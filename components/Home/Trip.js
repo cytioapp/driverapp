@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, Alert } from 'react-native';
 import { Button, Text } from 'native-base';
+import openMap from 'react-native-open-maps';
 
 class Trip extends React.Component {
   state = {
@@ -13,20 +14,19 @@ class Trip extends React.Component {
     this.setState({
       id: 1,
       address: 'Venustiano Carranza 1248, Santa Barbara, Colima',
-      since: '00:06'
+      since: '00:06',
+      latitude: '19.267041',
+      longitude: '-103.717528'
     })
   }
 
-  cancelTrip = () => {
-    Alert.alert(
-      'Cancelar',
-      '¿Está seguro que desea cancelar el servicio?',
-      [
-        {text: 'No', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-        {text: 'Si', onPress: () => this.props.cancelTrip() },
-      ],
-      { cancelable: false }
-    );
+  finishTrip = () => {
+    this.props.finishTrip()
+  }
+
+  showMap = () => {
+    const { latitude, longitude, address } = this.state;
+    openMap({ latitude,longitude, zoom: 30, query: address });
   }
 
   render() {
@@ -41,8 +41,13 @@ class Trip extends React.Component {
           <Text style={styles.label}>Tiempo de espera</Text>
           <Text style={styles.time}>{since}</Text>
         </View>
-        <Button large full danger style={{ marginTop: 7 }} onPress={this.cancelTrip}>
-          <Text>Cancelar</Text>
+        <View>
+          <Button onPress={this.showMap}>
+            <Text>Mostrar mapa</Text>
+          </Button>
+        </View>
+        <Button large full danger style={{ marginTop: 7 }} onPress={this.finishTrip}>
+          <Text>Finalizar servicio</Text>
         </Button>
       </View>
     );

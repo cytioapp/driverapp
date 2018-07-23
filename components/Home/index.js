@@ -1,6 +1,6 @@
 import React from 'react';
-import { View, Text, FlatList } from 'react-native';
-import { Container, Header, Title, Content, Body, Button } from 'native-base';
+import { View, Text, FlatList, TouchableOpacity, Alert } from 'react-native';
+import { Container, Header, Title, Content, Body, Left, Right, Button } from 'native-base';
 import TripItem from './TripItem';
 import Trip from './Trip';
 
@@ -26,6 +26,13 @@ class Home extends React.Component {
       }
     ]
   }
+
+  setFree = () => {
+    this.setState({
+      status: 'free',
+      currentTripId: null
+    });
+  }
   
   _keyExtractor = (item, index) => `${item.id}`;
 
@@ -49,11 +56,20 @@ class Home extends React.Component {
     });
   }
 
+  finishTrip = () => {
+    this.setFree();
+  }
+
   cancelTrip = () => {
-    this.setState({
-      status: 'free',
-      currentTripId: null
-    });
+    Alert.alert(
+      'Cancelar',
+      '¿Está seguro que desea cancelar el servicio?',
+      [
+        {text: 'No', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+        {text: 'Si', onPress: () => this.setFree()},
+      ],
+      { cancelable: false }
+    );
   }
 
   render() {
@@ -61,9 +77,17 @@ class Home extends React.Component {
     return (
       <Container>
         <Header>
+          <Left/>
           <Body>
-            <Title>Viajes disponibles</Title>
+            <Title>{status === 'free' ? 'Servicios' : 'Detalles'}</Title>
           </Body>
+          <Right>
+            {status === 'inprogress' && 
+              <TouchableOpacity onPress={this.cancelTrip}>
+                <Text>Cancelar</Text>
+              </TouchableOpacity>
+            }
+          </Right>
         </Header>
         {status === 'free' && 
           <FlatList
@@ -75,7 +99,7 @@ class Home extends React.Component {
         }
         {status === 'inprogress' && 
           <Content>
-            <Trip cancelTrip={this.cancelTrip} />
+            <Trip finishTrip={this.finishTrip} cancelTrip={this.cancelTrip} />
           </Content>
         }
       </Container>
