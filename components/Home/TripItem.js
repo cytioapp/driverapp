@@ -30,14 +30,14 @@ const styles = StyleSheet.create({
   }
 })
 
-const TripItem = ({ address, since, status, id, takeTrip, username }) => {
+const TripItem = ({ address_origin, since, status, id, takeTrip, username }) => {
   return (
-    <TouchableHighlight onPress={() => takeTrip(id, address)} underlayColor="#F2C874" >
+    <TouchableHighlight onPress={() => takeTrip(id, address_origin)} underlayColor="#F2C874" >
       <View style={styles.item}>
         <View style={styles.top}>
           <Text style={styles.label}>Dirección</Text>
         </View>
-        <Text style={styles.address}>{address}</Text>
+        <Text style={styles.address}>{address_origin}</Text>
       </View>
     </TouchableHighlight>
   );
