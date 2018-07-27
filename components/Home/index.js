@@ -19,6 +19,7 @@ import {
 } from 'native-base';
 import TripItem from './TripItem';
 import Trip from './Trip';
+import Api from '../../utils/api';
 
 const styles = StyleSheet.create({
   fontText: {
@@ -30,26 +31,15 @@ class Home extends React.Component {
   state = {
     status: 'free',
     currentTripId: null,
-    trips: [
-      {
-        id: 1,
-        address: 'Venustiano Carranza 1248, Santa Barbara, Colima',
-        since: '00:06',
-        username: 'Myrka'
-      },
-      {
-        id: 2,
-        address: 'Bugambilias 24, Villa flores, Villa de alvarez',
-        since: '02:02',
-        username: 'Sarahi'
-      },
-      {
-        id: 3,
-        address: 'Calle Gral. Alvaro Obregón 48-127, Santa Martha, 28975 Villa de Álvarez, Col.',
-        since: '09:22',
-        username: 'Larios'
-      }
-    ]
+    trips: []
+  }
+
+  componentDidMount() {
+    Api.get('/trips')
+      .then(res => {
+        this.setState({ trips: res.data })
+        console.log(res.data)
+      })
   }
 
   setFree = () => {
