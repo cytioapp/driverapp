@@ -3,23 +3,18 @@ import {
   Alert,
   FlatList,
   StyleSheet,
-  Text,
-  TouchableOpacity,
   View
 } from 'react-native';
 import {
-  Body,
-  Button,
   Container,
   Content,
-  Header,
-  Left,
-  Right,
-  Title
 } from 'native-base';
 import TripItem from './TripItem';
 import Trip from './Trip';
 import Api from '../../utils/api';
+import { Subscribe } from 'unstated';
+import sessionState from '../../states/session';
+import Header from './Header';
 
 const styles = StyleSheet.create({
   fontText: {
@@ -37,8 +32,9 @@ class Home extends React.Component {
   componentDidMount() {
     Api.get('/trips')
       .then(res => {
-        this.setState({ trips: res.data })
-        console.log(res.data)
+        if (Array.isArray(res.data)) {
+          this.setState({ trips: res.data })
+        }
       })
   }
 
@@ -97,35 +93,35 @@ class Home extends React.Component {
 
   render() {
     const { trips, status } = this.state;
+    const headerProps = {
+      status,
+      cancelTrip: this.cancelTrip,
+      navigation: this.props.navigation
+    };
+
     return (
-      <Container contentContainerStyle={{flex: 1}}>
-        <Header>
-          <Left/>
-          <Body>
-            <Title style={styles.fontText}>{status === 'free' ? 'Servicios' : 'Detalles'}</Title>
-          </Body>
-          <Right>
-            {status === 'inprogress' &&
-              <TouchableOpacity onPress={this.cancelTrip}>
-                <Text>Cancelar</Text>
-              </TouchableOpacity>
-            }
-          </Right>
-        </Header>
-        {status === 'free' &&
-          <FlatList
-            data={trips}
-            keyExtractor={this._keyExtractor}
-            ItemSeparatorComponent={this.renderSeparator}
-            renderItem={({item}) => <TripItem key={item.id} takeTrip={this.takeTrip} status={status} {...item} />}
-          />
-        }
-        {status === 'inprogress' &&
-          <Content contentContainerStyle={{flex: 1}}>
-            <Trip finishTrip={this.finishTrip} cancelTrip={this.cancelTrip} />
-          </Content>
-        }
-      </Container>
+      <Subscribe to={[sessionState]}>
+          {(session) => {
+            return (
+              <Container contentContainerStyle={{flex: 1}}>
+                <Header {...headerProps}/>
+                {status === 'free' &&
+                  <FlatList
+                    data={trips}
+                    keyExtractor={this._keyExtractor}
+                    ItemSeparatorComponent={this.renderSeparator}
+                    renderItem={({item}) => <TripItem key={item.id} takeTrip={this.takeTrip} status={status} {...item} />}
+                  />
+                }
+                {status === 'inprogress' &&
+                  <Content contentContainerStyle={{flex: 1}}>
+                    <Trip finishTrip={this.finishTrip} cancelTrip={this.cancelTrip} />
+                  </Content>
+                }
+              </Container>
+            )
+          }}
+        </Subscribe>
     );
   }
 }

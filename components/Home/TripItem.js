@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, StyleSheet, TouchableHighlight } from 'react-native';
-import { Button, Text } from 'native-base';
+import { Text } from 'native-base';
 
 const styles = StyleSheet.create({
   item: {
