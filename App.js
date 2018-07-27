@@ -3,7 +3,7 @@ import ExternalRoutes from './routes/ExternalRoutes';
 import InternalRoutes from './routes/InternalRoutes'
 import { Provider, Subscribe } from 'unstated';
 import sessionState from './states/session';
-import { View, Text } from 'react-native';
+import Loading from './components/Loading';
 
 class App extends Component {
   render() {
@@ -13,7 +13,7 @@ class App extends Component {
           {(session) => {
             session.verify();
             if (session.state.isLogued == null) {
-              return <View><Text>Espere un momento</Text></View>
+              return <Loading />;
             } else if (session.state.isLogued) {
               return <InternalRoutes />
             } else {
