@@ -7,8 +7,7 @@ class Api {
       sharedPreferencesName: 'taxiapp',
       keychainService: 'taxiapp'
     };
-    // const jwt = await SInfo.getItem('jwt', options);
-    const jwt = '';
+    const jwt = await SInfo.getItem('jwt', options);
     let auth_header = 'Bearer ' + jwt;
 
     return {
