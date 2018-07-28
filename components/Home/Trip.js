@@ -3,6 +3,7 @@ import { View, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { Button, Text } from 'native-base';
 import openMap from 'react-native-open-maps';
 import mapsIcon from '../../assets/maps-icon.png'
+import Api from '../../utils/api';
 
 const styles = StyleSheet.create({
   container: {
@@ -52,17 +53,23 @@ class Trip extends React.Component {
   state = {
     id: null,
     address: '',
-    since: ''
+    since: '',
+    full_name: ''
   }
 
   componentDidMount() {
-    this.setState({
-      id: 1,
-      address: 'Venustiano Carranza 1248, Santa Barbara, Colima',
-      since: '00:06',
-      latitude: '19.267041',
-      longitude: '-103.717528'
-    })
+    Api.get('/drivers/active_trip')
+      .then(res => {
+        console.log(res.data);
+        this.setState({
+          id: res.data.trip.id,
+          address: res.data.trip.address_origin,
+          since: '00:06',
+          latitude: res.data.trip.lat_origin,
+          longitude: res.data.trip.lng_origin,
+          full_name: res.data.trip.user.full_name
+        })
+      })
   }
 
   finishTrip = () => {
@@ -75,13 +82,13 @@ class Trip extends React.Component {
   }
 
   render() {
-    const { address, since } = this.state;
+    const { address, since, full_name } = this.state;
     return (
       <View style={styles.container}>
         <View style={styles.labelWrapper}>
           <Text style={styles.label}>Usuario</Text>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Text style={styles.text}>Nombre usuario</Text>
+            <Text style={styles.text}>{full_name}</Text>
           </View>
         </View>
 

@@ -30,15 +30,27 @@ class Home extends React.Component {
   }
 
   componentDidMount() {
-    Api.get('/trips')
+    Api.get('/drivers/active_trip')
       .then(res => {
-        if (Array.isArray(res.data)) {
-          this.setState({ trips: res.data })
+        if (res.data && res.data.active) {
+          this.setState({
+            status: 'inprogress',
+            currentTripId: res.data.trip.id
+          });
+        } else {
+          Api.get('/trips')
+            .then(res => {
+              if (Array.isArray(res.data)) {
+                this.setState({ trips: res.data })
+              }
+            })
         }
+        console.log(res);
       })
   }
 
   setFree = () => {
+    Api.put('/')
     this.setState({
       status: 'free',
       currentTripId: null
@@ -66,10 +78,16 @@ class Home extends React.Component {
       `¿Tomar viaje a ${address}?`,
       [
         {text: 'No', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-        {text: 'Si', onPress: () => this.setState({
-          status: 'inprogress',
-          currentTripId: 1
-        })},
+        {text: 'Si', onPress: () => 
+        Api.put('/drivers/accept_trip', { trip_id: id }).then(res => {
+          if (res.status == 200) {
+            this.setState({
+              status: 'inprogress',
+              currentTripId: 1
+            })
+          }
+        })
+        },
       ],
       { cancelable: false }
     );

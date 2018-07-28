@@ -4,8 +4,8 @@ import { Container } from 'unstated';
 import Api from '../utils/api';
 
 const options = {
-  sharedPreferencesName: 'taxiapp',
-  keychainService: 'taxiapp'
+  sharedPreferencesName: 'taxiappdriver',
+  keychainService: 'taxiappdriver'
 };
 
 class SessionState extends Container {
@@ -19,12 +19,12 @@ class SessionState extends Container {
       .then(res => {
         if (res.data.jwt) {
           SInfo.setItem('jwt', res.data.jwt, options)
-          .then(() => {
-            this.setState({
-              isLogued: true,
-              token: res.data.jwt
+            .then(() => {
+              this.setState({
+                isLogued: true,
+                token: res.data.jwt
+              });
             });
-          });
         } else {
           this.setState({ isLogued: false });
         }
