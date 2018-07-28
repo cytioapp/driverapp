@@ -60,7 +60,6 @@ class Trip extends React.Component {
   componentDidMount() {
     Api.get('/drivers/active_trip')
       .then(res => {
-        console.log(res.data);
         this.setState({
           id: res.data.trip.id,
           address: res.data.trip.address_origin,
@@ -72,10 +71,6 @@ class Trip extends React.Component {
       })
   }
 
-  finishTrip = () => {
-    this.props.finishTrip()
-  }
-
   showMap = () => {
     const { latitude, longitude, address } = this.state;
     openMap({ latitude,longitude, zoom: 30, query: address });
@@ -83,6 +78,7 @@ class Trip extends React.Component {
 
   render() {
     const { address, since, full_name } = this.state;
+    const { status } = this.props;
     return (
       <View style={styles.container}>
         <View style={styles.labelWrapper}>
@@ -106,11 +102,21 @@ class Trip extends React.Component {
           <Text style={styles.time}>{since}</Text>
         </View>
 
-        <View style={styles.buttonWrapper}>
-          <Button large full danger style={styles.finishButton} onPress={this.finishTrip}>
-            <Text style={styles.finishButtonText}>Finalizar servicio</Text>
-          </Button>
-        </View>
+        {status == 'taken' &&
+          <View style={styles.buttonWrapper}>
+            <Button large full primary style={styles.finishButton} onPress={this.props.startTrip}>
+              <Text style={styles.finishButtonText}>Iniciar servicio</Text>
+            </Button>
+          </View>
+        }
+
+        {status == 'active' &&
+          <View style={styles.buttonWrapper}>
+            <Button large full danger style={styles.finishButton} onPress={this.props.finishTrip}>
+              <Text style={styles.finishButtonText}>Finalizar servicio</Text>
+            </Button>
+          </View>
+        }
       </View>
     );
   }
