@@ -12,8 +12,6 @@ import {
 import TripItem from './TripItem';
 import Trip from './Trip';
 import Api from '../../utils/api';
-import { Subscribe } from 'unstated';
-import sessionState from '../../states/session';
 import Header from './Header';
 
 const styles = StyleSheet.create({
@@ -30,19 +28,36 @@ class Home extends React.Component {
   }
 
   componentDidMount() {
-    Api.get('/trips')
+    Api.get('/drivers/active_trip')
       .then(res => {
-        if (Array.isArray(res.data)) {
-          this.setState({ trips: res.data })
+        console.log(res);
+        if (res.data && res.data.active) {
+          this.setState({
+            status: res.data.trip.status,
+            currentTripId: res.data.trip.id
+          });
+        } else {
+          Api.get('/trips')
+            .then(res => {
+              if (Array.isArray(res.data)) {
+                this.setState({ trips: res.data.filter(item => item.status == 'holding') })
+              }
+            })
         }
       })
   }
 
   setFree = () => {
-    this.setState({
-      status: 'free',
-      currentTripId: null
-    });
+    Api.get('/trips')
+      .then(res => {
+        if (Array.isArray(res.data)) {
+          this.setState({
+            trips: res.data,
+            status: 'free',
+            currentTripId: null
+          });
+        }
+      })
   }
 
   _keyExtractor = (item, index) => `${item.id}`;
@@ -66,17 +81,43 @@ class Home extends React.Component {
       `¿Tomar viaje a ${address}?`,
       [
         {text: 'No', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-        {text: 'Si', onPress: () => this.setState({
-          status: 'inprogress',
-          currentTripId: 1
-        })},
+        {text: 'Si', onPress: () => 
+        Api.put('/drivers/accept_trip', { trip_id: id }).then(res => {
+          if (res.status == 200) {
+            this.setState({
+              status: 'inprogress',
+              currentTripId: id
+            })
+          }
+        })
+        },
       ],
       { cancelable: false }
     );
   }
 
   finishTrip = () => {
-    this.setFree();
+    Api.put('/drivers/finish_trip')
+      .then(res => {
+        if (res.status == 200) {
+          this.setFree();
+        } else {
+          console.log(res);
+        }
+      })
+  }
+
+  startTrip = () => {
+    Api.put('/drivers/start_trip')
+      .then(res => {
+        if (res.status == 200) {
+          this.setState({
+            status: 'active'
+          });
+        } else {
+          console.log(res);
+        }
+      })
   }
 
   cancelTrip = () => {
@@ -100,29 +141,23 @@ class Home extends React.Component {
     };
 
     return (
-      <Subscribe to={[sessionState]}>
-          {(session) => {
-            return (
-              <Container contentContainerStyle={{flex: 1}}>
-                <Header {...headerProps}/>
-                {status === 'free' &&
-                  <FlatList
-                    data={trips}
-                    keyExtractor={this._keyExtractor}
-                    ItemSeparatorComponent={this.renderSeparator}
-                    renderItem={({item}) => <TripItem key={item.id} takeTrip={this.takeTrip} status={status} {...item} />}
-                  />
-                }
-                {status === 'inprogress' &&
-                  <Content contentContainerStyle={{flex: 1}}>
-                    <Trip finishTrip={this.finishTrip} cancelTrip={this.cancelTrip} />
-                  </Content>
-                }
-              </Container>
-            )
-          }}
-        </Subscribe>
-    );
+      <Container contentContainerStyle={{flex: 1}}>
+        <Header {...headerProps}/>
+        {status === 'free' &&
+          <FlatList
+            data={trips}
+            keyExtractor={this._keyExtractor}
+            ItemSeparatorComponent={this.renderSeparator}
+            renderItem={({item}) => <TripItem key={item.id} takeTrip={this.takeTrip} status={status} {...item} />}
+          />
+        }
+        {['taken', 'inprogress', 'active'].includes(status) &&
+          <Content contentContainerStyle={{flex: 1}}>
+            <Trip status={status} finishTrip={this.finishTrip} cancelTrip={this.cancelTrip} startTrip={this.startTrip} />
+          </Content>
+        }
+      </Container>
+    )
   }
 }
 

@@ -3,6 +3,7 @@ import { View, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { Button, Text } from 'native-base';
 import openMap from 'react-native-open-maps';
 import mapsIcon from '../../assets/maps-icon.png'
+import Api from '../../utils/api';
 
 const styles = StyleSheet.create({
   container: {
@@ -52,21 +53,22 @@ class Trip extends React.Component {
   state = {
     id: null,
     address: '',
-    since: ''
+    since: '',
+    full_name: ''
   }
 
   componentDidMount() {
-    this.setState({
-      id: 1,
-      address: 'Venustiano Carranza 1248, Santa Barbara, Colima',
-      since: '00:06',
-      latitude: '19.267041',
-      longitude: '-103.717528'
-    })
-  }
-
-  finishTrip = () => {
-    this.props.finishTrip()
+    Api.get('/drivers/active_trip')
+      .then(res => {
+        this.setState({
+          id: res.data.trip.id,
+          address: res.data.trip.address_origin,
+          since: '00:06',
+          latitude: res.data.trip.lat_origin,
+          longitude: res.data.trip.lng_origin,
+          full_name: res.data.trip.user.full_name
+        })
+      })
   }
 
   showMap = () => {
@@ -75,13 +77,14 @@ class Trip extends React.Component {
   }
 
   render() {
-    const { address, since } = this.state;
+    const { address, since, full_name } = this.state;
+    const { status } = this.props;
     return (
       <View style={styles.container}>
         <View style={styles.labelWrapper}>
           <Text style={styles.label}>Usuario</Text>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Text style={styles.text}>Nombre usuario</Text>
+            <Text style={styles.text}>{full_name}</Text>
           </View>
         </View>
 
@@ -99,11 +102,21 @@ class Trip extends React.Component {
           <Text style={styles.time}>{since}</Text>
         </View>
 
-        <View style={styles.buttonWrapper}>
-          <Button large full danger style={styles.finishButton} onPress={this.finishTrip}>
-            <Text style={styles.finishButtonText}>Finalizar servicio</Text>
-          </Button>
-        </View>
+        {status == 'taken' &&
+          <View style={styles.buttonWrapper}>
+            <Button large full primary style={styles.finishButton} onPress={this.props.startTrip}>
+              <Text style={styles.finishButtonText}>Iniciar servicio</Text>
+            </Button>
+          </View>
+        }
+
+        {status == 'active' &&
+          <View style={styles.buttonWrapper}>
+            <Button large full danger style={styles.finishButton} onPress={this.props.finishTrip}>
+              <Text style={styles.finishButtonText}>Finalizar servicio</Text>
+            </Button>
+          </View>
+        }
       </View>
     );
   }
