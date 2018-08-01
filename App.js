@@ -11,8 +11,8 @@ class App extends Component {
       <Provider>
         <Subscribe to={[sessionState]}>
           {(session) => {
-            session.verify();
             if (session.state.isLogued == null) {
+              session.verify();
               return <Loading />;
             } else if (session.state.isLogued) {
               return <InternalRoutes />

@@ -13,6 +13,10 @@ import TripItem from './TripItem';
 import Trip from './Trip';
 import Api from '../../utils/api';
 import Header from './Header';
+window.navigator.userAgent = "react-native";
+import io from 'socket.io-client/dist/socket.io';
+import geodist from 'geodist';
+import Geolocation from 'react-native-geolocation-service';
 
 const styles = StyleSheet.create({
   fontText: {
@@ -21,16 +25,44 @@ const styles = StyleSheet.create({
 })
 
 class Home extends React.Component {
-  state = {
-    status: 'free',
-    currentTripId: null,
-    trips: []
+
+  constructor() {
+    super()
+
+    this.state = {
+      status: 'free',
+      currentTripId: null,
+      trips: []
+    }
+
+    this.socket = io('https://murmuring-thicket-35416.herokuapp.com');
   }
 
   componentDidMount() {
+    //Se une al room cuando se aceptó el trip por un driver
+    this.socket.emit('joinToDrivers', '');
+    this.socket.on('newTrip', (trip) => {
+      const geodistOptions = {exact: true, unit: 'km'};
+      Geolocation.getCurrentPosition(
+        (position) => {
+          let { latitude, longitude } = position.coords;
+          let origin_coords = {lat: latitude, lon: longitude};
+          let destiny_coords = {lat: trip.lat_origin, lon: trip.lng_origin};
+          let distance = geodist(origin_coords, destiny_coords, geodistOptions)
+          if(distance <= 4){
+            this.setState({
+              trips: [...this.state.trips, trip]
+            })
+          }
+        },
+        (error) => this.setState({ error: error.message }),
+        { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
+      );
+
+    });
+
     Api.get('/drivers/active_trip')
       .then(res => {
-        console.log(res);
         if (res.data && res.data.active) {
           this.setState({
             status: res.data.trip.status,
@@ -44,7 +76,9 @@ class Home extends React.Component {
               }
             })
         }
-      })
+      }).catch(err => {
+        console.log(err.response);
+      });
   }
 
   setFree = () => {
@@ -81,7 +115,7 @@ class Home extends React.Component {
       `¿Tomar viaje a ${address}?`,
       [
         {text: 'No', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-        {text: 'Si', onPress: () => 
+        {text: 'Si', onPress: () =>
         Api.put('/drivers/accept_trip', { trip_id: id }).then(res => {
           if (res.status == 200) {
             this.setState({
