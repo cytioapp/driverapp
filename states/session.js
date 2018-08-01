@@ -10,8 +10,7 @@ const options = {
 
 class SessionState extends Container {
   state = {
-    isLogued: null,
-    token: ''
+    isLogued: null
   };
 
   login = (email, password) => {
@@ -21,8 +20,7 @@ class SessionState extends Container {
           SInfo.setItem('jwt', res.data.jwt, options)
             .then(() => {
               this.setState({
-                isLogued: true,
-                token: res.data.jwt
+                isLogued: true
               });
             });
         } else {
@@ -48,7 +46,7 @@ class SessionState extends Container {
   }
 
   logout = () => {
-    this.setState({ isLogued: false, token: '' }, () => {
+    this.setState({ isLogued: false }, () => {
       SInfo.deleteItem('jwt', options)
     });
   }
