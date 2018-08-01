@@ -14,8 +14,8 @@ class SessionState extends Container {
     token: ''
   };
 
-  login = () => {
-    Api.post('/drivers/login', {email: 'driver1@driver.com', password: '123456'})
+  login = (email, password) => {
+    Api.post('/drivers/login', { email, password })
       .then(res => {
         if (res.data.jwt) {
           SInfo.setItem('jwt', res.data.jwt, options)
@@ -48,7 +48,7 @@ class SessionState extends Container {
   }
 
   logout = () => {
-    this.setState({ isLogued: false }, () => {
+    this.setState({ isLogued: false, token: '' }, () => {
       SInfo.deleteItem('jwt', options)
     });
   }
