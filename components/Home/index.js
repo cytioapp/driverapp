@@ -43,6 +43,9 @@ class Home extends React.Component {
   componentDidMount() {
     //Se une al room cuando se aceptó el trip por un driver
     this.socket.emit('joinToDrivers', '');
+
+    //En caso de que haya un nuevo viaje por parte del user se debe reflejar
+    //en el index de todos los drivers que tengan el trip a 4km a la redonda
     this.socket.on('newTrip', (trip) => {
       Platform.select({
         ios: () => this.compareWithCurrentPosition(trip),
@@ -59,6 +62,20 @@ class Home extends React.Component {
       })();
     });
 
+    //Cuando un taxista tome un trip, debe reflejarse en el index de todos
+    this.socket.on('tripTaken', (trip_id) => {
+      this.setState({
+        trips: this.state.trips.filter(trip => !(trip.id == trip_id.trip_id))
+      });
+    });
+
+    //Cuando el usuario cancela el viaje, se refleja en el index
+    this.socket.on("deleteTrip", (trip_id) => {
+      this.setState({
+        trips: this.state.trips.filter(trip => !(trip.id == trip_id.trip_id))
+      });
+    });
+
     Api.get('/drivers/active_trip')
       .then(res => {
         if (res.data && res.data.active) {
@@ -67,14 +84,7 @@ class Home extends React.Component {
             currentTripId: res.data.trip.id
           });
         } else {
-          Api.get('/trips')
-            .then(res => {
-              if (Array.isArray(res.data)) {
-                this.setState({ trips: res.data.filter(item => item.status == 'holding') })
-              }
-            }).catch(err => {
-              console.log('Trips catch', err.response)
-            })
+          this.getHoldingTrips();
         }
       }).catch(err => {
         console.log('Active trip catch', err.response)
@@ -83,7 +93,7 @@ class Home extends React.Component {
 
   compareWithCurrentPosition = (trip)  => {
     const geodistOptions = { exact: true, unit: 'km' };
-      
+
     Geolocation.getCurrentPosition(
       (position) => {
         let { latitude, longitude } = position.coords;
@@ -101,18 +111,18 @@ class Home extends React.Component {
     );
   }
 
-  setFree = () => {
-    Api.get('/trips')
+  getHoldingTrips = () => {
+    Api.get('/trips') //Change this endpoint to bring only the one's 4km away
       .then(res => {
         if (Array.isArray(res.data)) {
           this.setState({
-            trips: res.data,
+            trips: res.data.filter(item => item.status == 'holding'),
             status: 'free',
             currentTripId: null
           });
         }
       }).catch(err => {
-        console.log('Set trip catch', err.response)
+        console.log('Trips catch', err.response)
       })
   }
 
@@ -156,7 +166,7 @@ class Home extends React.Component {
     Api.put('/drivers/finish_trip')
       .then(res => {
         if (res.status == 200) {
-          this.setFree();
+          this.getHoldingTrips();
         } else {
           console.log(res);
         }
@@ -182,7 +192,7 @@ class Home extends React.Component {
       '¿Está seguro que desea cancelar el servicio?',
       [
         {text: 'No', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-        {text: 'Si', onPress: () => this.setFree()},
+        {text: 'Si', onPress: () => this.getHoldingTrips()},
       ],
       { cancelable: false }
     );
