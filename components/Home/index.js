@@ -3,7 +3,9 @@ import {
   Alert,
   FlatList,
   StyleSheet,
-  View
+  View,
+  PermissionsAndroid,
+  Platform
 } from 'react-native';
 import {
   Container,
@@ -42,23 +44,19 @@ class Home extends React.Component {
     //Se une al room cuando se aceptó el trip por un driver
     this.socket.emit('joinToDrivers', '');
     this.socket.on('newTrip', (trip) => {
-      const geodistOptions = {exact: true, unit: 'km'};
-      Geolocation.getCurrentPosition(
-        (position) => {
-          let { latitude, longitude } = position.coords;
-          let origin_coords = {lat: latitude, lon: longitude};
-          let destiny_coords = {lat: trip.lat_origin, lon: trip.lng_origin};
-          let distance = geodist(origin_coords, destiny_coords, geodistOptions)
-          if(distance <= 4){
-            this.setState({
-              trips: [...this.state.trips, trip]
-            })
-          }
-        },
-        (error) => this.setState({ error: error.message }),
-        { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
-      );
-
+      Platform.select({
+        ios: () => this.compareWithCurrentPosition(trip),
+        android: () => {
+          PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION)
+            .then(granted => {
+              if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                this.compareWithCurrentPosition(trip)
+              } else {
+                this.setState({ error: 'Se requieren permisos de ubicación' })
+              }
+            });
+        }
+      })();
     });
 
     Api.get('/drivers/active_trip')
@@ -81,6 +79,26 @@ class Home extends React.Component {
       }).catch(err => {
         console.log('Active trip catch', err.response)
       })
+  }
+
+  compareWithCurrentPosition = (trip)  => {
+    const geodistOptions = { exact: true, unit: 'km' };
+      
+    Geolocation.getCurrentPosition(
+      (position) => {
+        let { latitude, longitude } = position.coords;
+        let origin_coords = {lat: latitude, lon: longitude};
+        let destiny_coords = {lat: trip.lat_origin, lon: trip.lng_origin};
+        let distance = geodist(origin_coords, destiny_coords, geodistOptions)
+        if(distance <= 4){
+          this.setState({
+            trips: [...this.state.trips, trip]
+          })
+        }
+      },
+      (error) => this.setState({ error: error.message }),
+      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
+    );
   }
 
   setFree = () => {
