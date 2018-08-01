@@ -74,11 +74,13 @@ class Home extends React.Component {
               if (Array.isArray(res.data)) {
                 this.setState({ trips: res.data.filter(item => item.status == 'holding') })
               }
+            }).catch(err => {
+              console.log('Trips catch', err.response)
             })
         }
       }).catch(err => {
-        console.log(err.response);
-      });
+        console.log('Active trip catch', err.response)
+      })
   }
 
   setFree = () => {
@@ -91,6 +93,8 @@ class Home extends React.Component {
             currentTripId: null
           });
         }
+      }).catch(err => {
+        console.log('Set trip catch', err.response)
       })
   }
 

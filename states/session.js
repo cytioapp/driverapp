@@ -10,20 +10,21 @@ const options = {
 
 class SessionState extends Container {
   state = {
-    isLogued: null,
-    token: ''
+    isLogued: null
   };
 
-  login = () => {
-    Api.post('/drivers/login', {email: 'driver1@driver.com', password: '123456'})
+  login = (email, password) => {
+    Api.post('/drivers/login', { email, password })
       .then(res => {
         if (res.data.jwt) {
           SInfo.setItem('jwt', res.data.jwt, options)
             .then(() => {
               this.setState({
-                isLogued: true,
-                token: res.data.jwt
+                isLogued: true
               });
+            })
+            .catch(err => {
+              console.log(err);
             });
         } else {
           this.setState({ isLogued: false });
@@ -43,6 +44,9 @@ class SessionState extends Container {
             this.setState({ isLogued: false }, ()=> {
               return resolve();
             });
+        })
+        .catch(err => {
+          console.log(err);
         });
     })
   }
