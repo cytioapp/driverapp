@@ -22,6 +22,9 @@ class SessionState extends Container {
               this.setState({
                 isLogued: true
               });
+            })
+            .catch(err => {
+              console.log(err);
             });
         } else {
           this.setState({ isLogued: false });
@@ -41,6 +44,9 @@ class SessionState extends Container {
             this.setState({ isLogued: false }, ()=> {
               return resolve();
             });
+        })
+        .catch(err => {
+          console.log(err);
         });
     })
   }
