@@ -56,6 +56,15 @@ class SessionState extends Container {
       SInfo.deleteItem('jwt', options)
     });
   }
+
+  signup = (data) => {
+    Api.post('/drivers/signup', data)
+    .then(res => {
+      this.login(data.email, data.password);
+    }).catch(err => {
+      console.log('Signup error', err.response)
+    });
+  }
 }
 
 export default SessionState;
