@@ -6,6 +6,9 @@ import AssignVehicle from '../components/AssignVehicle';
 export default createDrawerNavigator({
   Home: {
     screen: Home
+  },
+  AssignVehicle: {
+    screen: AssignVehicle
   }
 },{
   headerMode: 'none',

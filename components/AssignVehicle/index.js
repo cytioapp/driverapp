@@ -18,6 +18,7 @@ import {
   Text,
   Title
 } from 'native-base';
+import Api from '../../utils/api';
 
 const styles = StyleSheet.create({
   pickerItem: {
@@ -58,6 +59,20 @@ export default class AssignVehicle extends Component {
     });
   }
 
+  assignVehicle = (data) => {
+    Api.post('/vehicles', { organization: data.organization,
+                            number: data.number,
+                            license_plate: '0101018435',
+                            model: 'Tsuru',
+                            year: '2010',
+                            service_type_id: 1
+                          })
+      .then(res => {
+        console.log(res)
+        this.props.navigation.navigate('Home')
+      })
+  }
+
   render(){
     return(
       <KeyboardAvoidingView style={{flex: 1}} behavior="padding">
@@ -83,11 +98,11 @@ export default class AssignVehicle extends Component {
                     selectedValue={this.state.organization}
                     onValueChange={this.onValueChange}
                   >
-                    <Picker.Item label="Libertad" value="key0" />
-                    <Picker.Item label="Centro" value="key1" />
-                    <Picker.Item label="El Trapiche" value="key2" />
-                    <Picker.Item label="Quesería" value="key3" />
-                    <Picker.Item label="Tabachines" value="key4" />
+                    <Picker.Item label="Libertad" value="Libertad" />
+                    <Picker.Item label="Centro" value="Centro" />
+                    <Picker.Item label="El Trapiche" value="El Trapiche" />
+                    <Picker.Item label="Quesería" value="Quesería" />
+                    <Picker.Item label="Tabachines" value="Tabachines" />
                   </Picker>
                 </View>
               </Item>
@@ -95,8 +110,17 @@ export default class AssignVehicle extends Component {
             <View style={styles.inputWrapper}>
               <Text>Número del taxi</Text>
               <Item style={styles.inputItem} rounded>
-                <Input style={styles.input} keyboardType="numeric" maxLength = {2} />
+                <Input
+                  style={styles.input}
+                  keyboardType="numeric"
+                  maxLength = {2}
+                  onChangeText={number => this.setState({ number })} />
               </Item>
+            </View>
+            <View>
+            <Button block rounded success onPress={() => this.assignVehicle(this.state)}>
+              <Text>Asignar vehículo</Text>
+            </Button>
             </View>
           </Content>
         </Container>

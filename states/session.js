@@ -21,6 +21,8 @@ class SessionState extends Container {
             .then(() => {
               this.setState({
                 isLogued: true
+              }, () => {
+                NavigationActions.navigate('AssignVehicle')
               });
             })
             .catch(err => {
