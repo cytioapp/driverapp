@@ -49,28 +49,45 @@ export default class AssignVehicle extends Component {
     super();
     this.state = {
       organization: '',
-      number: ''
+      number: '',
+      organizations: []
     };
+  }
+
+  componentDidMount(){
+    this.fetchOrganizations()
+  }
+
+  assignVehicle = () => {
+    Api.post('/vehicles', { organization_id: this.state.organization,
+                            number: this.state.number
+                          })
+      .then(res => {
+        console.log(res)
+        this.props.navigation.navigate('Home')
+      }).catch(err => {
+        console.log(err.response)
+      });;
   }
 
   onValueChange = (value) => {
     this.setState({
       organization: value
-    });
+    })
+  };
+
+  fetchOrganizations = () => {
+    Api.get('/organizations').then(res => {
+      this.setState({
+        organizations: res.data
+      });
+    })
   }
 
-  assignVehicle = (data) => {
-    Api.post('/vehicles', { organization: data.organization,
-                            number: data.number,
-                            license_plate: '0101018435',
-                            model: 'Tsuru',
-                            year: '2010',
-                            service_type_id: 1
-                          })
-      .then(res => {
-        console.log(res)
-        this.props.navigation.navigate('Home')
-      })
+  renderOrganizations = () => {
+    return this.state.organizations.map(organization => {
+      return <Picker.Item key={organization.id} label={organization.name} value={organization.id} />
+    });
   }
 
   render(){
@@ -98,11 +115,7 @@ export default class AssignVehicle extends Component {
                     selectedValue={this.state.organization}
                     onValueChange={this.onValueChange}
                   >
-                    <Picker.Item label="Libertad" value="Libertad" />
-                    <Picker.Item label="Centro" value="Centro" />
-                    <Picker.Item label="El Trapiche" value="El Trapiche" />
-                    <Picker.Item label="Quesería" value="Quesería" />
-                    <Picker.Item label="Tabachines" value="Tabachines" />
+                    {this.renderOrganizations()}
                   </Picker>
                 </View>
               </Item>
@@ -118,9 +131,10 @@ export default class AssignVehicle extends Component {
               </Item>
             </View>
             <View>
-            <Button block rounded success onPress={() => this.assignVehicle(this.state)}>
-              <Text>Asignar vehículo</Text>
-            </Button>
+            {/* this.assignVehicle(this.state) */}
+              <Button block rounded success onPress={this.assignVehicle}>
+                <Text>Asignar vehículo</Text>
+              </Button>
             </View>
           </Content>
         </Container>

@@ -109,7 +109,6 @@ export default class Signup extends Component {
 
                 </Form>
                 <View style={styles.buttonWrapper} >
-                {/* CHANGE ONPRESS METHOD */}
                   <Button block rounded success onPress={() => session.signup(this.state)}>
                     <Text>Registrarse</Text>
                   </Button>
