@@ -137,6 +137,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-sound-player')
     compile project(':react-native-geolocation-service')
     compile project(':react-native-sensitive-info')
     compile fileTree(dir: "libs", include: ["*.jar"])
