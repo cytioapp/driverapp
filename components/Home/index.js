@@ -20,6 +20,7 @@ window.navigator.userAgent = "react-native";
 import io from 'socket.io-client/dist/socket.io';
 import geodist from 'geodist';
 import Geolocation from 'react-native-geolocation-service';
+import SoundPlayer from 'react-native-sound-player'
 
 const styles = StyleSheet.create({
   fontText: {
@@ -56,6 +57,12 @@ class Home extends React.Component {
             .then(granted => {
               if (granted === PermissionsAndroid.RESULTS.GRANTED) {
                 this.compareWithCurrentPosition(trip)
+                try {
+                  // play the file appointed.mp3
+                  SoundPlayer.playSoundFile('appointed', 'mp3')
+                } catch (e) {
+                  console.log(`cannot play the sound file`, e)
+                }
               } else {
                 this.setState({ error: 'Se requieren permisos de ubicación' })
               }
@@ -91,6 +98,10 @@ class Home extends React.Component {
       }).catch(err => {
         console.log('Active trip catch', err.response)
       })
+  }
+
+  componentWillUnmount() {
+    SoundPlayer.unmount()
   }
 
   compareWithCurrentPosition = (trip)  => {
