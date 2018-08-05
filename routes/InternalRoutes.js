@@ -1,14 +1,14 @@
 import { createStackNavigator, createDrawerNavigator } from 'react-navigation';
 import Home from '../components/Home';
 import DrawerMenu from '../components/DrawerMenu';
-import Login from '../components/Login';
+import AssignVehicle from '../components/AssignVehicle';
 
 export default createDrawerNavigator({
   Home: {
     screen: Home
   },
-  Login: {
-    screen: Login
+  AssignVehicle: {
+    screen: AssignVehicle
   }
 },{
   headerMode: 'none',
