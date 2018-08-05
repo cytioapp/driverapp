@@ -5,7 +5,8 @@ import {
   StyleSheet,
   View,
   PermissionsAndroid,
-  Platform
+  Platform,
+  RefreshControl
 } from 'react-native';
 import {
   Container,
@@ -28,13 +29,14 @@ const styles = StyleSheet.create({
 
 class Home extends React.Component {
 
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
 
     this.state = {
       status: 'free',
       currentTripId: null,
-      trips: []
+      trips: [],
+      refreshing: false
     }
 
     this.socket = io('https://murmuring-thicket-35416.herokuapp.com');
@@ -215,6 +217,12 @@ class Home extends React.Component {
             keyExtractor={this._keyExtractor}
             ItemSeparatorComponent={this.renderSeparator}
             renderItem={({item}) => <TripItem key={item.id} takeTrip={this.takeTrip} status={status} {...item} />}
+            refreshControl={
+              <RefreshControl
+               refreshing={this.state.refreshing}
+               onRefresh={this.getHoldingTrips}
+              />
+            }
           />
         }
         {['taken', 'inprogress', 'active'].includes(status) &&
