@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 import { Subscribe } from 'unstated';
@@ -14,16 +14,22 @@ const styles = StyleSheet.create({
   }
 })
 
-export default class DrawerMenu extends React.Component {
+export default class DrawerMenu extends Component {
   render() {
+    const { navigate } = this.props.navigation;
     return (
       <Subscribe to={[sessionState]}>
         {(session) => (
           <ScrollView>
             <SafeAreaView style={{ flex: 1 }} forceInset={{ top: 'always', horizontal: 'never' }}>
-              <TouchableOpacity onPress={() => this.props.navigation.navigate('Home')}>
+              <TouchableOpacity onPress={() => navigate('Home')}>
                 <View style={styles.item}>
                   <Text>Inicio</Text>
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => navigate('AssignVehicle')}>
+                <View style={styles.item}>
+                  <Text>Asignar vehículo</Text>
                 </View>
               </TouchableOpacity>
               <TouchableOpacity onPress={session.logout}>

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {StyleSheet, View, KeyboardAvoidingView, Image} from 'react-native';
+import {StyleSheet, View, KeyboardAvoidingView, Image, TouchableOpacity} from 'react-native';
 import { Container, Content, Form, Item, Input, Button, Text } from 'native-base';
 import { Subscribe } from 'unstated';
 import sessionState from '../../states/session';
@@ -62,6 +62,16 @@ export default class Login extends Component {
                   <Button block rounded success onPress={() => session.login(this.state.email, this.state.password)}>
                     <Text>Iniciar Sesión</Text>
                   </Button>
+                </View>
+                <View>
+                  <TouchableOpacity onPress={() => this.props.navigation.navigate('Signup')}>
+                    <Text>Crear cuenta</Text>
+                  </TouchableOpacity>
+                </View>
+                <View>
+                  <TouchableOpacity onPress={() => this.props.navigation.navigate('ChangePassword')}>
+                    <Text>Olvidaste tu contraseña?</Text>
+                  </TouchableOpacity>
                 </View>
               </Content>
             </Container>
