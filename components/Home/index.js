@@ -19,7 +19,7 @@ import Header from './Header';
 window.navigator.userAgent = "react-native";
 import io from 'socket.io-client/dist/socket.io';
 import geodist from 'geodist';
-import Geolocation from 'react-native-geolocation-service';
+// import Geolocation from 'react-native-geolocation-service';
 
 const styles = StyleSheet.create({
   fontText: {
@@ -49,11 +49,14 @@ class Home extends React.Component {
     //En caso de que haya un nuevo viaje por parte del user se debe reflejar
     //en el index de todos los drivers que tengan el trip a 4km a la redonda
     this.socket.on('newTrip', (trip) => {
+      console.log('newTrip')
       Platform.select({
         ios: () => this.compareWithCurrentPosition(trip),
         android: () => {
+          console.log('Android Permissions')
           PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION)
             .then(granted => {
+              console.log(granted, PermissionsAndroid.RESULTS.GRANTED)
               if (granted === PermissionsAndroid.RESULTS.GRANTED) {
                 this.compareWithCurrentPosition(trip)
               } else {
@@ -65,16 +68,17 @@ class Home extends React.Component {
     });
 
     //Cuando un taxista tome un trip, debe reflejarse en el index de todos
-    this.socket.on('tripTaken', (trip_id) => {
+    this.socket.on('tripTaken', ({ trip_id }) => {
+      console.log('tripTaken')
       this.setState({
-        trips: this.state.trips.filter(trip => !(trip.id == trip_id.trip_id))
+        trips: this.state.trips.filter(trip => !(trip.id == trip_id))
       });
     });
 
     //Cuando el usuario cancela el viaje, se refleja en el index
-    this.socket.on("deleteTrip", (trip_id) => {
+    this.socket.on("deleteTrip", ({ trip_id }) => {
       this.setState({
-        trips: this.state.trips.filter(trip => !(trip.id == trip_id.trip_id))
+        trips: this.state.trips.filter(trip => !(trip.id == trip_id))
       });
     });
 
@@ -96,13 +100,13 @@ class Home extends React.Component {
   compareWithCurrentPosition = (trip)  => {
     const geodistOptions = { exact: true, unit: 'km' };
 
-    Geolocation.getCurrentPosition(
+    navigator.geolocation.getCurrentPosition(
       (position) => {
         let { latitude, longitude } = position.coords;
         let origin_coords = {lat: latitude, lon: longitude};
         let destiny_coords = {lat: trip.lat_origin, lon: trip.lng_origin};
         let distance = geodist(origin_coords, destiny_coords, geodistOptions)
-        if(distance <= 4){
+        if (distance <= 4){
           this.setState({
             trips: [...this.state.trips, trip]
           })
