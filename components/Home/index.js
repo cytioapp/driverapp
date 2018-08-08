@@ -39,7 +39,7 @@ class Home extends React.Component {
       refreshing: false
     }
 
-    this.socket = io('https://murmuring-thicket-35416.herokuapp.com');
+    this.socket = io('https://cytio.com.mx');
   }
 
   componentDidMount() {
