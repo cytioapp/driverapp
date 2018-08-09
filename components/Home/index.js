@@ -6,7 +6,8 @@ import {
   View,
   PermissionsAndroid,
   Platform,
-  RefreshControl
+  RefreshControl,
+  Text
 } from 'react-native';
 import {
   Container,
@@ -19,7 +20,22 @@ import Header from './Header';
 window.navigator.userAgent = "react-native";
 import io from 'socket.io-client/dist/socket.io';
 import geodist from 'geodist';
+import firebase from 'firebase';
 // import Geolocation from 'react-native-geolocation-service';
+
+var config = {
+  apiKey: "AIzaSyB1rovQJFNcRoCk3MJDXYr8UNDShl3_2S0",
+  authDomain: "cytio-10a47.firebaseapp.com",
+  databaseURL: "https://cytio-10a47.firebaseio.com",
+  projectId: "cytio-10a47",
+  storageBucket: "cytio-10a47.appspot.com",
+  messagingSenderId: "415204470651"
+};
+
+if (!firebase.apps.length) {
+  console.log('initialize firebase')
+  firebase.initializeApp(config);
+}
 
 const styles = StyleSheet.create({
   fontText: {
@@ -36,13 +52,18 @@ class Home extends React.Component {
       status: 'free',
       currentTripId: null,
       trips: [],
-      refreshing: false
+      refreshing: false,
+      tests: []
     }
 
     this.socket = io('https://cytio.com.mx');
   }
 
   componentDidMount() {
+    firebase.database().ref('server/holding_trips/').once('value', (snapshot) => {
+      this.setState({ tests: snapshot.val() })
+      // console.log(snapshot.val())
+    });
     //Se une al room cuando se aceptó el trip por un driver
     this.socket.emit('joinToDrivers', '');
 
@@ -205,7 +226,7 @@ class Home extends React.Component {
   }
 
   render() {
-    const { trips, status } = this.state;
+    const { trips, status, tests} = this.state;
     const headerProps = {
       status,
       cancelTrip: this.cancelTrip,
@@ -215,6 +236,7 @@ class Home extends React.Component {
     return (
       <Container contentContainerStyle={{flex: 1}}>
         <Header {...headerProps}/>
+        {tests.map((item, index) => <Text key={index}>{item.full_name}</Text>)}
         {status === 'free' &&
           <FlatList
             data={trips}
