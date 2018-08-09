@@ -21,6 +21,8 @@ DerivedData
 *.ipa
 *.xcuserstate
 project.xcworkspace
+ios/GoogleService-Info.plist
+ios/Pods
 
 # Android/IntelliJ
 #

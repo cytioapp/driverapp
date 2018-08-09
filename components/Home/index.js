@@ -20,22 +20,24 @@ import Header from './Header';
 window.navigator.userAgent = "react-native";
 import io from 'socket.io-client/dist/socket.io';
 import geodist from 'geodist';
-import firebase from 'firebase';
+import firebase from 'react-native-firebase';
+
+// import firebase from 'firebase';
 // import Geolocation from 'react-native-geolocation-service';
 
-var config = {
-  apiKey: "AIzaSyB1rovQJFNcRoCk3MJDXYr8UNDShl3_2S0",
-  authDomain: "cytio-10a47.firebaseapp.com",
-  databaseURL: "https://cytio-10a47.firebaseio.com",
-  projectId: "cytio-10a47",
-  storageBucket: "cytio-10a47.appspot.com",
-  messagingSenderId: "415204470651"
-};
+// var config = {
+//   apiKey: "AIzaSyB1rovQJFNcRoCk3MJDXYr8UNDShl3_2S0",
+//   authDomain: "cytio-10a47.firebaseapp.com",
+//   databaseURL: "https://cytio-10a47.firebaseio.com",
+//   projectId: "cytio-10a47",
+//   storageBucket: "cytio-10a47.appspot.com",
+//   messagingSenderId: "415204470651"
+// };
 
-if (!firebase.apps.length) {
-  console.log('initialize firebase')
-  firebase.initializeApp(config);
-}
+// if (!firebase.apps.length) {
+//   console.log('initialize firebase')
+//   firebase.initializeApp(config);
+// }
 
 const styles = StyleSheet.create({
   fontText: {
@@ -62,7 +64,7 @@ class Home extends React.Component {
   componentDidMount() {
     firebase.database().ref('server/holding_trips/').once('value', (snapshot) => {
       this.setState({ tests: snapshot.val() })
-      // console.log(snapshot.val())
+      console.log(snapshot.val())
     });
     //Se une al room cuando se aceptó el trip por un driver
     this.socket.emit('joinToDrivers', '');
