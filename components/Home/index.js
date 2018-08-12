@@ -6,7 +6,8 @@ import {
   View,
   PermissionsAndroid,
   Platform,
-  RefreshControl
+  RefreshControl,
+  Text
 } from 'react-native';
 import {
   Container,
@@ -16,44 +17,56 @@ import TripItem from './TripItem';
 import Trip from './Trip';
 import Api from '../../utils/api';
 import Header from './Header';
-window.navigator.userAgent = "react-native";
-import io from 'socket.io-client/dist/socket.io';
 import geodist from 'geodist';
-import Geolocation from 'react-native-geolocation-service';
+import firebase from 'firebase';
+import firebaseConfig from '../../firebaseconfig.json';
 
-const styles = StyleSheet.create({
-  fontText: {
-    fontFamily: 'Nunito-Bold'
-  }
-})
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
 
 class Home extends React.Component {
 
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      status: 'free',
-      currentTripId: null,
-      trips: [],
-      refreshing: false
-    }
-
-    this.socket = io('https://murmuring-thicket-35416.herokuapp.com');
+  state = {
+    status: 'free',
+    currentTripId: null,
+    trips: [],
+    refreshing: false,
   }
 
   componentDidMount() {
-    //Se une al room cuando se aceptó el trip por un driver
-    this.socket.emit('joinToDrivers', '');
+    // Solo debería traerme los trips que se generaron despues del componentDidMount
+    firebase.database().ref('server/holding_trips/').on('child_added', (snapshot, prevChildKey) => {
+      if (snapshot.val()) {
+        this.setState({
+          trips: [...this.state.trips, snapshot.val()]
+        });
+      } else {
+        this.setState({ trips: [] });
+      }
+    });
+
+    firebase.database().ref('server/holding_trips/').on('child_removed', (snapshot, prevChildKey) => {
+      if (snapshot.val()) {
+        this.setState({
+          trips: this.state.trips.filter(item => item.id != snapshot.val().id)
+        });
+      } else {
+        this.setState({ trips: [] });
+      }
+    });
 
     //En caso de que haya un nuevo viaje por parte del user se debe reflejar
     //en el index de todos los drivers que tengan el trip a 4km a la redonda
-    this.socket.on('newTrip', (trip) => {
+    /*this.socket.on('newTrip', (trip) => {
+      console.log('newTrip')
       Platform.select({
         ios: () => this.compareWithCurrentPosition(trip),
         android: () => {
+          console.log('Android Permissions')
           PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION)
             .then(granted => {
+              console.log(granted, PermissionsAndroid.RESULTS.GRANTED)
               if (granted === PermissionsAndroid.RESULTS.GRANTED) {
                 this.compareWithCurrentPosition(trip)
               } else {
@@ -62,21 +75,7 @@ class Home extends React.Component {
             });
         }
       })();
-    });
-
-    //Cuando un taxista tome un trip, debe reflejarse en el index de todos
-    this.socket.on('tripTaken', (trip_id) => {
-      this.setState({
-        trips: this.state.trips.filter(trip => !(trip.id == trip_id.trip_id))
-      });
-    });
-
-    //Cuando el usuario cancela el viaje, se refleja en el index
-    this.socket.on("deleteTrip", (trip_id) => {
-      this.setState({
-        trips: this.state.trips.filter(trip => !(trip.id == trip_id.trip_id))
-      });
-    });
+    });*/
 
     Api.get('/drivers/active_trip')
       .then(res => {
@@ -89,6 +88,9 @@ class Home extends React.Component {
           this.getHoldingTrips();
         }
       }).catch(err => {
+        if (err.response.status == 401) {
+          this.props.screenProps.session.logout();
+        }
         console.log('Active trip catch', err.response)
       })
   }
@@ -96,13 +98,13 @@ class Home extends React.Component {
   compareWithCurrentPosition = (trip)  => {
     const geodistOptions = { exact: true, unit: 'km' };
 
-    Geolocation.getCurrentPosition(
+    navigator.geolocation.getCurrentPosition(
       (position) => {
         let { latitude, longitude } = position.coords;
         let origin_coords = {lat: latitude, lon: longitude};
         let destiny_coords = {lat: trip.lat_origin, lon: trip.lng_origin};
         let distance = geodist(origin_coords, destiny_coords, geodistOptions)
-        if(distance <= 4){
+        if (distance <= 4){
           this.setState({
             trips: [...this.state.trips, trip]
           })
@@ -201,7 +203,7 @@ class Home extends React.Component {
   }
 
   render() {
-    const { trips, status } = this.state;
+    const { trips, status, tests} = this.state;
     const headerProps = {
       status,
       cancelTrip: this.cancelTrip,
