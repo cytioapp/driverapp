@@ -18,7 +18,7 @@ import Api from '../../utils/api';
 class Home extends React.Component {
 
   state = {
-    status: 'free',
+    status: '',
     currentTripId: null,
   }
 
@@ -30,6 +30,8 @@ class Home extends React.Component {
             status: res.data.trip.status,
             currentTripId: res.data.trip.id
           });
+        } else {
+          this.setState({ status: 'free' })
         }
       }).catch(err => {
         if (err.response.status == 401) {
@@ -37,6 +39,10 @@ class Home extends React.Component {
         }
         console.log('Active trip catch', err.response)
       })
+  }
+
+  componentWillUnmount() {
+    console.log('Unmonting index');
   }
 
   /* monitorTrip() {
@@ -58,7 +64,9 @@ class Home extends React.Component {
 
   render() {
     const { status } = this.state;
-      if (status === 'free') {
+      if (status == '') {
+        return <View></View>
+      } else if (status === 'free') {
         return (
           <TripList
             navigation={this.props.navigation}

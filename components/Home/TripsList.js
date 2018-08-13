@@ -19,6 +19,8 @@ if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }
 
+let dbRef = firebase.database().ref('server/holding_trips/');
+
 class TripsList extends React.Component {
   state = {
     trips: [],
@@ -29,7 +31,8 @@ class TripsList extends React.Component {
     this.getHoldingTrips();
 
     // Solo debería traerme los trips que se generaron despues del componentDidMount
-    firebase.database().ref('server/holding_trips/').on('child_added', (snapshot) => {
+    dbRef.orderByChild('timestamp').startAt(Date.now()).on('child_added', (snapshot) => {
+      console.log('Child_Added', snapshot.val())
       let trip = snapshot.val();
       if (trip) {
         // this.compareWithCurrentPosition(trip)
@@ -41,7 +44,7 @@ class TripsList extends React.Component {
       }
     });
 
-    firebase.database().ref('server/holding_trips/').on('child_removed', (snapshot) => {
+    dbRef.on('child_removed', (snapshot) => {
       let trip = snapshot.val();
       if (trip) {
         this.setState({
@@ -51,11 +54,16 @@ class TripsList extends React.Component {
     });
   }
 
+  componentWillUnmount() {
+    dbRef.off('child_added');
+    dbRef.off('child_removed');
+  }
+
   compareWithCurrentPosition = (trip)  => {
     const geodistOptions = { exact: true, unit: 'km' };
 
     this.currentPosition().then(({ lat, lng }) => {
-      let origin_coords = { lat, lng };
+      let origin_coords = { lat, lon: lng };
       let destiny_coords = { lat: trip.lat_origin, lon: trip.lng_origin };
       let distance = geodist(origin_coords, destiny_coords, geodistOptions)
       if (distance <= 4) {
@@ -92,7 +100,7 @@ class TripsList extends React.Component {
       this.checkGPSPermissions().then(() => {
         navigator.geolocation.getCurrentPosition((position) => {
           let { latitude, longitude } = position.coords;
-          return resolve({ lat: latitude, lon: longitude });
+          return resolve({ lat: latitude, lng: longitude });
         },
         (error) => this.setState({ error: error.message }, () => reject(error)),
         { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 })
