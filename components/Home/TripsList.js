@@ -32,13 +32,9 @@ class TripsList extends React.Component {
 
     // Solo debería traerme los trips que se generaron despues del componentDidMount
     dbRef.orderByChild('timestamp').startAt(Date.now()).on('child_added', (snapshot) => {
-      console.log('Child_Added', snapshot.val())
       let trip = snapshot.val();
       if (trip) {
-        // this.compareWithCurrentPosition(trip)
-        this.setState({
-          trips: [...this.state.trips, trip]
-        })
+        this.compareWithCurrentPosition(trip)
       } else {
         this.setState({ trips: [] });
       }
