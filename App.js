@@ -15,7 +15,7 @@ class App extends Component {
               session.verify();
               return <Loading />;
             } else if (session.state.isLogued) {
-              return <InternalRoutes />
+              return <InternalRoutes screenProps={{ session }} />
             } else {
               return <ExternalRoutes />
             }

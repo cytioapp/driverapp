@@ -6,7 +6,8 @@ import {
   View,
   PermissionsAndroid,
   Platform,
-  RefreshControl
+  RefreshControl,
+  Text
 } from 'react-native';
 import {
   Container,
@@ -16,70 +17,44 @@ import TripItem from './TripItem';
 import Trip from './Trip';
 import Api from '../../utils/api';
 import Header from './Header';
-window.navigator.userAgent = "react-native";
-import io from 'socket.io-client/dist/socket.io';
 import geodist from 'geodist';
-// import Geolocation from 'react-native-geolocation-service';
+import firebase from 'firebase';
+import firebaseConfig from '../../firebaseconfig.json';
 
-const styles = StyleSheet.create({
-  fontText: {
-    fontFamily: 'Nunito-Bold'
-  }
-})
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
 
 class Home extends React.Component {
 
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      status: 'free',
-      currentTripId: null,
-      trips: [],
-      refreshing: false
-    }
-
-    this.socket = io('https://cytio.com.mx');
+  state = {
+    status: 'free',
+    currentTripId: null,
+    trips: [],
+    refreshing: false,
   }
 
   componentDidMount() {
-    //Se une al room cuando se aceptó el trip por un driver
-    this.socket.emit('joinToDrivers', '');
-
-    //En caso de que haya un nuevo viaje por parte del user se debe reflejar
-    //en el index de todos los drivers que tengan el trip a 4km a la redonda
-    this.socket.on('newTrip', (trip) => {
-      console.log('newTrip')
-      Platform.select({
-        ios: () => this.compareWithCurrentPosition(trip),
-        android: () => {
-          console.log('Android Permissions')
-          PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION)
-            .then(granted => {
-              console.log(granted, PermissionsAndroid.RESULTS.GRANTED)
-              if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-                this.compareWithCurrentPosition(trip)
-              } else {
-                this.setState({ error: 'Se requieren permisos de ubicación' })
-              }
-            });
-        }
-      })();
+    // Solo debería traerme los trips que se generaron despues del componentDidMount
+    firebase.database().ref('server/holding_trips/').on('child_added', (snapshot) => {
+      if (snapshot.val()) {
+        // this.compareWithCurrentPosition(trip)
+        this.setState({
+          trips: [...this.state.trips, snapshot.val()]
+        });
+      } else {
+        this.setState({ trips: [] });
+      }
     });
 
-    //Cuando un taxista tome un trip, debe reflejarse en el index de todos
-    this.socket.on('tripTaken', ({ trip_id }) => {
-      console.log('tripTaken')
-      this.setState({
-        trips: this.state.trips.filter(trip => !(trip.id == trip_id))
-      });
-    });
-
-    //Cuando el usuario cancela el viaje, se refleja en el index
-    this.socket.on("deleteTrip", ({ trip_id }) => {
-      this.setState({
-        trips: this.state.trips.filter(trip => !(trip.id == trip_id))
-      });
+    firebase.database().ref('server/holding_trips/').on('child_removed', (snapshot) => {
+      if (snapshot.val()) {
+        this.setState({
+          trips: this.state.trips.filter(item => item.id != snapshot.val().id)
+        });
+      } else {
+        this.setState({ trips: [] });
+      }
     });
 
     Api.get('/drivers/active_trip')
@@ -93,8 +68,40 @@ class Home extends React.Component {
           this.getHoldingTrips();
         }
       }).catch(err => {
+        if (err.response.status == 401) {
+          this.props.screenProps.session.logout();
+        }
         console.log('Active trip catch', err.response)
       })
+  }
+
+  /* monitorTrip() {
+    let { currentTripId, trips } = this.state;
+    firebase.database().ref('server/taken_trips/').child(`${currentTripId}`).on('child_removed', (snapshot) => {
+      if (snapshot.val()) {
+        this.setState({
+          trips: trips.filter(item => item.id != snapshot.val().id)
+        });
+      } else {
+        this.setState({ trips: [] });
+      }
+    });
+  }*/
+
+  currentPosition = () => {
+    return new Promise((resolve, reject) => {
+      this.checkGPSPermissions().then(() => {
+        navigator.geolocation.getCurrentPosition((position) => {
+          let { latitude, longitude } = position.coords;
+          return resolve({ lat: latitude, lon: longitude });
+        },
+        (error) => this.setState({ error: error.message }, () => reject(error)),
+        { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 })
+      }).catch(err => {
+        console.log('Gps permissions', err);
+        return reject(err);
+      })
+    })
   }
 
   compareWithCurrentPosition = (trip)  => {
@@ -117,19 +124,42 @@ class Home extends React.Component {
     );
   }
 
-  getHoldingTrips = () => {
-    Api.get('/trips') //Change this endpoint to bring only the one's 4km away
-      .then(res => {
-        if (Array.isArray(res.data)) {
-          this.setState({
-            trips: res.data.filter(item => item.status == 'holding'),
-            status: 'free',
-            currentTripId: null
-          });
+  checkGPSPermissions = () => {
+    return new Promise((resolve, reject) => {
+      Platform.select({
+        ios: () => resolve(),
+        android: () => {
+          PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION)
+            .then(granted => {
+              if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                return resolve()
+              } else {
+                this.setState({ error: 'Se requieren permisos de ubicación' })
+                return reject({ error: 'Se requieren permisos de ubicación' });
+              }
+            });
         }
-      }).catch(err => {
-        console.log('Trips catch', err.response)
-      })
+      })();
+    })
+  }
+
+  getHoldingTrips = () => {
+    this.currentPosition().then(({ lat, lng }) => {
+      Api.post('/drivers/trips_in_range', { lat, lng })
+        .then(res => {
+          if (Array.isArray(res.data)) {
+            this.setState({
+              trips: res.data,
+              status: 'free',
+              currentTripId: null
+            });
+          }
+        }).catch(err => {
+          console.log('Trips catch', err.response)
+        })
+    }).catch(err => {
+      console.log('No se pudo obtener la ubicacion', err)
+    })
   }
 
   _keyExtractor = (item, index) => `${item.id}`;
@@ -157,7 +187,7 @@ class Home extends React.Component {
         Api.put('/drivers/accept_trip', { trip_id: id }).then(res => {
           if (res.status == 200) {
             this.setState({
-              status: 'inprogress',
+              status: 'active',
               currentTripId: id
             })
           }
@@ -179,26 +209,22 @@ class Home extends React.Component {
       })
   }
 
-  startTrip = () => {
-    Api.put('/drivers/start_trip')
-      .then(res => {
-        if (res.status == 200) {
-          this.setState({
-            status: 'active'
-          });
-        } else {
-          console.log(res);
-        }
-      })
-  }
-
   cancelTrip = () => {
     Alert.alert(
       'Cancelar',
       '¿Está seguro que desea cancelar el servicio?',
       [
         {text: 'No', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-        {text: 'Si', onPress: () => this.getHoldingTrips()},
+        {text: 'Si', onPress: () => 
+          Api.put('/drivers/cancel_trip')
+            .then(res => {
+              this.getHoldingTrips();
+            })
+            .catch(err => {
+              console.log(err.response);
+              alert('Ha ocurrido un error');
+            })
+        },
       ],
       { cancelable: false }
     );

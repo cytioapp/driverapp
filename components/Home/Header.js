@@ -28,7 +28,7 @@ const HeaderH = ({ status, cancelTrip, navigation }) => {
         <Title style={styles.fontText}>{status === 'free' ? 'Servicios' : 'Detalles'}</Title>
       </Body>
       <Right>
-        {status === 'inprogress' &&
+        {status === 'active' &&
           <TouchableOpacity onPress={cancelTrip}>
             <Text>Cancelar</Text>
           </TouchableOpacity>
