@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import {
   Body,
   Header,
@@ -10,11 +10,8 @@ import {
   Icon,
   Text
 } from 'native-base';
-const styles = StyleSheet.create({
-  fontText: {
-    fontFamily: 'Nunito-Bold'
-  }
-})
+import styles from './headerStyle';
+
 
 const HeaderH = ({ status, cancelTrip, navigation }) => {
   return (

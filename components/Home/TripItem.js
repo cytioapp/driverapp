@@ -1,34 +1,9 @@
 import React from 'react';
-import { View, StyleSheet, TouchableHighlight } from 'react-native';
+import { View, TouchableHighlight } from 'react-native';
 import { Text } from 'native-base';
+import styles from './tripItemStyle';
 
-const styles = StyleSheet.create({
-  item: {
-    padding: 15,
-    paddingTop: 25,
-    paddingBottom: 25
 
-  },
-  label: {
-    fontWeight: '700'
-  },
-  top: {
-    flexDirection: 'row',
-    fontFamily: 'Nunito-Bold',
-    justifyContent: 'space-between',
-    marginBottom: 5
-  },
-  time: {
-    color: '#333'
-  },
-  address: {
-    fontFamily: 'Nunito-Regular',
-    fontSize: 19
-  },
-  fontText: {
-    fontFamily: 'Nunito-Bold'
-  }
-})
 
 const TripItem = ({ address_origin, since, id, takeTrip }) => {
   return (
