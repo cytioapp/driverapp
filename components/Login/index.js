@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
   },
   input: {
     textAlign: 'center',
-    color: 'white'
+    color: '#1F120D'
   },
   forgotPasswordButtonWrapper: {
     alignItems: 'center',
@@ -62,6 +62,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     marginBottom: 10
+  },
+  createAccountText: {
+    color: '#1F120D'
+  },
+  createAccountLink: {
+    color: '#1F120D',
+    textDecorationLine: 'underline'
   }
 });
 
@@ -138,9 +145,9 @@ export default class Login extends Component {
             </View>
 
             <View style={styles.createAccountWrapper}>
-              <Text style={{ color: '#E3C463'}}>¿No tienes cuenta? </Text>
+              <Text style={styles.createAccountText}>¿No tienes cuenta? </Text>
               <TouchableOpacity onPress={() => this.props.navigation.navigate('Signup')}>
-                <Text style={{ color: '#E3C463', textDecorationLine: 'underline' }}>
+                <Text style={styles.createAccountLink}>
                   Regístrate
                 </Text>
               </TouchableOpacity>

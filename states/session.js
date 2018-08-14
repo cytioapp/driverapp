@@ -35,6 +35,7 @@ class SessionState extends Container {
         }
       })
       .catch(err => {
+        console.log(err.response)
         this.setState({loginErrors: err.response.data.errors})
       })
   }
@@ -64,13 +65,24 @@ class SessionState extends Container {
     });
   }
 
+  validatesEmail = (email) => {
+    const regex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return email.match(regex);
+  }
+
   signup = (data) => {
-    Api.post('/drivers/signup', data)
-    .then(res => {
-      this.login(data.email, data.password);
-    }).catch(err => {
-      console.log('Signup error', err.response)
-    });
+    this.setState({signupErrors: false});
+    if(this.validatesEmail(data.email)){
+      Api.post('/drivers/signup', data)
+      .then(res => {
+        this.login(data.email, data.password);
+      }).catch(err => {
+        console.log('Signup error', err.response)
+        this.setState({signupErrors: err.response.data.errors});
+      });
+    }else{
+      this.setState({signupErrors: [{message: "Email inválido"}]})
+    }
   }
 }
 
