@@ -10,7 +10,9 @@ const options = {
 
 class SessionState extends Container {
   state = {
-    isLogued: null
+    isLogued: null,
+    loginErrors: null,
+    signupErrors: null
   };
 
   login = (email, password) => {
@@ -31,6 +33,9 @@ class SessionState extends Container {
         } else {
           this.setState({ isLogued: false });
         }
+      })
+      .catch(err => {
+        this.setState({loginErrors: err.response.data.errors})
       })
   }
 
