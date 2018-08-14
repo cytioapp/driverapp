@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
   }
 })
 
-const TripItem = ({ address_origin, since, status, id, takeTrip, username }) => {
+const TripItem = ({ address_origin, since, id, takeTrip }) => {
   return (
     <TouchableHighlight onPress={() => takeTrip(id, address_origin)} underlayColor="#F2C874" >
       <View style={styles.item}>
