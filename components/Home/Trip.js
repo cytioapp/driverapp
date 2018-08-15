@@ -9,6 +9,7 @@ import firebase from 'firebase';
 import firebaseConfig from '../../firebaseconfig.json';
 import styles from './tripStyle';
 import Loading from '../Loading';
+import Modal from '../Modal';
 
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
@@ -23,7 +24,9 @@ class Trip extends React.Component {
     full_name: '',
     refreshing: false,
     status: '',
-    isWaiting: false
+    isWaiting: false,
+    errors: [],
+    modalVisible: false
   }
 
   componentDidMount() {
@@ -62,7 +65,12 @@ class Trip extends React.Component {
         } else {
           console.log(res);
         }
+    }).catch(err => {
+      this.setState({
+        errors: err.response.data.errors,
+        modalVisible: true
       })
+    })
   }
 
   cancelTrip = () => {
@@ -85,9 +93,19 @@ class Trip extends React.Component {
       this.props.setStatus('free');
     })
     .catch(err => {
-      this.setState({isWaiting: false});
-      alert('Ha ocurrido un error');
+      this.setState({
+        isWaiting: false,
+        errors: err.response.data.errors,
+        modalVisible: true
+      });
     })
+  }
+
+  setModalVisible = (visible) => {
+    this.setState({
+      modalVisible: visible,
+      errors: visible ? this.state.errors : []
+    });
   }
 
   showMap = () => {
@@ -108,6 +126,11 @@ class Trip extends React.Component {
         {this.state.isWaiting && <Loading />}
         <Header {...headerProps}/>
         <Content contentContainerStyle={{flex: 1}}>
+          <Modal
+            errors={this.state.errors}
+            modalVisible={this.state.modalVisible}
+            setModalVisible={this.setModalVisible}
+          />
           <View style={styles.labelWrapper}>
             <Text style={styles.label}>Usuario</Text>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>

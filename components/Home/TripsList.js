@@ -15,6 +15,7 @@ import Api from '../../utils/api';
 import firebase from 'firebase';
 import firebaseConfig from '../../firebaseconfig.json';
 import Loading from '../Loading';
+import Modal from '../Modal';
 
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
@@ -26,7 +27,9 @@ class TripsList extends React.Component {
   state = {
     trips: [],
     refreshing: false,
-    isWaiting: false
+    isWaiting: false,
+    modalVisible: false,
+    errors: []
   }
 
   componentDidMount() {
@@ -122,6 +125,7 @@ class TripsList extends React.Component {
           }
         }).catch(err => {
           console.log('Trips catch', err.response)
+
         })
     }).catch(err => {
       console.log('No se pudo obtener la ubicacion', err)
@@ -136,11 +140,11 @@ class TripsList extends React.Component {
         {text: 'No', onPress: () => {}, style: 'cancel'},
         {text: 'Si', onPress: () => this.acceptTrip(id)},
       ],
-    { cancelable: false }
-  );
-}
+      { cancelable: false }
+    );
+  }
 
-acceptTrip = id => {
+  acceptTrip = id => {
     this.setState({isWaiting: true})
     Api.put('/drivers/accept_trip', { trip_id: id })
     .then(res => {
@@ -149,9 +153,12 @@ acceptTrip = id => {
         this.props.setStatus('active');
       }
     })
-    .catch(() => {
-      this.setState({isWaiting: false})
-      alert('No se ha logrado tomar el servicio');
+    .catch( err => {
+      this.setState({
+        isWaiting: false,
+        modalVisible: true,
+        errors: err.response.data.errors
+      })
     })
   }
 
@@ -170,6 +177,13 @@ acceptTrip = id => {
     );
   }
 
+  setModalVisible = (visible) => {
+    this.setState({
+      modalVisible: visible,
+      errors: visible ? this.state.errors : []
+    });
+  }
+
   render() {
     const { trips } = this.state;
     const headerProps = {
@@ -180,6 +194,11 @@ acceptTrip = id => {
       <Container contentContainerStyle={{flex: 1}}>
         {this.state.isWaiting && <Loading />}
         <Header {...headerProps}/>
+        <Modal
+          errors={this.state.errors}
+          modalVisible={this.state.modalVisible}
+          setModalVisible={this.setModalVisible}
+        />
         <FlatList
           data={trips}
           keyExtractor={this._keyExtractor}
