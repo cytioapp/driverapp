@@ -19,30 +19,7 @@ import {
   Title
 } from 'native-base';
 import Api from '../../utils/api';
-
-const styles = StyleSheet.create({
-  pickerItem: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '100%'
-  },
-  inputWrapper: {
-    // backgroundColor: '#000000',
-    alignItems: 'center',
-    marginVertical: 20
-  },
-  inputItem: {
-    height: 150,
-    marginTop: 10,
-    width: 150
-  },
-  input: {
-    fontFamily: 'Nunito-Bold',
-    fontSize: 50,
-    textAlign: 'center'
-  }
-
-});
+import styles from './style';
 
 export default class AssignVehicle extends Component {
   constructor(){

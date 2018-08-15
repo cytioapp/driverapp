@@ -14,6 +14,7 @@ import Header from './Header';
 import Api from '../../utils/api';
 import firebase from 'firebase';
 import firebaseConfig from '../../firebaseconfig.json';
+import Loading from '../Loading';
 
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
@@ -25,6 +26,7 @@ class TripsList extends React.Component {
   state = {
     trips: [],
     refreshing: false,
+    isWaiting: false
   }
 
   componentDidMount() {
@@ -132,24 +134,28 @@ class TripsList extends React.Component {
       `¿Tomar viaje a ${address}?`,
       [
         {text: 'No', onPress: () => {}, style: 'cancel'},
-        {text: 'Si', onPress: () =>
-        Api.put('/drivers/accept_trip', { trip_id: id })
-          .then(res => {
-            if (res.status == 200) {
-              this.props.setStatus('active');
-            }
-          })
-          .catch(err => {
-            console.log(err);
-            alert('No se ha logrado tomar el servicio');
-          })
-        },
+        {text: 'Si', onPress: () => this.acceptTrip(id)},
       ],
-      { cancelable: false }
-    );
+    { cancelable: false }
+  );
+}
+
+acceptTrip = id => {
+    this.setState({isWaiting: true})
+    Api.put('/drivers/accept_trip', { trip_id: id })
+    .then(res => {
+      if (res.status == 200) {
+        this.setState({isWaiting: false})
+        this.props.setStatus('active');
+      }
+    })
+    .catch(() => {
+      this.setState({isWaiting: false})
+      alert('No se ha logrado tomar el servicio');
+    })
   }
 
-  _keyExtractor = (item, index) => `${item.id}`;
+  _keyExtractor = (item) => `${item.id}`;
 
   renderSeparator = () => {
     return (
@@ -172,6 +178,7 @@ class TripsList extends React.Component {
     };
     return (
       <Container contentContainerStyle={{flex: 1}}>
+        {this.state.isWaiting && <Loading />}
         <Header {...headerProps}/>
         <FlatList
           data={trips}

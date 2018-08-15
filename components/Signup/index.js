@@ -1,121 +1,157 @@
 import React, { Component } from 'react';
-import {StyleSheet, View, KeyboardAvoidingView} from 'react-native';
-import {
-  Body,
-  Container,
-  Content,
-  Form,
-  Header,
-  Item,
-  Input,
-  Button,
-  Text,
-  Title
-} from 'native-base';
+import { StyleSheet, View, TouchableOpacity } from 'react-native';
+import { Item, Input, Button, Text, Icon } from 'native-base';
 import { Subscribe } from 'unstated';
 import sessionState from '../../states/session';
-
-const styles = StyleSheet.create({
-  container:{
-    flex: 1,
-    justifyContent: 'center'
- },
-  form: {
-    flex: 1,
-  },
-  label: {
-    fontSize: 10,
-    marginLeft: 10,
-    marginTop: 15
-  },
-  buttonWrapper: {
-    padding: 10,
-  },
-  imageWrapper: {
-    paddingTop: 50,
-    justifyContent: 'center',
-    alignItems: 'center'
-  }
-});
+import AuthLayout from '../Layouts/AuthLayout';
+import styles from './style';
 
 export default class Signup extends Component {
   state = {
     full_name: '',
     email: '',
     password: '',
+    repeated_password: '',
     license_number: '',
+    phone_number: '',
+    hidePassword: true,
+    hideCopyPassword: true
+
+  }
+
+  renderErrors = (errors) => {
+    return <Text style={styles.errorsText}>{errors[0]}</Text>
   }
 
   render(){
     return(
       <Subscribe to={[sessionState]}>
         {(session) => (
-          <KeyboardAvoidingView style={{flex: 1}} behavior="padding">
-            <Container style={styles.container}>
-              <Header>
-                <Body><Title>Signup</Title></Body>
-              </Header>
+          <AuthLayout>
+            {session.state.signupErrors &&
+              <View style={styles.errorsContainer}>
+                <Icon active name="md-alert" style={styles.errorsIcon} />
+                {this.renderErrors(session.state.signupErrors)}
+              </View>
+            }
+            <View style={styles.form}>
+              <Item style={styles.item}>
+                <Icon active name="person" style={styles.icon} />
+                <Input
+                  placeholder="Nombre completo"
+                  autoCapitalize="none"
+                  onChangeText={full_name => this.setState({ full_name })}
+                  value={this.state.full_name}
+                  placeholderTextColor="#1F120D"
+                  style={styles.input}
+                />
+                <View style={{paddingHorizontal: 15}}></View>
+              </Item>
+              <Item style={styles.item}>
+                <Icon active name="mail" style={styles.icon} />
+                <Input
+                  placeholder="Correo electrónico"
+                  autoCapitalize="none"
+                  keyboardType="email-address"
+                  onChangeText={email => this.setState({ email })}
+                  value={this.state.email}
+                  placeholderTextColor="#1F120D"
+                  style={styles.input}
+                />
+                <View style={{paddingHorizontal: 15}}></View>
+              </Item>
+              <Item style={styles.item}>
+                <Icon active name="lock" style={styles.icon} />
+                <Input
+                  placeholder="Contraseña"
+                  secureTextEntry={this.state.hidePassword}
+                  onChangeText={password => this.setState({ password })}
+                  value={this.state.password}
+                  placeholderTextColor="#1F120D"
+                  style={styles.input}
+                />
+                <TouchableOpacity onPress={() => this.setState({ hidePassword: !this.state.hidePassword })}>
+                  <Icon active name="eye" style={styles.icon} />
+                </TouchableOpacity>
+              </Item>
 
-              <Content contentContainerStyle={{ flex: 1 }}>
-                <Form styles={styles.form}>
-                  <View style={styles.label}>
-                    <Text> Nombre completo </Text>
-                  </View>
-                  <Item>
-                    <Input
-                      placeholder="Nombre completo"
-                      autoCapitalize="none"
-                      onChangeText={full_name => this.setState({ full_name })}
-                      value={this.state.full_name}
-                    />
-                  </Item>
+              <Item style={styles.item}>
+                <Icon active name="lock" style={styles.icon} />
+                <Input
+                  placeholder="Repite la contraseña"
+                  secureTextEntry={this.state.hideCopyPassword}
+                  onChangeText={repeated_password => this.setState({ repeated_password })}
+                  value={this.state.repeated_password}
+                  placeholderTextColor="#1F120D"
+                  style={styles.input}
+                />
+                <TouchableOpacity onPress={() => this.setState({ hideCopyPassword: !this.state.hideCopyPassword })}>
+                  <Icon active name="eye" style={styles.icon} />
+                </TouchableOpacity>
+              </Item>
 
-                  <View style={styles.label}>
-                    <Text> Email </Text>
-                  </View>
-                  <Item>
-                    <Input
-                      autoCapitalize="none"
-                      keyboardType="email-address"
-                      onChangeText={email => this.setState({ email })}
-                      placeholder="example@something.com"
-                      value={this.state.email}
-                    />
-                  </Item>
+              <Item style={styles.item}>
+                <Icon active name="ios-call" style={styles.icon} />
+                <Input
+                  placeholder="Número de celular"
+                  autoCapitalize="none"
+                  keyboardType="phone-pad"
+                  onChangeText={phone_number => this.setState({ phone_number })}
+                  value={this.state.phone_number}
+                  placeholderTextColor="#1F120D"
+                  style={styles.input}
+                />
+                <View style={{paddingHorizontal: 15}}></View>
+              </Item>
 
-                  <View style={styles.label}>
-                    <Text> Contraseña </Text>
-                  </View>
-                  <Item>
-                    <Input
-                      placeholder="Contraseña"
-                      autoCapitalize="none"
-                      onChangeText={password => this.setState({ password })}
-                      secureTextEntry={true}
-                      value={this.state.password}
-                    />
-                  </Item>
+              <Item style={styles.item}>
+                <Icon active name="ios-card" style={styles.icon} />
+                <Input
+                  placeholder="Número de licencia"
+                  autoCapitalize="none"
+                  onChangeText={license_number => this.setState({ license_number })}
+                  value={this.state.license_number}
+                  placeholderTextColor="#1F120D"
+                  style={styles.input}
+                />
+                <View style={{paddingHorizontal: 15}}></View>
+              </Item>
 
-                  <View style={styles.label}>
-                    <Text> Licencia </Text>
-                  </View>
-                  <Item>
-                    <Input
-                      placeholder="99.999.999"
-                      onChangeText={license_number => this.setState({ license_number })}
-                      value={this.state.license_number}
-                    />
-                  </Item>
+              <TouchableOpacity style={styles.licenseButton}>
+                <Icon active name="ios-camera" style={styles.icon} />
+                <Text style={styles.licenseText}>Gaffete</Text>
+                <View style={{paddingHorizontal: 15}}></View>
+              </TouchableOpacity>
 
-                </Form>
-                <View style={styles.buttonWrapper} >
-                  <Button block rounded success onPress={() => session.signup(this.state)}>
-                    <Text>Registrarse</Text>
-                  </Button>
-                </View>
-              </Content>
-            </Container>
-          </KeyboardAvoidingView>
+            </View>
+
+            <View style={styles.forgotPasswordButtonWrapper}>
+              <TouchableOpacity onPress={() => this.props.navigation.navigate('ChangePassword')}>
+                <Text style={styles.forgotPasswordText}>
+                  ¿Olvidaste tu contraseña?
+                </Text>
+              </TouchableOpacity>
+            </View>
+
+            <View style={styles.signupButtonWrapper} >
+              <Button
+                block
+                style={styles.signupButton}
+                onPress={() => session.signup(this.state)}
+              >
+                <Text style={styles.signupButtonText}>Regístrate</Text>
+              </Button>
+            </View>
+
+            <View style={styles.loginWrapper}>
+              <Text style={styles.loginText}>¿Ya tienes cuenta? </Text>
+              <TouchableOpacity onPress={() => this.props.navigation.navigate('Login')}>
+                <Text style={styles.loginLink}>
+                  Inicia sesión
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </AuthLayout>
         )}
       </Subscribe>
     )

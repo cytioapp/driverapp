@@ -3,16 +3,7 @@ import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-nati
 import { SafeAreaView } from 'react-navigation';
 import { Subscribe } from 'unstated';
 import sessionState from '../../states/session';
-
-const styles = StyleSheet.create({
-  item: {
-    paddingTop: 16,
-    paddingBottom: 16,
-    paddingLeft: 10,
-    paddingRight: 10,
-    backgroundColor: '#FAFAFA'
-  }
-})
+import styles from './drawerMenuStyle';
 
 export default class DrawerMenu extends Component {
   render() {

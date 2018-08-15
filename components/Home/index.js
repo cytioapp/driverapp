@@ -1,30 +1,25 @@
 import React from 'react';
 import {
-  Alert,
-  StyleSheet,
-  View,
-  PermissionsAndroid,
-  Platform,
-  Text
+  View
 } from 'react-native';
-import {
-  Container,
-  Content,
-} from 'native-base';
 import Trip from './Trip';
 import TripList from './TripsList';
 import Api from '../../utils/api';
+import Loading from '../Loading';
 
 class Home extends React.Component {
 
   state = {
     status: '',
     currentTripId: null,
+    isWaiting: false
   }
 
   componentDidMount() {
+    this.setState({isWaiting: true});
     Api.get('/drivers/active_trip')
       .then(res => {
+        this.setState({isWaiting: false});
         if (res.data && res.data.active) {
           this.setState({
             status: res.data.trip.status,
@@ -34,6 +29,7 @@ class Home extends React.Component {
           this.setState({ status: 'free' })
         }
       }).catch(err => {
+        this.setState({isWaiting: false});
         if (err.response.status == 401) {
           this.props.screenProps.session.logout();
         }
@@ -64,23 +60,24 @@ class Home extends React.Component {
 
   render() {
     const { status } = this.state;
-      if (status == '') {
-        return <View></View>
-      } else if (status === 'free') {
-        return (
-          <TripList
-            navigation={this.props.navigation}
-            setStatus={this.setStatus} />
-        )
-      } else {
-        return (
-          <Trip
-            status={status}
-            navigation={this.props.navigation}
-            setStatus={this.setStatus}
-          />
-        )
-      }
+    {this.state.isWaiting && <Loading />}
+    if (status == '') {
+      return <Loading />
+    } else if (status === 'free') {
+      return (
+        <TripList
+          navigation={this.props.navigation}
+          setStatus={this.setStatus} />
+      )
+    } else {
+      return (
+        <Trip
+          status={status}
+          navigation={this.props.navigation}
+          setStatus={this.setStatus}
+        />
+      )
+    }
   }
 }
 

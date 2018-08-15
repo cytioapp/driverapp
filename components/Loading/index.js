@@ -1,21 +1,26 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import {
+  Image,
+  ImageBackground,
+  View
+} from 'react-native';
 import { Spinner } from 'native-base';
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
-  }
-});
+import logo2 from '../../assets/logo2.png';
+import fondo2 from '../../assets/fondo2.jpg';
+import styles from './style';
 
 const Loading = () => {
   return (
-    <View style={styles.container}>
-      <Text>Espere un momento</Text>
-      <Spinner />
-    </View>
+    <ImageBackground source={fondo2} style={styles.backgroundImage}>
+      <View style={styles.logoContainer}>
+        <Image source={logo2} style={styles.logoImage}/>
+      </View>
+      <View style={styles.container}>
+        <View></View>
+        <Spinner color="#E3C463"/>
+        <View></View>
+      </View>
+    </ImageBackground>
   );
 }
 
