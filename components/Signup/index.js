@@ -13,15 +13,14 @@ export default class Signup extends Component {
     password: '',
     repeated_password: '',
     license_number: '',
+    phone_number: '',
     hidePassword: true,
     hideCopyPassword: true
 
   }
 
   renderErrors = (errors) => {
-    return errors.map((error, i) => {
-      return <Text key={i} style={styles.errors}>{error.message}</Text>
-    });
+    return <Text style={styles.errorsText}>{errors[0]}</Text>
   }
 
   render(){
@@ -90,6 +89,40 @@ export default class Signup extends Component {
                   <Icon active name="eye" style={styles.icon} />
                 </TouchableOpacity>
               </Item>
+
+              <Item style={styles.item}>
+                <Icon active name="ios-call" style={styles.icon} />
+                <Input
+                  placeholder="Número de celular"
+                  autoCapitalize="none"
+                  keyboardType="phone-pad"
+                  onChangeText={phone_number => this.setState({ phone_number })}
+                  value={this.state.phone_number}
+                  placeholderTextColor="#1F120D"
+                  style={styles.input}
+                />
+                <View style={{paddingHorizontal: 15}}></View>
+              </Item>
+
+              <Item style={styles.item}>
+                <Icon active name="ios-card" style={styles.icon} />
+                <Input
+                  placeholder="Número de licencia"
+                  autoCapitalize="none"
+                  onChangeText={license_number => this.setState({ license_number })}
+                  value={this.state.license_number}
+                  placeholderTextColor="#1F120D"
+                  style={styles.input}
+                />
+                <View style={{paddingHorizontal: 15}}></View>
+              </Item>
+
+              <TouchableOpacity style={styles.licenseButton}>
+                <Icon active name="ios-camera" style={styles.icon} />
+                <Text style={styles.licenseText}>Gaffete</Text>
+                <View style={{paddingHorizontal: 15}}></View>
+              </TouchableOpacity>
+
             </View>
 
             <View style={styles.forgotPasswordButtonWrapper}>

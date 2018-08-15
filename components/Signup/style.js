@@ -9,15 +9,16 @@ const styles = StyleSheet.create({
   errorsContainer:{
     alignItems: 'center',
     flexDirection: 'row',
-    paddingHorizontal: 30
+    marginHorizontal: 30
   },
   errorsIcon: {
     color: '#B72A2A',
     marginRight: 15
   },
-  errors: {
+  errorsText: {
     color: '#B72A2A',
-    fontSize: 15
+    fontSize: 15,
+    marginRight: 30
   },
   form: {
     marginBottom: 20,
@@ -34,6 +35,19 @@ const styles = StyleSheet.create({
   input: {
     textAlign: 'center',
     color: '#1F120D'
+  },
+  licenseButton: {
+    alignItems: 'center',
+    borderColor: '#1F120D',
+    borderRadius: 6,
+    borderWidth: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 10,
+    padding: 10
+  },
+  licenseText: {
+    color: '#1F120D',
   },
   forgotPasswordButtonWrapper: {
     alignItems: 'center',
