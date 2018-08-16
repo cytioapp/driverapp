@@ -1,9 +1,5 @@
 import React, { Component } from 'react';
-import {
-  StyleSheet,
-  View,
-  KeyboardAvoidingView
-} from 'react-native';
+import { View, KeyboardAvoidingView } from 'react-native';
 import {
   Body,
   Button,
@@ -14,7 +10,9 @@ import {
   Icon,
   Input,
   Item,
+  Left,
   Picker,
+  Right,
   Text,
   Title
 } from 'native-base';
@@ -22,14 +20,12 @@ import Api from '../../utils/api';
 import styles from './style';
 
 export default class AssignVehicle extends Component {
-  constructor(){
-    super();
-    this.state = {
-      organization: '',
-      number: '',
-      organizations: []
-    };
-  }
+
+  state = {
+    organization: '',
+    number: '',
+    organizations: []
+  };
 
   componentDidMount(){
     this.fetchOrganizations()
@@ -71,48 +67,67 @@ export default class AssignVehicle extends Component {
     return(
       <KeyboardAvoidingView style={{flex: 1}} behavior="padding">
         <Container>
-          <Header>
-            <Body><Title>Asignar vehículo</Title></Body>
+          <Header style={styles.header} iosBarStyle="light-content">
+            <Left style={styles.headerLeft}>
+              <Button transparent onPress={this.props.navigation.openDrawer}>
+                <Icon name='menu' style={styles.menuIcon} />
+              </Button>
+            </Left>
+            <Body style={styles.bodyHeader}>
+              <Title style={styles.fontText}>Asignar vehículo</Title>
+            </Body>
+            <Right style={styles.headerRight} />
           </Header>
 
           <Content contentContainerStyle={{ flex: 1 }}>
-            <Form style={styles.form}>
-              <Item style={styles.pickerItem} picker>
-                <View>
-                  <Text>Sitio</Text>
-                </View>
-                <View style={styles.pickerWrapper}>
-                  <Picker
-                    mode="dropdown"
-                    iosIcon={<Icon name="ios-arrow-down-outline" />}
-                    style={{ width: undefined }}
-                    placeholder="Selecciona el sitio"
-                    placeholderStyle={{ color: "#bfc6ea" }}
-                    placeholderIconColor="#007aff"
-                    selectedValue={this.state.organization}
-                    onValueChange={this.onValueChange}
-                  >
-                    {this.renderOrganizations()}
-                  </Picker>
-                </View>
-              </Item>
-            </Form>
+            <View>
+              <Picker
+                renderHeader={backAction =>
+                  <Header style={styles.header} iosBarStyle="light-content">
+                    <Left style={styles.headerLeft}>
+                      <Button transparent onPress={backAction}>
+                        <Icon name="arrow-back" style={styles.menuIcon} />
+                      </Button>
+                    </Left>
+                    <Body style={styles.bodyHeader}>
+                      <Title style={styles.fontText}>Selecciona el sitio</Title>
+                    </Body>
+                    <Right style={styles.headerRight} />
+                  </Header>}
+                iosIcon={<Icon name="ios-arrow-down-outline" />}
+                mode="dropdown"
+                style={styles.picker}
+                placeholder="Selecciona el sitio"
+                placeholderStyle={styles.placeholder}
+                placeholderIconColor="#5C5C5C"
+                selectedValue={this.state.organization}
+                onValueChange={this.onValueChange}
+              >
+                {this.renderOrganizations()}
+              </Picker>
+            </View>
+
             <View style={styles.inputWrapper}>
-              <Text>Número del taxi</Text>
-              <Item style={styles.inputItem} rounded>
+              <Item style={styles.inputItem}>
                 <Input
-                  style={styles.input}
+                  autoCapitalize="none"
                   keyboardType="numeric"
-                  maxLength = {2}
-                  onChangeText={number => this.setState({ number })} />
+                  maxLength = {4}
+                  onChangeText={number => this.setState({ number })}
+                  placeholder="Número del taxi"
+                  placeholderStyle={styles.placeholder}
+                  value={this.state.number}
+                  style={styles.input}
+                />
               </Item>
             </View>
-            <View>
-            {/* this.assignVehicle(this.state) */}
-              <Button block rounded success onPress={this.assignVehicle}>
-                <Text>Asignar vehículo</Text>
+
+            <View style={styles.buttonWrapper}>
+              <Button large full style={styles.asignButton} onPress={this.assignVehicle}>
+                <Text style={styles.asignButtonText}>Asignar vehículo</Text>
               </Button>
             </View>
+
           </Content>
         </Container>
       </KeyboardAvoidingView>

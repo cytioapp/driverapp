@@ -1,46 +1,62 @@
 import {StyleSheet} from 'react-native';
 
+const yellow = '#E3C463';
+const label = '#000';
+const text = '#5C5C5C';
+const textBackground = '#F3F3F3';
+
+
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    padding: 15
+    flex: 1
   },
-  item: {
-    padding: 15
+  darkFieldWrapper: {
+    backgroundColor: textBackground,
+    padding: 10
+  },
+  fieldWrapper: {
+    padding: 10
   },
   label: {
-    fontFamily: 'Nunito-Bold',
-    marginBottom: 5
-  },
-  top: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  time: {
-    fontSize: 22
+    color: label,
+    fontFamily: 'Nunito-Bold'
   },
   text: {
-    flex: 1,
-    fontSize: 22,
-    fontFamily: 'Nunito-Regular'
+    color: text,
+    fontFamily: 'Nunito-Regular',
+    marginVertical: 5
   },
-  finishButton: {
-    backgroundColor: '#000000',
-    borderRadius: 50,
-    margin: 20
+  directionWrapper: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between'
   },
-  finishButtonText: {
-    fontFamily: 'Nunito-Bold'
+  textDirection: {
+    color: text,
+    flex: 3,
+    fontFamily: 'Nunito-Regular',
+    marginVertical: 5
+  },
+  mapImageWrapper: {
+    alignItems: 'center',
+    flex: 1
+  },
+  mapImage: {
+    height: 50,
+    width: 50
   },
   buttonWrapper: {
     alignItems: 'center',
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-    right: 0
+    marginTop: 70
   },
-  labelWrapper: {
-    marginBottom: 20
+  finishButton: {
+    backgroundColor: yellow,
+    marginHorizontal: 30
+  },
+  finishButtonText: {
+    color: label,
+    fontFamily: 'Nunito-Bold',
+    fontSize: 18
   }
 });
 

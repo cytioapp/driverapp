@@ -7,18 +7,17 @@ import {
   Right,
   Title,
   Button,
-  Icon,
-  Text
+  Icon
 } from 'native-base';
 import styles from './headerStyle';
 
 
 const HeaderH = ({ status, cancelTrip, navigation }) => {
   return (
-    <Header>
+    <Header style={styles.header} iosBarStyle="light-content">
       <Left>
         <Button transparent onPress={navigation.openDrawer}>
-          <Icon name='menu' />
+          <Icon name='menu' style={styles.menuIcon} />
         </Button>
       </Left>
       <Body>
@@ -26,9 +25,9 @@ const HeaderH = ({ status, cancelTrip, navigation }) => {
       </Body>
       <Right>
         {status === 'active' &&
-          <TouchableOpacity onPress={cancelTrip}>
-            <Text>Cancelar</Text>
-          </TouchableOpacity>
+          <Button transparent onPress={cancelTrip}>
+            <Icon name='ios-close-circle-outline' style={styles.cancelIcon} />
+          </Button>
         }
       </Right>
     </Header>

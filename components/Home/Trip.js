@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, TouchableOpacity, Image, Alert } from 'react-native';
+import { View, TouchableOpacity, Image, Alert } from 'react-native';
 import { Button, Text, Container, Content } from 'native-base';
 import openMap from 'react-native-open-maps';
 import mapsIcon from '../../assets/maps-icon.png'
@@ -9,6 +9,7 @@ import firebase from 'firebase';
 import firebaseConfig from '../../firebaseconfig.json';
 import styles from './tripStyle';
 import Loading from '../Loading';
+import Modal from '../Modal';
 
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
@@ -23,7 +24,9 @@ class Trip extends React.Component {
     full_name: '',
     refreshing: false,
     status: '',
-    isWaiting: false
+    isWaiting: false,
+    errors: [],
+    modalVisible: false
   }
 
   componentDidMount() {
@@ -62,7 +65,12 @@ class Trip extends React.Component {
         } else {
           console.log(res);
         }
+    }).catch(err => {
+      this.setState({
+        errors: err.response.data.errors,
+        modalVisible: true
       })
+    })
   }
 
   cancelTrip = () => {
@@ -85,9 +93,19 @@ class Trip extends React.Component {
       this.props.setStatus('free');
     })
     .catch(err => {
-      this.setState({isWaiting: false});
-      alert('Ha ocurrido un error');
+      this.setState({
+        isWaiting: false,
+        errors: err.response.data.errors,
+        modalVisible: true
+      });
     })
+  }
+
+  setModalVisible = (visible) => {
+    this.setState({
+      modalVisible: visible,
+      errors: visible ? this.state.errors : []
+    });
   }
 
   showMap = () => {
@@ -108,30 +126,35 @@ class Trip extends React.Component {
         {this.state.isWaiting && <Loading />}
         <Header {...headerProps}/>
         <Content contentContainerStyle={{flex: 1}}>
-          <View style={styles.labelWrapper}>
-            <Text style={styles.label}>Usuario</Text>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Text style={styles.text}>{full_name}</Text>
-            </View>
+          <Modal
+            errors={this.state.errors}
+            modalVisible={this.state.modalVisible}
+            setModalVisible={this.setModalVisible}
+          />
+
+          <View style={styles.darkFieldWrapper}>
+            <Text style={styles.label}>Usuario:</Text>
+            <Text style={styles.text}>{full_name}</Text>
           </View>
 
-          <View style={styles.labelWrapper}>
-            <Text style={styles.label}>Dirección</Text>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Text style={styles.text}>{address}</Text>
-              <TouchableOpacity onPress={this.showMap} style={{height: 70, width: 70}}>
-                <Image style={{ height: '100%', width: '100%' }} source={mapsIcon} />
+          <View style={styles.fieldWrapper}>
+            <Text style={styles.label}>Dirección:</Text>
+            <View style={styles.directionWrapper}>
+              <Text style={styles.textDirection}>{address}</Text>
+              <TouchableOpacity onPress={this.showMap} style={styles.mapImageWrapper}>
+                <Image style={styles.mapImage} source={mapsIcon} />
               </TouchableOpacity>
             </View>
           </View>
-          <View style={{ marginTop: 10 }}>
-            <Text style={styles.label}>Tiempo de espera</Text>
-            <Text style={styles.time}>{since}</Text>
+
+          <View style={styles.darkFieldWrapper}>
+            <Text style={styles.label}>Tiempo de espera:</Text>
+            <Text style={styles.text}>{since}</Text>
           </View>
 
           {status == 'active' &&
             <View style={styles.buttonWrapper}>
-              <Button large full danger style={styles.finishButton} onPress={this.finishTrip}>
+              <Button large full style={styles.finishButton} onPress={this.finishTrip}>
                 <Text style={styles.finishButtonText}>Finalizar servicio</Text>
               </Button>
             </View>
