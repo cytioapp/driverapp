@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {StyleSheet, View, TouchableOpacity} from 'react-native';
+import { View, TouchableOpacity} from 'react-native';
 import { Icon, Item, Input, Button, Text } from 'native-base';
 import { Subscribe } from 'unstated';
 import sessionState from '../../states/session';
