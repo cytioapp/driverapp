@@ -14,7 +14,7 @@ import styles from './headerStyle';
 
 const HeaderH = ({ status, cancelTrip, navigation }) => {
   return (
-    <Header style={styles.header} iosBarStyle="light-content">
+    <Header style={styles.header} iosBarStyle="light-content" androidStatusBarColor="#262626">
       <Left>
         <Button transparent onPress={navigation.openDrawer}>
           <Icon name='menu' style={styles.menuIcon} />

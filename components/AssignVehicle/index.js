@@ -67,7 +67,7 @@ export default class AssignVehicle extends Component {
     return(
       <KeyboardAvoidingView style={{flex: 1}} behavior="padding">
         <Container>
-          <Header style={styles.header} iosBarStyle="light-content">
+          <Header style={styles.header} iosBarStyle="light-content" androidStatusBarColor="#262626">
             <Left style={styles.headerLeft}>
               <Button transparent onPress={this.props.navigation.openDrawer}>
                 <Icon name='menu' style={styles.menuIcon} />
@@ -83,7 +83,7 @@ export default class AssignVehicle extends Component {
             <View>
               <Picker
                 renderHeader={backAction =>
-                  <Header style={styles.header} iosBarStyle="light-content">
+                  <Header style={styles.header} iosBarStyle="light-content" androidStatusBarColor="#262626">
                     <Left style={styles.headerLeft}>
                       <Button transparent onPress={backAction}>
                         <Icon name="arrow-back" style={styles.menuIcon} />

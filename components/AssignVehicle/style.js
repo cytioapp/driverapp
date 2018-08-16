@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
   asignButtonText: {
     color: label,
     fontFamily: 'Nunito-Bold',
-    fontSize: 18
+    fontSize: 15
   }
 
 });
