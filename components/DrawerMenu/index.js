@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 import { Subscribe } from 'unstated';
 import sessionState from '../../states/session';
@@ -13,6 +13,11 @@ export default class DrawerMenu extends Component {
         {(session) => (
           <ScrollView>
             <SafeAreaView style={{ flex: 1 }} forceInset={{ top: 'always', horizontal: 'never' }}>
+              <TouchableOpacity onPress={() => navigate('Profile')}>
+                <View style={styles.item}>
+                  <Text>Perfil</Text>
+                </View>
+              </TouchableOpacity>
               <TouchableOpacity onPress={() => navigate('Home')}>
                 <View style={styles.item}>
                   <Text>Inicio</Text>
