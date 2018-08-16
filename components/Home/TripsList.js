@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import { Container } from 'native-base';
 import geodist from 'geodist';
+import Geolocation from 'react-native-geolocation-service';
 import TripItem from './TripItem';
 import Header from './Header';
 import Api from '../../utils/api';
@@ -96,7 +97,7 @@ class TripsList extends React.Component {
   currentPosition = () => {
     return new Promise((resolve, reject) => {
       this.checkGPSPermissions().then(() => {
-        navigator.geolocation.getCurrentPosition((position) => {
+        Geolocation.getCurrentPosition((position) => {
           let { latitude, longitude } = position.coords;
           return resolve({ lat: latitude, lng: longitude });
         },
