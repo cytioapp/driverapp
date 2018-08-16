@@ -1,7 +1,7 @@
 import {StyleSheet} from 'react-native';
 
 const yellow = '#E3C463';
-const label = '#000000';
+const label = '#000';
 const text = '#5C5C5C';
 const textBackground = '#F3F3F3';
 
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     color: label,
     fontFamily: 'Nunito-Bold',
     fontSize: 18
-  },
+  }
 });
 
 export default styles;
