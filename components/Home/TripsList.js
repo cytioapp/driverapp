@@ -6,8 +6,11 @@ import {
   Platform,
   RefreshControl,
   View,
+  Text,
+  StyleSheet,
+  TouchableOpacity
 } from 'react-native';
-import { Container } from 'native-base';
+import { Container, Spinner } from 'native-base';
 import geodist from 'geodist';
 import Geolocation from 'react-native-geolocation-service';
 import TripItem from './TripItem';
@@ -24,13 +27,29 @@ if (!firebase.apps.length) {
 
 let dbRef = firebase.database().ref('server/holding_trips/');
 
+const styles = StyleSheet.create({
+  emptyWrapper: {
+    paddingTop: 50,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  emptyText: {
+    fontSize: 22
+  },
+  emptyInstructions: {
+    marginTop: 10,
+    fontSize: 18
+  }
+})
+
 class TripsList extends React.Component {
   state = {
     trips: [],
     refreshing: false,
     isWaiting: false,
     modalVisible: false,
-    errors: []
+    errors: [],
+    fetchingTrips: false
   }
 
   componentDidMount() {
@@ -114,6 +133,7 @@ class TripsList extends React.Component {
   }
 
   getHoldingTrips = () => {
+    this.setState({ fetchingTrips: true });
     this.currentPosition().then(({ lat, lng }) => {
       Api.post('/drivers/trips_in_range', { lat, lng })
         .then(res => {
@@ -124,12 +144,14 @@ class TripsList extends React.Component {
               currentTripId: null
             });
           }
+          this.setState({ fetchingTrips: false });
         }).catch(err => {
           console.log('Trips catch', err.response)
-
+          this.setState({ fetchingTrips: false });
         })
     }).catch(err => {
-      console.log('No se pudo obtener la ubicacion', err)
+      console.log('No se pudo obtener la ubicacion', err);
+      this.setState({ fetchingTrips: false });
     })
   }
 
@@ -178,6 +200,19 @@ class TripsList extends React.Component {
     );
   }
 
+  renderEmptyComponent = () => {
+    const { fetchingTrips } = this.state;
+    return (
+      <View style={styles.emptyWrapper}>
+        <Text style={styles.emptyText}>No hay servicios cercanos</Text>
+        <TouchableOpacity onPress={this.getHoldingTrips}>
+          <Text style={styles.emptyInstructions}>Toca para buscar servicios</Text>
+        </TouchableOpacity>
+        {fetchingTrips && <Spinner color="#333"/>}
+      </View>
+    )
+  }
+
   setModalVisible = (visible) => {
     this.setState({
       modalVisible: visible,
@@ -207,10 +242,11 @@ class TripsList extends React.Component {
           renderItem={({item}) => <TripItem key={item.id} takeTrip={this.takeTrip} {...item} />}
           refreshControl={
             <RefreshControl
-            refreshing={this.state.refreshing}
-            onRefresh={this.getHoldingTrips}
+              refreshing={this.state.refreshing}
+              onRefresh={this.getHoldingTrips}
             />
           }
+          ListEmptyComponent={this.renderEmptyComponent}
         />
       </Container>
     );
