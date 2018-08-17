@@ -41,19 +41,6 @@ class Home extends React.Component {
     console.log('Unmonting index');
   }
 
-  /* monitorTrip() {
-    let { currentTripId, trips } = this.state;
-    firebase.database().ref('server/taken_trips/').child(`${currentTripId}`).on('child_removed', (snapshot) => {
-      if (snapshot.val()) {
-        this.setState({
-          trips: trips.filter(item => item.id != snapshot.val().id)
-        });
-      } else {
-        this.setState({ trips: [] });
-      }
-    });
-  }*/
-
   setStatus = (status) => {
     this.setState({ status });
   }
