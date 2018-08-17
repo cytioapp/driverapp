@@ -14,7 +14,7 @@ import Modal from '../Modal';
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }
-
+let dbRef = firebase.database().ref('server/taken_trips/');
 
 class Trip extends React.Component {
   state = {
@@ -33,6 +33,19 @@ class Trip extends React.Component {
     this.getActiveTrip();
   }
 
+  componentWillUnmount() {
+    dbRef.off('child_removed');
+  }
+
+  monitorTrip = () => {
+    let { id } = this.state;
+    dbRef.child(`${id}`).on('child_removed', (snapshot) => {
+      if (snapshot.key == 'id') {
+        this.props.setStatus('free');
+      }
+    });
+  }
+
   getActiveTrip = () => {
     // this.setState({ refreshing: true });
 
@@ -46,7 +59,7 @@ class Trip extends React.Component {
           latitude: res.data.trip.lat_origin,
           longitude: res.data.trip.lng_origin,
           full_name: res.data.trip.user.full_name
-        })
+        }, this.monitorTrip);
       }).catch(err => {
         // this.setState({ refreshing: false });
         console.log(err.response);
