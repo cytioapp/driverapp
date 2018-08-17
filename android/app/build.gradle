@@ -148,6 +148,8 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-image-resizer')
+    compile project(':react-native-image-picker')
     compile project(':react-native-geolocation-service')
     compile project(':react-native-sensitive-info')
     compile fileTree(dir: "libs", include: ["*.jar"])

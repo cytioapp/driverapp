@@ -1,10 +1,23 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity, Image } from 'react-native';
 import { Item, Input, Button, Text, Icon } from 'native-base';
 import { Subscribe } from 'unstated';
 import sessionState from '../../states/session';
 import AuthLayout from '../Layouts/AuthLayout';
 import styles from './style';
+import ImagePicker from 'react-native-image-picker';
+import ImageResizer from 'react-native-image-resizer';
+
+var options = {
+  title: 'Selecciona una foto',
+  takePhotoButtonTitle: 'Tomar una foto',
+  chooseFromLibraryButtonTitle: 'Desde galería',
+  cancelButtonTitle: 'Cancelar',
+  storageOptions: {
+    skipBackup: true,
+    path: 'images'
+  }
+};
 
 export default class Signup extends Component {
   state = {
@@ -15,15 +28,54 @@ export default class Signup extends Component {
     license_number: '',
     phone_number: '',
     hidePassword: true,
-    hideCopyPassword: true
-
+    hideCopyPassword: true,
+    imageSource: null,
+    showSpinner: false
   }
+
+  pickImage = () => {
+    ImagePicker.showImagePicker(options, (response) => {
+      console.log('Response = ', response);
+
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      } else if (response.customButton) {
+        console.log('User tapped custom button: ', response.customButton);
+      } else {
+        ImageResizer.createResizedImage('data:image/jpeg;base64,' + response.data, 400, 400, 'JPEG', 50).then((source) => {
+          this.setState({
+            imageSource: {
+              uri: source.uri,
+              fileName: source.name
+            }
+          });
+        }).catch((err) => {
+          console.log('Resize error', err);
+        });
+      }
+    });
+  };
+
+  // uploadFile = () => {
+  //   this.setState({ showSpinner: true });
+  //   Api.postImage({
+  //     photo: this.state.imageSource,
+  //     title: this.state.title
+  //   }).then(data => {
+  //     this.setState({ showSpinner: false });
+  //     this.props.navigation.goBack();
+  //     console.log(data);
+  //   });
+  // };
 
   renderErrors = (errors) => {
     return <Text style={styles.errorsText}>{errors[0]}</Text>
   }
 
   render(){
+    const { imageSource } = this.state;
     return(
       <Subscribe to={[sessionState]}>
         {(session) => (
@@ -117,11 +169,13 @@ export default class Signup extends Component {
                 <View style={{paddingHorizontal: 15}}></View>
               </Item>
 
-              <TouchableOpacity style={styles.licenseButton}>
+              <TouchableOpacity style={styles.licenseButton} onPress={this.pickImage}>
                 <Icon active name="ios-camera" style={styles.icon} />
                 <Text style={styles.licenseText}>Gaffete</Text>
                 <View style={{paddingHorizontal: 15}}></View>
               </TouchableOpacity>
+
+              {imageSource && <Image source={{ uri: imageSource.uri }} style={{ width: 40, height: 40 }}/>}
 
             </View>
 
