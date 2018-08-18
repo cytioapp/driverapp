@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, TouchableOpacity, Image } from 'react-native';
+import { View, TouchableOpacity, Image, Platform } from 'react-native';
 import { Item, Input, Button, Text, Icon } from 'native-base';
 import { Subscribe } from 'unstated';
 import sessionState from '../../states/session';
@@ -7,6 +7,8 @@ import AuthLayout from '../Layouts/AuthLayout';
 import styles from './style';
 import ImagePicker from 'react-native-image-picker';
 import ImageResizer from 'react-native-image-resizer';
+// import RNFS from 'react-native-fs';
+import Api from '../../utils/api';
 
 var options = {
   title: 'Selecciona una foto',
@@ -27,6 +29,7 @@ export default class Signup extends Component {
     repeated_password: '',
     license_number: '',
     phone_number: '',
+    public_service_permission_image: '',
     hidePassword: true,
     hideCopyPassword: true,
     imageSource: null,
@@ -44,31 +47,50 @@ export default class Signup extends Component {
       } else if (response.customButton) {
         console.log('User tapped custom button: ', response.customButton);
       } else {
-        ImageResizer.createResizedImage('data:image/jpeg;base64,' + response.data, 400, 400, 'JPEG', 50).then((source) => {
-          this.setState({
-            imageSource: {
-              uri: source.uri,
-              fileName: source.name
-            }
+        // console.log('resp',response)
+        // this.setState({
+        //   imageSource: {
+        //     uri: response.data,
+        //     fileName: response.fileName
+        //   }
+        // }, this.uploadFile);
+        ImageResizer.createResizedImage('data:image/jpeg;base64,' + response.data, 400, 400, 'JPEG', 50)
+          .then((source) => {
+            console.log(source);
+            // const filePath = Platform.OS === 'android' && source.uri.replace ? source.uri.replace('file://', '') : source.uri;
+            // const photoData = await RNFS.readFile(filePath, 'base64')
+            // console.log('filePath', filePath);
+            this.setState({
+              imageSource: {
+                uri: source.uri,
+                fileName: source.name,
+                path: source.path
+              }
+            }, this.uploadFile);
+          }).catch((err) => {
+            console.log('Resize error', err);
           });
-        }).catch((err) => {
-          console.log('Resize error', err);
-        });
       }
     });
   };
 
-  // uploadFile = () => {
-  //   this.setState({ showSpinner: true });
-  //   Api.postImage({
-  //     photo: this.state.imageSource,
-  //     title: this.state.title
-  //   }).then(data => {
-  //     this.setState({ showSpinner: false });
-  //     this.props.navigation.goBack();
-  //     console.log(data);
-  //   });
-  // };
+  uploadFile = () => {
+    this.setState({ showSpinner: true });
+    Api.postImage('/upload_permission_image', {
+      photo: this.state.imageSource,
+      field: 'public_service_permission_image'
+    })
+    .then(data => data.json())
+    .then(data => {
+      this.setState({ showSpinner: false });
+      console.log(data);
+      this.setState({
+        public_service_permission_image: data.image
+      });
+    }).catch(err => {
+      console.log(err);
+    });
+  };
 
   renderErrors = (errors) => {
     return <Text style={styles.errorsText}>{errors[0]}</Text>

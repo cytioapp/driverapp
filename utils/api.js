@@ -45,6 +45,28 @@ class Api {
   static delete(route, params) {
     return this.xhr(route, params, 'DELETE');
   }
+
+  static postImage = function(path, params) {
+    var data = new FormData();
+    data.append('public_service_permission_image', {
+      uri: params.photo.uri,
+      type: 'image/jpeg', // o params.photo.type
+      name: params.photo.fileName
+    });
+    console.log('formData', data);
+    const url = 'https://cytio.com.mx/api/drivers' + path;
+    // Content-Type de tipo multipart (para archivos)
+    // const headers = await this.headers('multipart/form-data; charset=utf-8; boundary=__X_PAW_BOUNDARY__\'');
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'multipart/form-data; charset=utf-8; boundary=__X_PAW_BOUNDARY__\'',
+        Accept: 'application/json'
+      },
+      body: data
+    };
+    return fetch(url, options);
+  }
 }
 
 export default Api;
