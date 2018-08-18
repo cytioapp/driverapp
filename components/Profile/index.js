@@ -11,8 +11,40 @@ import {
 import styles from './style';
 import profile from '../../assets/profile.png';
 import StarsRate from './StarsRate';
+import Api from '../../utils/api';
 
 export default class Profile extends Component {
+  state = {
+    full_name: '',
+    rate: 0,
+    phoneNumber: '+52 312 450 5499',
+    email: '',
+    license_number: '',
+    model: '',
+    license_plate: '',
+    organization: '',
+    number: ''
+  }
+
+  componentDidMount(){
+    this.fetchDriverData();
+  }
+
+  fetchDriverData = () => {
+    Api.get('/drivers/profile')
+      .then(res => {
+        this.setState({
+          full_name: res.data.user.full_name,
+          email: res.data.user.email,
+          rate: res.data.rate,
+          license_number: res.data.license_number,
+          model: `${res.data.vehicle.license_plate} ${res.data.vehicle.year}`,
+          license_plate: res.data.vehicle.license_plate,
+          organization: `Tabachines ${res.data.vehicle.number}`
+        })
+      }).catch(err => console.log(err))
+  }
+
   render(){
     return(
       <KeyboardAvoidingView style={styles.keyboard}>
@@ -25,7 +57,7 @@ export default class Profile extends Component {
             </Left>
             <Body/>
             <Right style={styles.headerRight}>
-              <Button transparent onPress={this.props.navigation.openDrawer}>
+              <Button transparent onPress={() => {this.props.navigation.navigate('EditProfile')}}>
                 <Icon name='create' style={styles.menuIcon} />
               </Button>
             </Right>
@@ -35,10 +67,9 @@ export default class Profile extends Component {
               <Image style={styles.profilePhoto} source={profile} />
             </View>
             <View style={styles.driverInfoWrapper}>
-              <Text style={styles.name}>Juan Pérez Larios</Text>
-              <StarsRate stars={5} rate={3} />
-              {/* <Text style={styles.email}></Text> */}
-              <Text style={styles.phoneNumber}>3123203876</Text>
+              <Text style={styles.name}>{this.state.full_name}</Text>
+              <StarsRate stars={5} rate={this.state.rate} />
+              <Text style={styles.phoneNumber}>{this.state.phoneNumber}</Text>
             </View>
           </View>
         </Header>
@@ -47,20 +78,26 @@ export default class Profile extends Component {
 
           <View style={styles.darkFieldWrapper}>
             <Text style={styles.label}>Correo:</Text>
-            <Text style={styles.text}>driver1@gmail.com</Text>
+            <Text style={styles.text}>{this.state.email}</Text>
           </View>
           <View style={styles.darkFieldWrapper}>
             <Text style={styles.label}>Licencia:</Text>
-            <Text style={styles.text}>67326-SJHDG23-WEF2</Text>
+            <Text style={styles.text}>{this.state.license_number}</Text>
           </View>
 
           <View style={styles.fieldWrapper}>
             <Text style={styles.label}>Modelo del taxi:</Text>
-            <Text style={styles.text}>Nissan 2015</Text>
+            <Text style={styles.text}>{this.state.model}</Text>
           </View>
+
           <View style={styles.fieldWrapper}>
             <Text style={styles.label}>Sitio y número:</Text>
-            <Text style={styles.text}>Tabachines 43</Text>
+            <Text style={styles.text}>{this.state.organization}</Text>
+          </View>
+
+          <View style={styles.fieldWrapper}>
+            <Text style={styles.label}>Placas:</Text>
+            <Text style={styles.text}>{this.state.license_plate}</Text>
           </View>
 
         </View>
