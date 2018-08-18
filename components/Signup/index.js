@@ -54,17 +54,13 @@ export default class Signup extends Component {
         //     fileName: response.fileName
         //   }
         // }, this.uploadFile);
-        ImageResizer.createResizedImage('data:image/jpeg;base64,' + response.data, 400, 400, 'JPEG', 50)
+        ImageResizer.createResizedImage('data:image/jpeg;base64,' + response.data, 800, 800, 'JPEG', 70)
           .then((source) => {
             console.log(source);
-            // const filePath = Platform.OS === 'android' && source.uri.replace ? source.uri.replace('file://', '') : source.uri;
-            // const photoData = await RNFS.readFile(filePath, 'base64')
-            // console.log('filePath', filePath);
             this.setState({
               imageSource: {
                 uri: source.uri,
-                fileName: source.name,
-                path: source.path
+                fileName: source.name
               }
             }, this.uploadFile);
           }).catch((err) => {

@@ -1,5 +1,6 @@
 import SInfo from 'react-native-sensitive-info';
 import axios from 'axios';
+import { Platform } from 'react-native';
 
 class Api {
   static headers = async function(contentType) {
@@ -54,7 +55,7 @@ class Api {
       name: params.photo.fileName
     });
     console.log('formData', data);
-    const url = 'https://cytio.com.mx/api/drivers' + path;
+    const url = 'http://cytio.com.mx/api/drivers' + path;
     // Content-Type de tipo multipart (para archivos)
     // const headers = await this.headers('multipart/form-data; charset=utf-8; boundary=__X_PAW_BOUNDARY__\'');
     const options = {
@@ -65,7 +66,25 @@ class Api {
       },
       body: data
     };
-    return fetch(url, options);
+    
+    if (Platform.OS === 'android') {
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', url);
+      xhr.send(data);
+      return new Promise((resolve, reject) => {
+        xhr.onreadystatechange = () => {
+          console.log(xhr.response);
+          if (xhr.readyState == 4) {
+            resolve(xhr.response);
+          } else {
+            reject();
+          }
+        }
+
+      })
+    } else {
+      return fetch(url, options);
+    }
   }
 }
 
