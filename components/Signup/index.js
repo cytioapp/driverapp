@@ -47,13 +47,6 @@ export default class Signup extends Component {
       } else if (response.customButton) {
         console.log('User tapped custom button: ', response.customButton);
       } else {
-        // console.log('resp',response)
-        // this.setState({
-        //   imageSource: {
-        //     uri: response.data,
-        //     fileName: response.fileName
-        //   }
-        // }, this.uploadFile);
         ImageResizer.createResizedImage('data:image/jpeg;base64,' + response.data, 800, 800, 'JPEG', 70)
           .then((source) => {
             console.log(source);
@@ -76,11 +69,10 @@ export default class Signup extends Component {
       photo: this.state.imageSource,
       field: 'public_service_permission_image'
     })
-    .then(data => data.json())
     .then(data => {
-      this.setState({ showSpinner: false });
       console.log(data);
       this.setState({
+        showSpinner: false,
         public_service_permission_image: data.image
       });
     }).catch(err => {

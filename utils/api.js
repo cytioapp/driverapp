@@ -54,35 +54,32 @@ class Api {
       type: 'image/jpeg', // o params.photo.type
       name: params.photo.fileName
     });
-    console.log('formData', data);
-    const url = 'http://cytio.com.mx/api/drivers' + path;
-    // Content-Type de tipo multipart (para archivos)
-    // const headers = await this.headers('multipart/form-data; charset=utf-8; boundary=__X_PAW_BOUNDARY__\'');
-    const options = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'multipart/form-data; charset=utf-8; boundary=__X_PAW_BOUNDARY__\'',
-        Accept: 'application/json'
-      },
-      body: data
-    };
+    
+    const url = 'https://cytio.com.mx/api/drivers' + path;
     
     if (Platform.OS === 'android') {
-      var xhr = new XMLHttpRequest();
-      xhr.open('POST', url);
-      xhr.send(data);
       return new Promise((resolve, reject) => {
-        xhr.onreadystatechange = () => {
-          console.log(xhr.response);
-          if (xhr.readyState == 4) {
+        let xhr = new XMLHttpRequest();
+        xhr.open('POST', url);
+        xhr.responseType = 'json';
+        xhr.send(data);
+        xhr.onload = () => {
+          if (xhr.status == 200) {
             resolve(xhr.response);
           } else {
             reject();
           }
         }
-
-      })
+      });
     } else {
+      const options = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'multipart/form-data; charset=utf-8; boundary=__X_PAW_BOUNDARY__\'',
+          Accept: 'application/json'
+        },
+        body: data
+      };
       return fetch(url, options);
     }
   }
