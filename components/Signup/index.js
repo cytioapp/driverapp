@@ -1,10 +1,24 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, TouchableOpacity } from 'react-native';
-import { Item, Input, Button, Text, Icon } from 'native-base';
+import { View, TouchableOpacity, Image } from 'react-native';
+import { Item, Input, Button, Text, Icon, Spinner } from 'native-base';
 import { Subscribe } from 'unstated';
 import sessionState from '../../states/session';
 import AuthLayout from '../Layouts/AuthLayout';
 import styles from './style';
+import ImagePicker from 'react-native-image-picker';
+import ImageResizer from 'react-native-image-resizer';
+import Api from '../../utils/api';
+
+var options = {
+  title: 'Selecciona una foto',
+  takePhotoButtonTitle: 'Tomar una foto',
+  chooseFromLibraryButtonTitle: 'Desde galería',
+  cancelButtonTitle: 'Cancelar',
+  storageOptions: {
+    skipBackup: true,
+    path: 'images'
+  }
+};
 
 export default class Signup extends Component {
   state = {
@@ -14,16 +28,65 @@ export default class Signup extends Component {
     repeated_password: '',
     license_number: '',
     phone_number: '',
+    public_service_permission_image: '',
     hidePassword: true,
-    hideCopyPassword: true
-
+    hideCopyPassword: true,
+    imageSource: null,
+    imageSpinner: false
   }
+
+  pickImage = () => {
+    ImagePicker.showImagePicker(options, (response) => {
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+        alert('Ha ocurrido un error, intentalo de nuevo');
+      } else if (response.customButton) {
+        console.log('User tapped custom button: ', response.customButton);
+      } else {
+        this.setState({ imageSpinner: true });
+        ImageResizer.createResizedImage('data:image/jpeg;base64,' + response.data, 1024, 1024, 'JPEG', 80)
+          .then((source) => {
+            console.log(source);
+            this.setState({
+              imageSource: {
+                uri: source.uri,
+                fileName: source.name
+              }
+            }, this.uploadFile);
+          }).catch((err) => {
+            console.log('Resize error', err);
+            alert('Ha ocurrido un error, intentalo de nuevo');
+            this.setState({ imageSpinner: false });
+          });
+      }
+    });
+  };
+
+  uploadFile = () => {
+    Api.postImage('/upload_permission_image', {
+      photo: this.state.imageSource,
+      field: 'public_service_permission_image'
+    })
+    .then(data => {
+      this.setState({
+        imageSpinner: false,
+        public_service_permission_image: data.image
+      });
+    }).catch(err => {
+      console.log(err);
+      alert('Ha ocurrido un error, intentalo de nuevo');
+      this.setState({ imageSpinner: false });
+    });
+  };
 
   renderErrors = (errors) => {
     return <Text style={styles.errorsText}>{errors[0]}</Text>
   }
 
   render(){
+    const { imageSource, imageSpinner } = this.state;
     return(
       <Subscribe to={[sessionState]}>
         {(session) => (
@@ -117,11 +180,20 @@ export default class Signup extends Component {
                 <View style={{paddingHorizontal: 15}}></View>
               </Item>
 
-              <TouchableOpacity style={styles.licenseButton}>
-                <Icon active name="ios-camera" style={styles.icon} />
-                <Text style={styles.licenseText}>Gaffete</Text>
-                <View style={{paddingHorizontal: 15}}></View>
-              </TouchableOpacity>
+              <View style={styles.licenseWrapper}>
+                <TouchableOpacity style={styles.licenseButton} onPress={this.pickImage}>
+                  <Icon active name="ios-camera" style={styles.icon} />
+                  <Text style={styles.licenseText}>Gaffete</Text>
+                  <View style={{paddingHorizontal: 15}}></View>
+                </TouchableOpacity>
+                {(imageSource || imageSpinner) &&
+                  <View style={styles.licensePreview}>
+                    {imageSpinner && <Spinner color="black" />}
+                    {(imageSource && !imageSpinner) && <Image source={{ uri: imageSource.uri }} style={{ width: 40, height: 40 }}/>}
+                  </View>
+                }
+              </View>
+
 
             </View>
 
