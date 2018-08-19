@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, Image, KeyboardAvoidingView, View } from 'react-native';
+import { Text, Image, View } from 'react-native';
 import {
   Body,
   Button,
@@ -12,6 +12,7 @@ import styles from './style';
 import profile from '../../assets/profile.png';
 import StarsRate from './StarsRate';
 import Api from '../../utils/api';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 export default class Profile extends Component {
   state = {
@@ -47,7 +48,7 @@ export default class Profile extends Component {
 
   render(){
     return(
-      <KeyboardAvoidingView style={styles.keyboard}>
+      <KeyboardAwareScrollView style={styles.keyboard}>
         <Header style={styles.header} iosBarStyle="light-content" androidStatusBarColor="#262626">
           <View style={styles.headerTop}>
             <Left style={styles.headerLeft}>
@@ -102,7 +103,7 @@ export default class Profile extends Component {
 
         </View>
 
-      </KeyboardAvoidingView>
+      </KeyboardAwareScrollView>
     )
   }
 }

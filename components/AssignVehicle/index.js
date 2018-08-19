@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, KeyboardAvoidingView } from 'react-native';
+import { View } from 'react-native';
 import {
   Body,
   Button,
@@ -16,6 +16,7 @@ import {
   Text,
   Title
 } from 'native-base';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import Api from '../../utils/api';
 import styles from './style';
 
@@ -65,7 +66,7 @@ export default class AssignVehicle extends Component {
 
   render(){
     return(
-      <KeyboardAvoidingView style={{flex: 1}} behavior="padding">
+      <KeyboardAwareScrollView style={{flex: 1}} behavior="padding">
         <Container>
           <Header style={styles.header} iosBarStyle="light-content" androidStatusBarColor="#262626">
             <Left style={styles.headerLeft}>
@@ -130,7 +131,7 @@ export default class AssignVehicle extends Component {
 
           </Content>
         </Container>
-      </KeyboardAvoidingView>
+      </KeyboardAwareScrollView>
     )
   }
 }

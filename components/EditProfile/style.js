@@ -1,14 +1,15 @@
-import { StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
 
 const headerBackground = '#262626';
 const yellow = '#E3C463';
 const label = '#000';
 const text = '#5C5C5C';
 const textBackground = '#F3F3F3';
+const window = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   keyboard: {
-    flex: 1
+    height: window.height
   },
   fontText: {
     color: yellow,
@@ -85,7 +86,23 @@ const styles = StyleSheet.create({
   },
   space: {
     width: 20
-  }
+  },
+  buttonWrapper: {
+    margin: 40
+  },
+  button: {
+    backgroundColor: yellow,
+    borderRadius: 0
+  },
+  buttonDisabled: {
+    backgroundColor: '#EADAA9',
+    borderRadius: 0
+  },
+  buttonText: {
+    color: label,
+    fontFamily: 'Nunito-Bold',
+    fontWeight: '500'
+  },
 });
 
 export default styles;

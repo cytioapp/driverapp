@@ -7,7 +7,7 @@ import EditProfile from '../components/EditProfile';
 
 export default createDrawerNavigator({
   Home: {
-    screen: EditProfile
+    screen: Home
   },
   AssignVehicle: {
     screen: AssignVehicle
