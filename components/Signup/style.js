@@ -36,6 +36,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#1F120D'
   },
+  licenseWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
   licenseButton: {
     alignItems: 'center',
     borderColor: '#1F120D',
@@ -44,7 +48,16 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: 10,
-    padding: 10
+    padding: 10,
+    flex: 5
+  },
+  licensePreview: {
+    width: 10,
+    height: 40,
+    marginTop: 10,
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   licenseText: {
     color: '#1F120D',
