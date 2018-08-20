@@ -54,10 +54,15 @@ const styles = StyleSheet.create({
   licensePreview: {
     width: 10,
     height: 40,
-    marginTop: 10,
+    margin: 10,
+    marginTop: 20,
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  licenseImage: {
+    height: 40,
+    width: 40
   },
   licenseText: {
     color: '#1F120D',
