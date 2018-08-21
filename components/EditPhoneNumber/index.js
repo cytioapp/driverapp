@@ -79,15 +79,15 @@ export default class EditPhoneNumber extends Component {
     return(
       <KeyboardAwareScrollView style={styles.keyboard}>
         <Header style={styles.header} iosBarStyle="light-content" androidStatusBarColor="#262626">
-          <Left style={styles.headerLeft}>
+          <Left style={styles.leftHeader}>
             <Button transparent onPress={() => this.handleReturn()}>
               <Icon name='ios-arrow-back' style={styles.menuIcon} />
             </Button>
           </Left>
           <Body style={styles.bodyHeader}>
-            <Title style={styles.fontText}>Editar número de celular</Title>
+            <Title style={styles.fontText}>Editar número</Title>
           </Body>
-          <Right style={styles.headerRight} />
+          <Right style={styles.rightHeader} />
         </Header>
 
         <View style={styles.container}>

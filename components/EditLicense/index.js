@@ -78,7 +78,7 @@ export default class EditLicense extends Component {
     return(
       <KeyboardAwareScrollView style={styles.keyboard}>
         <Header style={styles.header} iosBarStyle="light-content" androidStatusBarColor="#262626">
-          <Left style={styles.headerLeft}>
+          <Left style={styles.leftHeader}>
             <Button transparent onPress={() => this.handleReturn()}>
               <Icon name='ios-arrow-back' style={styles.menuIcon} />
             </Button>
@@ -86,7 +86,7 @@ export default class EditLicense extends Component {
           <Body style={styles.bodyHeader}>
             <Title style={styles.fontText}>Editar licencia</Title>
           </Body>
-          <Right style={styles.headerRight} />
+          <Right style={styles.rightHeader} />
         </Header>
 
         <View style={styles.container}>

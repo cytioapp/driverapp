@@ -78,7 +78,7 @@ export default class EditEmail extends Component {
     return(
       <KeyboardAwareScrollView style={styles.keyboard}>
         <Header style={styles.header} iosBarStyle="light-content" androidStatusBarColor="#262626">
-          <Left style={styles.headerLeft}>
+          <Left style={styles.leftHeader}>
             <Button transparent onPress={() => this.handleReturn()}>
               <Icon name='ios-arrow-back' style={styles.menuIcon} />
             </Button>
@@ -86,13 +86,13 @@ export default class EditEmail extends Component {
           <Body style={styles.bodyHeader}>
             <Title style={styles.fontText}>Editar email</Title>
           </Body>
-          <Right style={styles.headerRight} />
+          <Right style={styles.rightHeader} />
         </Header>
 
         <View style={styles.container}>
           <View style={styles.darkFieldWrapper}>
             <View style={styles.generalItem}>
-              <Text style={styles.label}>Correo:</Text>
+              <Text style={styles.label}>Correo electrónico:</Text>
               <TextInput
                   placeholder="Correo"
                   autoCapitalize="none"

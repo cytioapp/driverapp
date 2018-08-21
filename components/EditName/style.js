@@ -22,6 +22,7 @@ const styles = StyleSheet.create({
     flex: 1
   },
   bodyHeader: {
+    alignItems: 'center',
     flex: 2
   },
   rightHeader: {
