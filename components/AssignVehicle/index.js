@@ -142,8 +142,8 @@ export default class AssignVehicle extends Component {
                   selectedValue={this.state.organization}
                   onValueChange={this.onValueChange}
                 >
-                  {Platform.OS == 'android' && <Picker.Item key='x' label='Selecciona un sitio...' value='' />}
-                  {this.renderOrganizations()}
+                    {Platform.OS === 'android' ? <Picker.Item key='x' label='Selecciona un sitio...' value='' /> : <React.Fragment />}
+                    {this.renderOrganizations()}
                 </Picker>
               </View>
 
