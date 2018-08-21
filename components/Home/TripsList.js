@@ -31,10 +31,12 @@ const styles = StyleSheet.create({
   emptyWrapper: {
     paddingTop: 50,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    padding: 20
   },
   emptyText: {
-    fontSize: 22
+    fontSize: 22,
+    textAlign: 'center'
   },
   emptyInstructions: {
     marginTop: 10,
@@ -49,7 +51,8 @@ class TripsList extends React.Component {
     isWaiting: false,
     modalVisible: false,
     errors: [],
-    fetchingTrips: false
+    fetchingTrips: false,
+    error: ''
   }
 
   componentDidMount() {
@@ -123,10 +126,10 @@ class TripsList extends React.Component {
           let { latitude, longitude } = position.coords;
           return resolve({ lat: latitude, lng: longitude });
         },
-        (error) => this.setState({ error: error.message }, () => reject(error)),
+        (error) => this.setState({ error: 'No se pudo obtener la ubicación actual' }, () => reject(error)),
         { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 })
       }).catch(err => {
-        console.log('Gps permissions', err);
+        this.setState({ error: 'Se requieren permisos de ubicación' });
         return reject(err);
       })
     })
@@ -201,16 +204,24 @@ class TripsList extends React.Component {
   }
 
   renderEmptyComponent = () => {
-    const { fetchingTrips } = this.state;
-    return (
-      <View style={styles.emptyWrapper}>
-        <Text style={styles.emptyText}>No hay servicios cercanos</Text>
-        <TouchableOpacity onPress={this.getHoldingTrips}>
-          <Text style={styles.emptyInstructions}>Toca para buscar servicios</Text>
-        </TouchableOpacity>
-        {fetchingTrips && <Spinner color="#333"/>}
-      </View>
-    )
+    const { fetchingTrips, error } = this.state;
+    if (!error) {
+      return (
+        <View style={styles.emptyWrapper}>
+          <Text style={styles.emptyText}>No hay servicios cercanos</Text>
+          <TouchableOpacity onPress={this.getHoldingTrips}>
+            <Text style={styles.emptyInstructions}>Toca para buscar servicios</Text>
+          </TouchableOpacity>
+          {fetchingTrips && <Spinner color="#333"/>}
+        </View>
+      );
+    } else {
+      return (
+        <View style={[styles.emptyWrapper, { textAlign: 'center' }]}>
+          <Text style={styles.emptyText}>{error}</Text>
+        </View>
+      );
+    }
   }
 
   setModalVisible = (visible) => {
