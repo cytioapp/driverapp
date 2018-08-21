@@ -1,6 +1,5 @@
 import SInfo from 'react-native-sensitive-info';
 import axios from 'axios';
-import { Platform } from 'react-native';
 
 class Api {
   static headers = async function(contentType) {
@@ -57,31 +56,19 @@ class Api {
     
     const url = 'https://cytio.com.mx/api/drivers' + path;
     
-    if (Platform.OS === 'android') {
-      return new Promise((resolve, reject) => {
-        let xhr = new XMLHttpRequest();
-        xhr.open('POST', url);
-        xhr.responseType = 'json';
-        xhr.send(data);
-        xhr.onload = () => {
-          if (xhr.status == 200) {
-            resolve(xhr.response);
-          } else {
-            reject();
-          }
+    return new Promise((resolve, reject) => {
+      let xhr = new XMLHttpRequest();
+      xhr.open('POST', url);
+      xhr.responseType = 'json';
+      xhr.send(data);
+      xhr.onload = () => {
+        if (xhr.status == 200) {
+          resolve(xhr.response);
+        } else {
+          reject();
         }
-      });
-    } else {
-      const options = {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'multipart/form-data; charset=utf-8; boundary=__X_PAW_BOUNDARY__\'',
-          Accept: 'application/json'
-        },
-        body: data
-      };
-      return fetch(url, options);
-    }
+      }
+    });
   }
 }
 
