@@ -20,7 +20,7 @@ var options = {
   }
 };
 
-export default class Signup extends Component {
+class Signup extends Component {
   state = {
     full_name: '',
     email: '',
@@ -48,7 +48,6 @@ export default class Signup extends Component {
         this.setState({ imageSpinner: true });
         ImageResizer.createResizedImage('data:image/jpeg;base64,' + response.data, 1024, 1024, 'JPEG', 80)
           .then((source) => {
-            console.log(source);
             this.setState({
               imageSource: {
                 uri: source.uri,
@@ -189,7 +188,7 @@ export default class Signup extends Component {
                 {(imageSource || imageSpinner) &&
                   <View style={styles.licensePreview}>
                     {imageSpinner && <Spinner color="black" />}
-                    {(imageSource && !imageSpinner) && <Image source={{ uri: imageSource.uri }} style={{ width: 40, height: 40 }}/>}
+                    {(imageSource && !imageSpinner) && <Image source={{ uri: imageSource.uri }} style={styles.licenseImage}/>}
                   </View>
                 }
               </View>
@@ -229,3 +228,5 @@ export default class Signup extends Component {
     )
   }
 }
+
+export default Signup;

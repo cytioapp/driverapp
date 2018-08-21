@@ -11,6 +11,16 @@ const styles = StyleSheet.create({
   header: {
     backgroundColor: headerBackground,
   },
+  headerLeft: {
+    flex: 1
+  },
+  bodyHeader: {
+    alignItems: 'center',
+    flex: 2
+  },
+  headerRight: {
+    flex: 1
+  },
   menuIcon: {
     color: yellow
   },

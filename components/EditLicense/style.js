@@ -18,13 +18,14 @@ const styles = StyleSheet.create({
   header: {
     backgroundColor: headerBackground,
   },
-  leftHeader: {
+  headerLeft: {
     flex: 1
   },
   bodyHeader: {
+    alignItems: 'center',
     flex: 2
   },
-  rightHeader: {
+  headerRight: {
     flex: 1
   },
   menuIcon: {
