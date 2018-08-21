@@ -13,21 +13,29 @@ const styles = StyleSheet.create({
   header: {
     backgroundColor: headerBackground,
   },
-  leftHeader: {
+  headerLeft: {
     flex: 1
   },
   bodyHeader: {
+    alignItems: 'center',
     flex: 2
   },
-  rightHeader: {
+  headerRight: {
     flex: 1
   },
   menuIcon: {
     color: yellow
   },
+  container: {
+    padding: 15
+  },
+  actualOrganization: {
+    alignSelf: 'center',
+    fontFamily: 'Nunito-Italic',
+    marginBottom: 20
+  },
   picker: {
-    backgroundColor: textBackground,
-    width: '100%'
+    backgroundColor: textBackground
   },
   placeholder: {
     color: text
@@ -36,10 +44,23 @@ const styles = StyleSheet.create({
     color: text
   },
   inputWrapper: {
-    paddingHorizontal: 20
+    alignItems: 'center',
+    flexDirection: 'row',
+    marginVertical: 10,
+    paddingVertical: 10
+  },
+  textInputWrapper: {
+    borderColor: label,
+    borderRadius: 2,
+    borderWidth: 1,
+    flex: 1,
+    marginRight: 15
+  },
+  label: {
+    color: label,
+    fontFamily: 'Nunito-Bold'
   },
   inputItem: {
-    marginVertical: 30
   },
   input: {
     textAlign: 'center'
@@ -56,6 +77,25 @@ const styles = StyleSheet.create({
     color: label,
     fontFamily: 'Nunito-Bold',
     fontSize: 15
+  },
+  imageWrapper: {
+    marginVertical: 10
+  },
+  taxiOrganization: {
+    fontFamily: 'Nunito-Regular',
+    left: 125,
+    top: 60,
+    position: 'absolute',
+  },
+  taxiNumber: {
+    fontFamily: 'Nunito-Regular',
+    left: 135,
+    top: 80,
+    position: 'absolute',
+  },
+  taxiImage: {
+    height: 120,
+    width: 'auto'
   }
 
 });

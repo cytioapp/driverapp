@@ -188,7 +188,7 @@ class Signup extends Component {
                 {(imageSource || imageSpinner) &&
                   <View style={styles.licensePreview}>
                     {imageSpinner && <Spinner color="black" />}
-                    {(imageSource && !imageSpinner) && <Image source={{ uri: imageSource.uri }} style={{ width: 40, height: 40 }}/>}
+                    {(imageSource && !imageSpinner) && <Image source={{ uri: imageSource.uri }} style={styles.licenseImage}/>}
                   </View>
                 }
               </View>

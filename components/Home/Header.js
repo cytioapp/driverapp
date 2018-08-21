@@ -15,15 +15,15 @@ import styles from './headerStyle';
 const HeaderH = ({ status, cancelTrip, navigation }) => {
   return (
     <Header style={styles.header} iosBarStyle="light-content" androidStatusBarColor="#262626">
-      <Left>
+      <Left style={styles.headerLeft}>
         <Button transparent onPress={navigation.openDrawer}>
           <Icon name='menu' style={styles.menuIcon} />
         </Button>
       </Left>
-      <Body>
+      <Body style={styles.bodyHeader}>
         <Title style={styles.fontText}>{status === 'free' ? 'Servicios' : 'Detalles'}</Title>
       </Body>
-      <Right>
+      <Right style={styles.headerRight}>
         {status === 'active' &&
           <Button transparent onPress={cancelTrip}>
             <Icon name='ios-close-circle-outline' style={styles.cancelIcon} />
