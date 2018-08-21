@@ -49,7 +49,6 @@ export default class AssignVehicle extends Component {
 
   getActualInfo = () => {
     Api.get('/drivers/profile').then(res => {
-      console.log(res)
       this.setState({
         actual: `${res.data.vehicle.organization.name} ${res.data.vehicle.number}`
       });

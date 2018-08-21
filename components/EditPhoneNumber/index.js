@@ -17,8 +17,8 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 
 export default class EditPhoneNumber extends Component {
   state = {
-    original_phone_number: '+52 312 450 5499',
-    new_phone_number: '+52 111 450 5499',
+    original_phone_number: '',
+    new_phone_number: '',
     buttonDisabled: true
   }
 
@@ -29,11 +29,12 @@ export default class EditPhoneNumber extends Component {
   fillFields = () => {
     Api.get('/drivers/profile')
     .then(res => {
-      //Falta el phone number
-      // this.setState({
-
-      // })
-    }).catch(err => console.log(err))
+      this.setState({
+        original_phone_number: res.data.phone_number,
+        new_phone_number: res.data.phone_number
+      });
+      this.difference();
+    });
   }
 
   handleReturn = () => {
@@ -54,26 +55,18 @@ export default class EditPhoneNumber extends Component {
 
   handleSave = (returnFlag = false) => {
     if(returnFlag) {
-      /*
-      Api.put(/driver/edit_name)...then(
-        this.props.naviga...('profile')
-      )
-      */
-      this.props.navigation.navigate('Profile')
+      Api.put('/drivers/profile', {phone_number: this.state.new_phone_number}).then( res => {
+        this.props.navigation.navigate('Profile')
+      });
     } else {
-      /*
-      Api.put(/driver/edit_name)...then(
-        fillFields() -> Para actualizar info
-        this.difference()
-      )
-      */
-      console.log('Guardado')
-      this.difference()
+      Api.put('/drivers/profile', {phone_number: this.state.new_phone_number}).then( res => {
+        this.fillFields();
+      });
     }
   }
 
   difference = () => {
-    if(this.state.original_phoneNumber !== this.state.new_phoneNumber){
+    if(this.state.original_phone_number !== this.state.new_phone_number){
       this.setState({buttonDisabled: false})
       return true
     } else {
@@ -109,7 +102,7 @@ export default class EditPhoneNumber extends Component {
                     onChangeText={new_phone_number => {
                       this.setState({ new_phone_number }, () => this.difference())
                     }}
-                    value={this.state.original_phone_number}
+                    value={this.state.new_phone_number}
                     placeholderTextColor="#5C5C5C"
                     style={styles.input}
                 />

@@ -18,7 +18,7 @@ export default class Profile extends Component {
   state = {
     full_name: '',
     rate: 0,
-    phoneNumber: '+52 312 450 5499',
+    phone_number: '',
     email: '',
     license_number: '',
     model: '',
@@ -39,6 +39,7 @@ export default class Profile extends Component {
           email: res.data.user.email,
           rate: res.data.rate,
           license_number: res.data.license_number,
+          phone_number: res.data.phone_number,
           model: `${res.data.vehicle.license_plate} ${res.data.vehicle.year}`,
           license_plate: res.data.vehicle.license_plate,
           organization: `Tabachines ${res.data.vehicle.number}`
@@ -72,7 +73,7 @@ export default class Profile extends Component {
               </View>
               <StarsRate stars={5} rate={this.state.rate} />
               <View style={styles.rowWrapper}>
-                <Text style={styles.phoneNumber}>{this.state.phoneNumber}</Text>
+                <Text style={styles.phoneNumber}>{this.state.phone_number}</Text>
                 <Button transparent onPress={() => {this.props.navigation.navigate('EditPhoneNumber')}}>
                   <Icon name='create' style={styles.menuIcon} />
                 </Button>

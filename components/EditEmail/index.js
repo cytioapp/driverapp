@@ -31,7 +31,8 @@ export default class EditEmail extends Component {
       this.setState({
         original_email: res.data.user.email,
         new_email: res.data.user.email,
-      })
+      });
+      this.difference();
     }).catch(err => console.log(err))
   }
 
@@ -53,21 +54,13 @@ export default class EditEmail extends Component {
 
   handleSave = (returnFlag = false) => {
     if(returnFlag) {
-      /*
-      Api.put(/driver/edit_name)...then(
-        this.props.naviga...('profile')
-      )
-      */
-      this.props.navigation.navigate('Profile')
+      Api.put('/users/profile', {email: this.state.new_email}).then( res => {
+        this.props.navigation.navigate('Profile')
+      });
     } else {
-      /*
-      Api.put(/driver/edit_name)...then(
-        fillFields() -> Para actualizar info
-        this.difference()
-      )
-      */
-      console.log('Guardado')
-      this.difference()
+      Api.put('/users/profile', {email: this.state.new_email}).then( res => {
+        this.fillFields();
+      });
     }
   }
 
@@ -106,7 +99,7 @@ export default class EditEmail extends Component {
                   onChangeText={new_email => {
                     this.setState({ new_email }, () => this.difference())
                   }}
-                  value={this.state.original_email}
+                  value={this.state.new_email}
                   placeholderTextColor="#5C5C5C"
                   style={styles.input}
               />

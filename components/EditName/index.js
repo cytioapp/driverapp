@@ -31,7 +31,8 @@ export default class EditEmail extends Component {
       this.setState({
         original_full_name: res.data.user.full_name,
         new_full_name: res.data.user.full_name
-      })
+      });
+      this.difference();
     }).catch(err => console.log(err))
   }
 
@@ -53,21 +54,13 @@ export default class EditEmail extends Component {
 
   handleSave = (returnFlag = false) => {
     if(returnFlag) {
-      /*
-      Api.put(/driver/edit_name)...then(
-        this.props.naviga...('profile')
-      )
-      */
-      this.props.navigation.navigate('Profile')
+      Api.put('/users/profile', {full_name: this.state.new_full_name}).then( res => {
+        this.props.navigation.navigate('Profile')
+      });
     } else {
-      /*
-      Api.put(/driver/edit_name)...then(
-        fillFields() -> Para actualizar info
-        this.difference()
-      )
-      */
-      console.log('Guardado')
-      this.difference()
+      Api.put('/users/profile', {full_name: this.state.new_full_name}).then( res => {
+        this.fillFields();
+      });
     }
   }
 
@@ -106,7 +99,7 @@ export default class EditEmail extends Component {
                 onChangeText= {new_full_name => {
                   this.setState({ new_full_name }, () => this.difference())
                 }}
-                value={this.state.original_full_name}
+                value={this.state.new_full_name}
                 placeholderTextColor="#5C5C5C"
                 style={styles.input}
               />

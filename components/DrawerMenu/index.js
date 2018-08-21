@@ -15,7 +15,6 @@ export default class DrawerMenu extends Component {
   }
   componentDidMount() {
     Api.get('/drivers/profile').then(res => {
-      console.log(res);
       if (res.data && res.data.vehicle) {
         this.setState({
           number: res.data.vehicle.number,

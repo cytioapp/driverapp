@@ -31,7 +31,8 @@ export default class EditLicense extends Component {
       this.setState({
         original_license_number: res.data.license_number,
         new_license_number: res.data.license_number
-      })
+      });
+      this.difference();
     }).catch(err => console.log(err))
   }
 
@@ -53,21 +54,13 @@ export default class EditLicense extends Component {
 
   handleSave = (returnFlag = false) => {
     if(returnFlag) {
-      /*
-      Api.put(/driver/edit_name)...then(
-        this.props.naviga...('profile')
-      )
-      */
-      this.props.navigation.navigate('Profile')
+      Api.put('/drivers/profile', {license_number: this.state.new_license_number}).then( res => {
+        this.props.navigation.navigate('Profile')
+      });
     } else {
-      /*
-      Api.put(/driver/edit_name)...then(
-        fillFields() -> Para actualizar info
-        this.difference()
-      )
-      */
-      console.log('Guardado')
-      this.difference()
+      Api.put('/drivers/profile', {license_number: this.state.new_license_number}).then( res => {
+        this.fillFields();
+      });
     }
   }
 
@@ -107,7 +100,7 @@ export default class EditLicense extends Component {
                     onChangeText={new_license_number => {
                       this.setState({ new_license_number }, () => this.difference())
                     }}
-                    value={this.state.original_license_number}
+                    value={this.state.new_license_number}
                     placeholderTextColor="#5C5C5C"
                     style={styles.input}
                 />

@@ -61,7 +61,6 @@ class Trip extends React.Component {
           full_name: res.data.trip.user.full_name
         }, this.monitorTrip);
       }).catch(err => {
-        // this.setState({ refreshing: false });
         console.log(err.response);
         alert('No se pudo obtener la informacion del servicio');
       })
