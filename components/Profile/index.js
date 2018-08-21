@@ -40,11 +40,11 @@ export default class Profile extends Component {
           rate: res.data.rate,
           license_number: res.data.license_number,
           phone_number: res.data.phone_number,
-          model: `${res.data.vehicle.license_plate} ${res.data.vehicle.year}`,
-          license_plate: res.data.vehicle.license_plate,
-          organization: `Tabachines ${res.data.vehicle.number}`
+          model: res.data.vehicle ? `${res.data.vehicle.model} ${res.data.vehicle.year}` : '',
+          license_plate: res.data.vehicle ? res.data.vehicle.license_plate : '',
+          organization: res.data.vehicle ? `${res.data.vehicle.organization.name} ${res.data.vehicle.number}` : ''
         })
-      }).catch(err => console.log(err))
+      }).catch(err => console.log(`Fetch driver's info error: ${err}`))
   }
 
   render(){
@@ -103,20 +103,32 @@ export default class Profile extends Component {
             </View>
           </View>
 
-          <View style={styles.fieldWrapper}>
-            <Text style={styles.label}>Modelo del taxi:</Text>
-            <Text style={styles.text}>{this.state.model}</Text>
-          </View>
+          {this.state.model !== '' &&
+            <View style={styles.fieldWrapper}>
+              <Text style={styles.label}>Modelo del taxi:</Text>
+              <Text style={styles.text}>{this.state.model}</Text>
+            </View>
+          }
 
-          <View style={styles.fieldWrapper}>
-            <Text style={styles.label}>Sitio y número:</Text>
-            <Text style={styles.text}>{this.state.organization}</Text>
-          </View>
+          {this.state.organization !== '' &&
+            <View style={styles.fieldWrapper}>
+              <Text style={styles.label}>Sitio y número:</Text>
+              <Text style={styles.text}>{this.state.organization}</Text>
+            </View>
+          }
 
-          <View style={styles.fieldWrapper}>
-            <Text style={styles.label}>Placas:</Text>
-            <Text style={styles.text}>{this.state.license_plate}</Text>
-          </View>
+          {this.state.license_plate !== '' &&
+            <View style={styles.fieldWrapper}>
+              <Text style={styles.label}>Placas:</Text>
+              <Text style={styles.text}>{this.state.license_plate}</Text>
+            </View>
+          }
+
+          {this.state.model === '' &&
+            <View style={styles.noTaxiMessageWrapper}>
+              <Text style={styles.label}>No tienes taxi asignado</Text>
+            </View>
+          }
 
         </View>
 

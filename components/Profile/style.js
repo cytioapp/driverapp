@@ -96,6 +96,10 @@ const styles = StyleSheet.create({
     fontFamily: 'Nunito-Regular',
     marginVertical: 5
   },
+  noTaxiMessageWrapper: {
+    alignItems: 'center',
+    marginVertical: 15
+  }
 });
 
 export default styles;

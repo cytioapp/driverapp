@@ -58,7 +58,7 @@ export default class DrawerMenu extends Component {
               </TouchableHighlight >
               <TouchableHighlight onPress={session.logout} underlayColor={underlayColor}>
                 <View style={styles.item}>
-                  <Text style={styles.itemText}>Cerrar sessión</Text>
+                  <Text style={styles.itemText}>Cerrar sesión</Text>
                 </View>
               </TouchableHighlight>
             </SafeAreaView>
