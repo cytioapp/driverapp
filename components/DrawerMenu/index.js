@@ -1,38 +1,67 @@
 import React, { Component } from 'react';
-import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, TouchableHighlight, Image } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 import { Subscribe } from 'unstated';
 import sessionState from '../../states/session';
-import styles from './drawerMenuStyle';
+import styles from './style';
+import logoImage from '../../assets/logo2.png';
+import Api from '../../utils/api';
+const underlayColor = '#989898';
 
 export default class DrawerMenu extends Component {
+  state = {
+    number: '',
+    organizationName: ''
+  }
+  componentDidMount() {
+    Api.get('/drivers/profile').then(res => {
+      console.log(res);
+      if (res.data && res.data.vehicle) {
+        this.setState({
+          number: res.data.vehicle.number,
+          organizationName: res.data.vehicle.organization.name
+        });
+      }
+    })
+  }
   render() {
     const { navigate } = this.props.navigation;
+    const { organizationName, number } = this.state;
     return (
       <Subscribe to={[sessionState]}>
         {(session) => (
-          <ScrollView>
+          <ScrollView style={styles.menu}>
             <SafeAreaView style={{ flex: 1 }} forceInset={{ top: 'always', horizontal: 'never' }}>
-              <TouchableOpacity onPress={() => navigate('Profile')}>
+              <View style={styles.logoWrapper}>
+                <Image source={logoImage} style={styles.logo}/>
+                <TouchableHighlight onPress={() => navigate('AssignVehicle')}>
+                  <View>
+                    <Text style={styles.vehicleText}>
+                      {`${organizationName} ${number}`}
+                    </Text>
+                  </View>
+                </TouchableHighlight>
+              </View>
+              <TouchableHighlight onPress={() => navigate('Home')} underlayColor={underlayColor}>
                 <View style={styles.item}>
-                  <Text>Perfil</Text>
+                  <Text style={styles.itemText}>Inicio</Text>
                 </View>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => navigate('Home')}>
+              </TouchableHighlight>
+              <TouchableHighlight onPress={() => navigate('Profile')} underlayColor={underlayColor}>
                 <View style={styles.item}>
-                  <Text>Inicio</Text>
+                  <Text style={styles.itemText}>Perfil</Text>
                 </View>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => navigate('AssignVehicle')}>
+              </TouchableHighlight>
+              <TouchableHighlight onPress={() => navigate('AssignVehicle')} underlayColor={underlayColor}>
                 <View style={styles.item}>
-                  <Text>Asignar vehículo</Text>
+                  <Text style={styles.itemText}>Asignar vehículo</Text>
                 </View>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={session.logout}>
+              </TouchableHighlight >
+              <TouchableHighlight onPress={session.logout} underlayColor={underlayColor}>
                 <View style={styles.item}>
-                  <Text>Cerrar sessión</Text>
+                  <Text style={styles.itemText}>Cerrar sessión</Text>
                 </View>
-              </TouchableOpacity>
+              </TouchableHighlight>
             </SafeAreaView>
           </ScrollView>
         )}
