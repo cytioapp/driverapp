@@ -37,36 +37,9 @@ const styles = StyleSheet.create({
     backgroundColor: textBackground,
     padding: 10
   },
-  fieldWrapper: {
-    padding: 10
-  },
-  rowWrapper: {
-    flexDirection: 'row',
-    marginTop: 10
-  },
-  profilePhotoWrapper: {
-    backgroundColor: 'white',
-    borderRadius: 50,
-    height: 65,
-    justifyContent: 'center',
-    marginHorizontal: 10,
-    width: 65
-  },
-  profilePhoto:{
-    alignSelf: 'center',
-    borderRadius: 31,
-    height: 62,
-    width: 62
-  },
   item: {
     alignItems: 'flex-start',
     flex: 1
-  },
-  generalItem: {
-    marginTop: 10
-  },
-  icon: {
-    color: '#1F120D'
   },
   label: {
     color: label,
@@ -80,12 +53,6 @@ const styles = StyleSheet.create({
     fontSize: 17,
     height: 50,
     width: '100%'
-  },
-  marginTop:{
-    marginTop: 10
-  },
-  space: {
-    width: 20
   },
   buttonWrapper: {
     margin: 40
@@ -102,7 +69,7 @@ const styles = StyleSheet.create({
     color: label,
     fontFamily: 'Nunito-Bold',
     fontWeight: '500'
-  },
-});
+  }
+})
 
 export default styles;

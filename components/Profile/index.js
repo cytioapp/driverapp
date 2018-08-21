@@ -51,26 +51,32 @@ export default class Profile extends Component {
       <KeyboardAwareScrollView style={styles.keyboard}>
         <Header style={styles.header} iosBarStyle="light-content" androidStatusBarColor="#262626">
           <View style={styles.headerTop}>
-            <Left style={styles.headerLeft}>
+            <Left style={styles.leftHeader}>
               <Button transparent onPress={this.props.navigation.openDrawer}>
                 <Icon name='menu' style={styles.menuIcon} />
               </Button>
             </Left>
             <Body/>
-            <Right style={styles.headerRight}>
-              <Button transparent onPress={() => {this.props.navigation.navigate('EditProfile')}}>
-                <Icon name='create' style={styles.menuIcon} />
-              </Button>
-            </Right>
+            <Right style={styles.rightHeader} />
           </View>
           <View style={styles.headerBottom}>
             <View style={styles.profilePhotoWrapper}>
               <Image style={styles.profilePhoto} source={profile} />
             </View>
             <View style={styles.driverInfoWrapper}>
-              <Text style={styles.name}>{this.state.full_name}</Text>
+              <View style={styles.rowWrapper}>
+                <Text style={styles.name}>{this.state.full_name}</Text>
+                <Button transparent style={styles.editButton} onPress={() => {this.props.navigation.navigate('EditName')}}>
+                  <Icon name='create' style={styles.menuIcon} />
+                </Button>
+              </View>
               <StarsRate stars={5} rate={this.state.rate} />
-              <Text style={styles.phoneNumber}>{this.state.phoneNumber}</Text>
+              <View style={styles.rowWrapper}>
+                <Text style={styles.phoneNumber}>{this.state.phoneNumber}</Text>
+                <Button transparent onPress={() => {this.props.navigation.navigate('EditPhoneNumber')}}>
+                  <Icon name='create' style={styles.menuIcon} />
+                </Button>
+              </View>
             </View>
           </View>
         </Header>
@@ -79,11 +85,21 @@ export default class Profile extends Component {
 
           <View style={styles.darkFieldWrapper}>
             <Text style={styles.label}>Correo:</Text>
-            <Text style={styles.text}>{this.state.email}</Text>
+            <View style={styles.rowWrapper}>
+              <Text style={styles.text}>{this.state.email}</Text>
+              <Button transparent onPress={() => {this.props.navigation.navigate('EditEmail')}}>
+                <Icon name='create' style={styles.menuIcon} />
+              </Button>
+            </View>
           </View>
           <View style={styles.darkFieldWrapper}>
             <Text style={styles.label}>Licencia:</Text>
-            <Text style={styles.text}>{this.state.license_number}</Text>
+            <View style={styles.rowWrapper}>
+              <Text style={styles.text}>{this.state.license_number}</Text>
+              <Button transparent onPress={() => {this.props.navigation.navigate('EditLicense')}}>
+                <Icon name='create' style={styles.menuIcon} />
+              </Button>
+            </View>
           </View>
 
           <View style={styles.fieldWrapper}>
