@@ -53,16 +53,10 @@ export default class EditPhoneNumber extends Component {
     }
   }
 
-  handleSave = (returnFlag = false) => {
-    if(returnFlag) {
-      Api.put('/drivers/profile', {phone_number: this.state.new_phone_number}).then( res => {
-        this.props.navigation.navigate('Profile')
-      });
-    } else {
-      Api.put('/drivers/profile', {phone_number: this.state.new_phone_number}).then( res => {
-        this.fillFields();
-      });
-    }
+  handleSave = () => {
+    Api.put('/drivers/profile', {phone_number: this.state.new_phone_number}).then( () => {
+      this.props.navigation.navigate('Profile')
+    });
   }
 
   difference = () => {

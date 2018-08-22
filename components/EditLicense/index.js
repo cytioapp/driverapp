@@ -52,16 +52,10 @@ export default class EditLicense extends Component {
     }
   }
 
-  handleSave = (returnFlag = false) => {
-    if(returnFlag) {
-      Api.put('/drivers/profile', {license_number: this.state.new_license_number}).then( res => {
-        this.props.navigation.navigate('Profile')
-      });
-    } else {
-      Api.put('/drivers/profile', {license_number: this.state.new_license_number}).then( res => {
-        this.fillFields();
-      });
-    }
+  handleSave = () => {
+    Api.put('/drivers/profile', {license_number: this.state.new_license_number}).then( () => {
+      this.props.navigation.navigate('Profile')
+    });
   }
 
   difference = () => {
