@@ -49,7 +49,6 @@ export default class AssignVehicle extends Component {
 
   getActualInfo = () => {
     Api.get('/drivers/profile').then(res => {
-      console.log(res)
       this.setState({
         actual: `${res.data.vehicle.organization.name} ${res.data.vehicle.number}`
       });
@@ -98,9 +97,18 @@ export default class AssignVehicle extends Component {
 
           <Content contentContainerStyle={{ flex: 1 }}>
             <View style={styles.container}>
-              <Text style={styles.actualOrganization}>
-                Taxi actual: {this.state.actual}
-              </Text>
+
+              {this.state.actual === '' &&
+                <Text style={styles.actualOrganization}>
+                  No tienes taxi asignado
+                </Text>
+              }
+
+              {this.state.actual !== '' &&
+                <Text style={styles.actualOrganization}>
+                  Taxi actual: {this.state.actual}
+                </Text>
+              }
 
               <Text style={styles.label}>Número y sitio del taxi:</Text>
               <View style={styles.inputWrapper}>

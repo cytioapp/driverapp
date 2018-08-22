@@ -28,8 +28,13 @@ const styles = StyleSheet.create({
   rightHeader: {
     flex: 1
   },
+  editButton: {
+    padding: 0
+  },
   menuIcon: {
-    color: yellow
+    color: yellow,
+    fontSize: 20,
+    padding: 0
   },
   headerBottom: {
     alignItems: 'center',
@@ -49,6 +54,10 @@ const styles = StyleSheet.create({
     borderRadius: 31,
     height: 62,
     width: 62
+  },
+  rowWrapper: {
+    alignItems: 'center',
+    flexDirection: 'row'
   },
   driverInfoWrapper: {
     marginRight: 60
@@ -87,6 +96,10 @@ const styles = StyleSheet.create({
     fontFamily: 'Nunito-Regular',
     marginVertical: 5
   },
+  noTaxiMessageWrapper: {
+    alignItems: 'center',
+    marginVertical: 15
+  }
 });
 
 export default styles;

@@ -15,7 +15,6 @@ export default class DrawerMenu extends Component {
   }
   componentDidMount() {
     Api.get('/drivers/profile').then(res => {
-      console.log(res);
       if (res.data && res.data.vehicle) {
         this.setState({
           number: res.data.vehicle.number,
@@ -59,7 +58,7 @@ export default class DrawerMenu extends Component {
               </TouchableHighlight >
               <TouchableHighlight onPress={session.logout} underlayColor={underlayColor}>
                 <View style={styles.item}>
-                  <Text style={styles.itemText}>Cerrar sessión</Text>
+                  <Text style={styles.itemText}>Cerrar sesión</Text>
                 </View>
               </TouchableHighlight>
             </SafeAreaView>

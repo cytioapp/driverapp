@@ -18,7 +18,7 @@ export default class Profile extends Component {
   state = {
     full_name: '',
     rate: 0,
-    phoneNumber: '+52 312 450 5499',
+    phone_number: '',
     email: '',
     license_number: '',
     model: '',
@@ -39,11 +39,12 @@ export default class Profile extends Component {
           email: res.data.user.email,
           rate: res.data.rate,
           license_number: res.data.license_number,
-          model: `${res.data.vehicle.license_plate} ${res.data.vehicle.year}`,
-          license_plate: res.data.vehicle.license_plate,
-          organization: `Tabachines ${res.data.vehicle.number}`
+          phone_number: res.data.phone_number,
+          model: res.data.vehicle ? `${res.data.vehicle.model} ${res.data.vehicle.year}` : '',
+          license_plate: res.data.vehicle ? res.data.vehicle.license_plate : '',
+          organization: res.data.vehicle ? `${res.data.vehicle.organization.name} ${res.data.vehicle.number}` : ''
         })
-      }).catch(err => console.log(err))
+      }).catch(err => console.log(`Fetch driver's info error: ${err}`))
   }
 
   render(){
@@ -51,26 +52,32 @@ export default class Profile extends Component {
       <KeyboardAwareScrollView style={styles.keyboard}>
         <Header style={styles.header} iosBarStyle="light-content" androidStatusBarColor="#262626">
           <View style={styles.headerTop}>
-            <Left style={styles.headerLeft}>
+            <Left style={styles.leftHeader}>
               <Button transparent onPress={this.props.navigation.openDrawer}>
                 <Icon name='menu' style={styles.menuIcon} />
               </Button>
             </Left>
             <Body/>
-            <Right style={styles.headerRight}>
-              <Button transparent onPress={() => {this.props.navigation.navigate('EditProfile')}}>
-                <Icon name='create' style={styles.menuIcon} />
-              </Button>
-            </Right>
+            <Right style={styles.rightHeader} />
           </View>
           <View style={styles.headerBottom}>
             <View style={styles.profilePhotoWrapper}>
               <Image style={styles.profilePhoto} source={profile} />
             </View>
             <View style={styles.driverInfoWrapper}>
-              <Text style={styles.name}>{this.state.full_name}</Text>
+              <View style={styles.rowWrapper}>
+                <Text style={styles.name}>{this.state.full_name}</Text>
+                <Button transparent style={styles.editButton} onPress={() => {this.props.navigation.navigate('EditName')}}>
+                  <Icon name='create' style={styles.menuIcon} />
+                </Button>
+              </View>
               <StarsRate stars={5} rate={this.state.rate} />
-              <Text style={styles.phoneNumber}>{this.state.phoneNumber}</Text>
+              <View style={styles.rowWrapper}>
+                <Text style={styles.phoneNumber}>{this.state.phone_number}</Text>
+                <Button transparent onPress={() => {this.props.navigation.navigate('EditPhoneNumber')}}>
+                  <Icon name='create' style={styles.menuIcon} />
+                </Button>
+              </View>
             </View>
           </View>
         </Header>
@@ -79,27 +86,49 @@ export default class Profile extends Component {
 
           <View style={styles.darkFieldWrapper}>
             <Text style={styles.label}>Correo:</Text>
-            <Text style={styles.text}>{this.state.email}</Text>
+            <View style={styles.rowWrapper}>
+              <Text style={styles.text}>{this.state.email}</Text>
+              <Button transparent onPress={() => {this.props.navigation.navigate('EditEmail')}}>
+                <Icon name='create' style={styles.menuIcon} />
+              </Button>
+            </View>
           </View>
           <View style={styles.darkFieldWrapper}>
             <Text style={styles.label}>Licencia:</Text>
-            <Text style={styles.text}>{this.state.license_number}</Text>
+            <View style={styles.rowWrapper}>
+              <Text style={styles.text}>{this.state.license_number}</Text>
+              <Button transparent onPress={() => {this.props.navigation.navigate('EditLicense')}}>
+                <Icon name='create' style={styles.menuIcon} />
+              </Button>
+            </View>
           </View>
 
-          <View style={styles.fieldWrapper}>
-            <Text style={styles.label}>Modelo del taxi:</Text>
-            <Text style={styles.text}>{this.state.model}</Text>
-          </View>
+          {this.state.model !== '' &&
+            <View style={styles.fieldWrapper}>
+              <Text style={styles.label}>Modelo del taxi:</Text>
+              <Text style={styles.text}>{this.state.model}</Text>
+            </View>
+          }
 
-          <View style={styles.fieldWrapper}>
-            <Text style={styles.label}>Sitio y número:</Text>
-            <Text style={styles.text}>{this.state.organization}</Text>
-          </View>
+          {this.state.organization !== '' &&
+            <View style={styles.fieldWrapper}>
+              <Text style={styles.label}>Sitio y número:</Text>
+              <Text style={styles.text}>{this.state.organization}</Text>
+            </View>
+          }
 
-          <View style={styles.fieldWrapper}>
-            <Text style={styles.label}>Placas:</Text>
-            <Text style={styles.text}>{this.state.license_plate}</Text>
-          </View>
+          {this.state.license_plate !== '' &&
+            <View style={styles.fieldWrapper}>
+              <Text style={styles.label}>Placas:</Text>
+              <Text style={styles.text}>{this.state.license_plate}</Text>
+            </View>
+          }
+
+          {this.state.model === '' &&
+            <View style={styles.noTaxiMessageWrapper}>
+              <Text style={styles.label}>No tienes taxi asignado</Text>
+            </View>
+          }
 
         </View>
 

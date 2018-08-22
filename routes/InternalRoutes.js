@@ -3,7 +3,10 @@ import Home from '../components/Home';
 import DrawerMenu from '../components/DrawerMenu';
 import AssignVehicle from '../components/AssignVehicle';
 import Profile from '../components/Profile';
-import EditProfile from '../components/EditProfile';
+import EditName from '../components/EditName';
+import EditPhoneNumber from '../components/EditPhoneNumber';
+import EditEmail from '../components/EditEmail';
+import EditLicense from '../components/EditLicense';
 
 export default createDrawerNavigator({
   Home: {
@@ -15,8 +18,17 @@ export default createDrawerNavigator({
   Profile: {
     screen: Profile
   },
-  EditProfile: {
-    screen: EditProfile
+  EditName: {
+    screen: EditName
+  },
+  EditPhoneNumber: {
+    screen: EditPhoneNumber
+  },
+  EditEmail: {
+    screen: EditEmail
+  },
+  EditLicense: {
+    screen: EditLicense
   }
 },{
   headerMode: 'none',
