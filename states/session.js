@@ -70,9 +70,14 @@ class SessionState extends Container {
     return email.match(regex);
   }
 
+  validatesPassword = (password, repeated_password) => {
+    return password === repeated_password ? true : false
+  }
+
   signup = (data) => {
     this.setState({signupErrors: false});
-    if(this.validatesEmail(data.email)){
+    if(this.validatesEmail(data.email) &&
+       this.validatesPassword(data.password, data.repeated_password)){
       Api.post('/drivers/signup', data)
       .then(res => {
         this.login(data.email, data.password);
@@ -81,7 +86,12 @@ class SessionState extends Container {
         this.setState({signupErrors: err.response.data.errors});
       });
     }else{
-      this.setState({signupErrors: [{message: "Email inválido"}]})
+      if(!this.validatesPassword(data.password, data.repeated_password)){
+        this.setState({signupErrors: [{ message: "Las contraseñas no coinciden" }]})
+      }
+      if(!this.validatesEmail(data.email)) {
+        this.setState({signupErrors: [{ message: "Email inválido" }]});
+      }
     }
   }
 }
