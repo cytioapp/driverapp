@@ -28,6 +28,9 @@ const styles = StyleSheet.create({
     color: '#E3C463',
     fontWeight: '500'
   },
+  spinnerWrapper: {
+    alignItems: 'center'
+  }
 });
 
 export default styles;

@@ -16,7 +16,7 @@ export default class errorModal extends Component {
   }
 
   render(){
-    const { errors, modalVisible } = this.props;
+    const { errors, modalVisible, changePassword = false, navigation } = this.props;
     return(
       <Modal
           animationType="slide"
@@ -32,7 +32,12 @@ export default class errorModal extends Component {
               <View style={styles.buttonWrapper}>
                 <Button rounded
                   onPress={() => {
-                    this.props.setModalVisible(!modalVisible);
+                    if(changePassword){
+                      this.props.setModalVisible(!modalVisible);
+                      this.props.navigation.navigate('Login')
+                    }else{
+                      this.props.setModalVisible(!modalVisible);
+                    }
                   }}
                   style={styles.button}>
                   <Text style={styles.buttonText}>Ok</Text>
