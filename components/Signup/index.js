@@ -192,16 +192,6 @@ class Signup extends Component {
                   </View>
                 }
               </View>
-
-
-            </View>
-
-            <View style={styles.forgotPasswordButtonWrapper}>
-              <TouchableOpacity onPress={() => this.props.navigation.navigate('ChangePassword')}>
-                <Text style={styles.forgotPasswordText}>
-                  ¿Olvidaste tu contraseña?
-                </Text>
-              </TouchableOpacity>
             </View>
 
             <View style={styles.signupButtonWrapper} >

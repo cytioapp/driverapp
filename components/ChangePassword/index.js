@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-import {StyleSheet, View} from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 import {
   Button,
   Icon,
   Input,
   Item,
-  Spinner,
   Text
 } from 'native-base';
 import AuthLayout from '../Layouts/AuthLayout';
@@ -72,6 +71,7 @@ export default class ChangePassword extends Component {
             <View style={{paddingHorizontal: 15}}></View>
           </Item>
         </View>
+
         <View style={styles.sendEmailButtonWrapper} >
           <Button
             block
@@ -81,6 +81,16 @@ export default class ChangePassword extends Component {
             <Text style={styles.sendEmailButtonText}>Enviar correo</Text>
           </Button>
         </View>
+
+        <View style={styles.loginWrapper}>
+          <Text style={styles.loginText}>¿Ya tienes cuenta? </Text>
+          <TouchableOpacity onPress={() => this.props.navigation.navigate('Login')}>
+            <Text style={styles.loginLink}>
+              Inicia sesión
+            </Text>
+          </TouchableOpacity>
+        </View>
+
       </AuthLayout>
   )
   }

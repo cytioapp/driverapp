@@ -67,15 +67,8 @@ const styles = StyleSheet.create({
   licenseText: {
     color: '#1F120D',
   },
-  forgotPasswordButtonWrapper: {
-    alignItems: 'center',
-  },
-  forgotPasswordText: {
-    color: '#1F120D',
-    textDecorationLine: 'underline'
-  },
   signupButtonWrapper: {
-    margin: 40
+    margin: 30
   },
   signupButton: {
     backgroundColor: '#1F120D',
