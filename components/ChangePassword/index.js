@@ -1,17 +1,10 @@
 import React, { Component } from 'react';
 import { TouchableOpacity, View } from 'react-native';
-import {
-  Button,
-  Icon,
-  Input,
-  Item,
-  Text
-} from 'native-base';
+import { Button, Icon, Input, Item, Spinner, Text } from 'native-base';
 import AuthLayout from '../Layouts/AuthLayout';
 import styles from './style';
 import Api from '../../utils/api';
 import Modal from '../Modal';
-import SimpleLoading from '../SimpleLoading';
 
 export default class ChangePassword extends Component {
   state = {
@@ -19,42 +12,51 @@ export default class ChangePassword extends Component {
     modalVisible: false,
     alerts: [],
     isWaiting: false
-  }
+  };
 
   handleEmail = () => {
-    this.setState({isWaiting: true});
-    Api.post('/password_reset', {email: this.state.email}).then(() => {
-      this.setState({
-        isWaiting: false,
-        alerts: [...this.state.alerts, { message: "Se envió un correo a tu email que te dirá cómo cambiar tu contraseña, sigue las instrucciones y regresa de nuevo a la aplicación para loguearte."}],
-        modalVisible: true
+    this.setState({ isWaiting: true });
+    Api.post('/password_reset', { email: this.state.email })
+      .then(() => {
+        this.setState({
+          isWaiting: false,
+          alerts: [
+            {
+              message:
+                'Se envió un correo a tu email que te dirá cómo cambiar tu contraseña, sigue las instrucciones y regresa de nuevo a la aplicación para loguearte.'
+            }
+          ],
+          modalVisible: true
+        });
       })
-    }).catch(() => {
-      this.setState({
-        isWaiting: false,
-        alerts: [...this.state.alerts, { message: "Ha ocurrido un error, vuelve a intentarlo" }],
-        modalVisible: true
-      })
-    });
-  }
+      .catch(() => {
+        this.setState({
+          isWaiting: false,
+          alerts: [{ message: 'Ha ocurrido un error, vuelve a intentarlo' }],
+          modalVisible: true
+        });
+      });
+  };
 
-  setModalVisible = (visible) => {
+  setModalVisible = visible => {
     this.setState({
       modalVisible: visible,
       alerts: visible ? this.state.alerts : []
     });
-  }
+  };
 
-  render(){
-    return(
+  redirectToLogin = () => {
+    this.props.navigation.navigate('Login');
+  };
+
+  render() {
+    return (
       <AuthLayout>
-        { this.state.isWaiting && <SimpleLoading /> }
         <Modal
           errors={this.state.alerts}
           modalVisible={this.state.modalVisible}
           setModalVisible={this.setModalVisible}
-          changePassword={true}
-          navigation={this.props.navigation}
+          onDismiss={this.redirectToLogin}
         />
         <View style={styles.form}>
           <Item style={styles.item}>
@@ -68,30 +70,30 @@ export default class ChangePassword extends Component {
               placeholderTextColor="#1F120D"
               style={styles.input}
             />
-            <View style={{paddingHorizontal: 15}}></View>
+            <View style={{ paddingHorizontal: 15 }} />
           </Item>
         </View>
 
-        <View style={styles.sendEmailButtonWrapper} >
+        <View style={styles.sendEmailButtonWrapper}>
           <Button
             block
             style={styles.sendEmailButton}
             onPress={() => this.handleEmail()}
           >
             <Text style={styles.sendEmailButtonText}>Enviar correo</Text>
+            {this.state.isWaiting && <Spinner color="#E3C463" />}
           </Button>
         </View>
 
         <View style={styles.loginWrapper}>
           <Text style={styles.loginText}>¿Ya tienes cuenta? </Text>
-          <TouchableOpacity onPress={() => this.props.navigation.navigate('Login')}>
-            <Text style={styles.loginLink}>
-              Inicia sesión
-            </Text>
+          <TouchableOpacity
+            onPress={() => this.props.navigation.navigate('Login')}
+          >
+            <Text style={styles.loginLink}>Inicia sesión</Text>
           </TouchableOpacity>
         </View>
-
       </AuthLayout>
-  )
+    );
   }
 }
