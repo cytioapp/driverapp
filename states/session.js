@@ -55,7 +55,6 @@ class SessionState extends Container {
         }
       })
       .catch(err => {
-        console.log(err.response);
         this.setState({ loginErrors: err.response.data.errors });
       });
   };
@@ -142,7 +141,6 @@ class SessionState extends Container {
           this.login(data.email, data.password);
         })
         .catch(err => {
-          console.log('Signup error', err.response);
           this.setState({ signupErrors: err.response.data.errors });
         });
     }
