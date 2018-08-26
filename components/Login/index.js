@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, TouchableOpacity} from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 import { Icon, Item, Input, Button, Text } from 'native-base';
 import { Subscribe } from 'unstated';
 import sessionState from '../../states/session';
@@ -11,23 +11,23 @@ export default class Login extends Component {
     email: '',
     password: '',
     hidePassword: true
-  }
+  };
 
-  renderErrors = (errors) => {
-    return <Text style={styles.errors}>{errors[0]}</Text>
-  }
+  renderErrors = errors => {
+    return <Text style={styles.errors}>{errors[0]}</Text>;
+  };
 
-  render(){
-    return(
+  render() {
+    return (
       <Subscribe to={[sessionState]}>
-        {(session) => (
+        {session => (
           <AuthLayout>
-            {session.state.loginErrors &&
+            {session.state.loginErrors && (
               <View style={styles.errorsContainer}>
                 <Icon active name="md-alert" style={styles.errorsIcon} />
                 {this.renderErrors(session.state.loginErrors)}
               </View>
-            }
+            )}
             <View style={styles.form}>
               <Item style={styles.item}>
                 <Icon active name="mail" style={styles.icon} />
@@ -40,7 +40,7 @@ export default class Login extends Component {
                   placeholderTextColor="#1F120D"
                   style={styles.input}
                 />
-                <View style={{paddingHorizontal: 15}}></View>
+                <View style={{ paddingHorizontal: 15 }} />
               </Item>
               <Item style={styles.item}>
                 <Icon active name="lock" style={styles.icon} />
@@ -52,25 +52,33 @@ export default class Login extends Component {
                   placeholderTextColor="#1F120D"
                   style={styles.input}
                 />
-                <TouchableOpacity onPress={() => this.setState({ hidePassword: !this.state.hidePassword })}>
+                <TouchableOpacity
+                  onPress={() =>
+                    this.setState({ hidePassword: !this.state.hidePassword })
+                  }
+                >
                   <Icon active name="eye" style={styles.icon} />
                 </TouchableOpacity>
               </Item>
             </View>
 
             <View style={styles.forgotPasswordButtonWrapper}>
-              <TouchableOpacity onPress={() => this.props.navigation.navigate('ChangePassword')}>
+              <TouchableOpacity
+                onPress={() => this.props.navigation.navigate('ChangePassword')}
+              >
                 <Text style={styles.forgotPasswordText}>
                   ¿Olvidaste tu contraseña?
                 </Text>
               </TouchableOpacity>
             </View>
 
-            <View style={styles.loginButtonWrapper} >
+            <View style={styles.loginButtonWrapper}>
               <Button
                 block
                 style={styles.loginButton}
-                onPress={() => session.login(this.state.email, this.state.password)}
+                onPress={() =>
+                  session.login(this.state.email, this.state.password)
+                }
               >
                 <Text style={styles.loginButtonText}>Iniciar Sesión</Text>
               </Button>
@@ -78,16 +86,15 @@ export default class Login extends Component {
 
             <View style={styles.createAccountWrapper}>
               <Text style={styles.createAccountText}>¿No tienes cuenta? </Text>
-              <TouchableOpacity onPress={() => this.props.navigation.navigate('Signup')}>
-                <Text style={styles.createAccountLink}>
-                  Regístrate
-                </Text>
+              <TouchableOpacity
+                onPress={() => this.props.navigation.navigate('Signup')}
+              >
+                <Text style={styles.createAccountLink}>Regístrate</Text>
               </TouchableOpacity>
             </View>
           </AuthLayout>
         )}
       </Subscribe>
-    )
+    );
   }
 }
-

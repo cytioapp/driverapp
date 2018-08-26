@@ -12,7 +12,24 @@ class SessionState extends Container {
   state = {
     isLogued: null,
     loginErrors: null,
-    signupErrors: null
+    signupErrors: null,
+    user: {
+      number: '',
+      organizationName: ''
+    }
+  };
+
+  fetchUserData = () => {
+    Api.get('/drivers/profile').then(res => {
+      if (res.data && res.data.vehicle) {
+        this.setState({
+          user: {
+            number: res.data.vehicle.number,
+            organizationName: res.data.vehicle.organization.name
+          }
+        });
+      }
+    });
   };
 
   login = (email, password) => {
@@ -21,11 +38,14 @@ class SessionState extends Container {
         if (res.data.jwt) {
           SInfo.setItem('jwt', res.data.jwt, options)
             .then(() => {
-              this.setState({
-                isLogued: true
-              }, () => {
-                NavigationActions.navigate('AssignVehicle')
-              });
+              this.setState(
+                {
+                  isLogued: true
+                },
+                () => {
+                  NavigationActions.navigate('AssignVehicle');
+                }
+              );
             })
             .catch(err => {
               console.log(err);
@@ -35,55 +55,96 @@ class SessionState extends Container {
         }
       })
       .catch(err => {
-        console.log(err.response)
-        this.setState({loginErrors: err.response.data.errors})
-      })
-  }
+        this.setState({ loginErrors: err.response.data.errors });
+      });
+  };
+
+  updateUser = user => {
+    this.setState({
+      user: user
+    });
+  };
 
   verify = () => {
     return new Promise((resolve, reject) => {
       return SInfo.getItem('jwt', options)
         .then(value => {
           if (value)
-            this.setState({ isLogued: true }, ()=> {
+            this.setState({ isLogued: true }, () => {
               return resolve();
             });
           else
-            this.setState({ isLogued: false }, ()=> {
+            this.setState({ isLogued: false }, () => {
               return resolve();
             });
         })
         .catch(err => {
           console.log(err);
         });
-    })
-  }
+    });
+  };
 
   logout = () => {
     this.setState({ isLogued: false }, () => {
-      SInfo.deleteItem('jwt', options)
+      SInfo.deleteItem('jwt', options);
     });
-  }
+  };
 
-  validatesEmail = (email) => {
-    const regex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return email.match(regex);
-  }
+  validations = data => {
+    const nameRegex = /^[áÁéÉíÍóÓúÚñÑa-z ,\-']+$/i;
 
-  signup = (data) => {
-    this.setState({signupErrors: false});
-    if(this.validatesEmail(data.email)){
-      Api.post('/drivers/signup', data)
-      .then(res => {
-        this.login(data.email, data.password);
-      }).catch(err => {
-        console.log('Signup error', err.response)
-        this.setState({signupErrors: err.response.data.errors});
+    if (!data.full_name.match(nameRegex)) {
+      this.setState({
+        signupErrors: ['Nombre inválido']
       });
-    }else{
-      this.setState({signupErrors: [{message: "Email inválido"}]})
+      return false;
     }
-  }
+
+    const emailRegex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (!data.email.match(emailRegex)) {
+      this.setState({
+        signupErrors: ['Email inválido']
+      });
+      return false;
+    }
+
+    const numberRegex = /^[0-9+ -]{10,16}$/;
+    if (!data.phone_number.match(numberRegex)) {
+      this.setState({
+        signupErrors: ['Número inválido']
+      });
+      return false;
+    }
+
+    if (data.password.length < 6) {
+      this.setState({
+        signupErrors: ['La contraseña debe tener mínimo 6 caracteres']
+      });
+      return false;
+    }
+
+    if (data.password !== data.repeated_password) {
+      this.setState({
+        signupErrors: ['Las contraseñas no coinciden']
+      });
+      return false;
+    } else {
+      return true;
+    }
+  };
+
+  signup = data => {
+    this.setState({ signupErrors: false });
+    if (this.validations(data)) {
+      Api.post('/drivers/signup', data)
+        .then(res => {
+          this.login(data.email, data.password);
+        })
+        .catch(err => {
+          this.setState({ signupErrors: err.response.data.errors });
+        });
+    }
+  };
 }
 
 export default SessionState;

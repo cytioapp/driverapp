@@ -28,6 +28,20 @@ const styles = StyleSheet.create({
     color: '#E3C463',
     fontWeight: '500'
   },
+  loginWrapper: {
+    alignItems: 'flex-end',
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginBottom: 10
+  },
+  loginText: {
+    color: '#1F120D'
+  },
+  loginLink: {
+    color: '#1F120D',
+    textDecorationLine: 'underline'
+  }
 });
 
 export default styles;

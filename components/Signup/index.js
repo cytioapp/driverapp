@@ -33,10 +33,10 @@ class Signup extends Component {
     hideCopyPassword: true,
     imageSource: null,
     imageSpinner: false
-  }
+  };
 
   pickImage = () => {
-    ImagePicker.showImagePicker(options, (response) => {
+    ImagePicker.showImagePicker(options, response => {
       if (response.didCancel) {
         console.log('User cancelled image picker');
       } else if (response.error) {
@@ -46,15 +46,25 @@ class Signup extends Component {
         console.log('User tapped custom button: ', response.customButton);
       } else {
         this.setState({ imageSpinner: true });
-        ImageResizer.createResizedImage('data:image/jpeg;base64,' + response.data, 1024, 1024, 'JPEG', 80)
-          .then((source) => {
-            this.setState({
-              imageSource: {
-                uri: source.uri,
-                fileName: source.name
-              }
-            }, this.uploadFile);
-          }).catch((err) => {
+        ImageResizer.createResizedImage(
+          'data:image/jpeg;base64,' + response.data,
+          1024,
+          1024,
+          'JPEG',
+          80
+        )
+          .then(source => {
+            this.setState(
+              {
+                imageSource: {
+                  uri: source.uri,
+                  fileName: source.name
+                }
+              },
+              this.uploadFile
+            );
+          })
+          .catch(err => {
             console.log('Resize error', err);
             alert('Ha ocurrido un error, intentalo de nuevo');
             this.setState({ imageSpinner: false });
@@ -68,34 +78,33 @@ class Signup extends Component {
       photo: this.state.imageSource,
       field: 'public_service_permission_image'
     })
-    .then(data => {
-      this.setState({
-        imageSpinner: false,
-        public_service_permission_image: data.image
+      .then(data => {
+        this.setState({
+          imageSpinner: false,
+          public_service_permission_image: data.image
+        });
+      })
+      .catch(err => {
+        console.log(err);
+        alert('Ha ocurrido un error, intentalo de nuevo');
+        this.setState({ imageSpinner: false });
       });
-    }).catch(err => {
-      console.log(err);
-      alert('Ha ocurrido un error, intentalo de nuevo');
-      this.setState({ imageSpinner: false });
-    });
   };
 
-  renderErrors = (errors) => {
-    return <Text style={styles.errorsText}>{errors[0]}</Text>
-  }
-
-  render(){
+  render() {
     const { imageSource, imageSpinner } = this.state;
-    return(
+    return (
       <Subscribe to={[sessionState]}>
-        {(session) => (
+        {session => (
           <AuthLayout>
-            {session.state.signupErrors &&
+            {session.state.signupErrors && (
               <View style={styles.errorsContainer}>
                 <Icon active name="md-alert" style={styles.errorsIcon} />
-                {this.renderErrors(session.state.signupErrors)}
+                <Text style={styles.errorsText}>
+                  {session.state.signupErrors[0]}
+                </Text>
               </View>
-            }
+            )}
             <View style={styles.form}>
               <Item style={styles.item}>
                 <Icon active name="person" style={styles.icon} />
@@ -107,7 +116,7 @@ class Signup extends Component {
                   placeholderTextColor="#1F120D"
                   style={styles.input}
                 />
-                <View style={{paddingHorizontal: 15}}></View>
+                <View style={{ paddingHorizontal: 15 }} />
               </Item>
               <Item style={styles.item}>
                 <Icon active name="mail" style={styles.icon} />
@@ -120,36 +129,7 @@ class Signup extends Component {
                   placeholderTextColor="#1F120D"
                   style={styles.input}
                 />
-                <View style={{paddingHorizontal: 15}}></View>
-              </Item>
-              <Item style={styles.item}>
-                <Icon active name="lock" style={styles.icon} />
-                <Input
-                  placeholder="Contraseña"
-                  secureTextEntry={this.state.hidePassword}
-                  onChangeText={password => this.setState({ password })}
-                  value={this.state.password}
-                  placeholderTextColor="#1F120D"
-                  style={styles.input}
-                />
-                <TouchableOpacity onPress={() => this.setState({ hidePassword: !this.state.hidePassword })}>
-                  <Icon active name="eye" style={styles.icon} />
-                </TouchableOpacity>
-              </Item>
-
-              <Item style={styles.item}>
-                <Icon active name="lock" style={styles.icon} />
-                <Input
-                  placeholder="Repite la contraseña"
-                  secureTextEntry={this.state.hideCopyPassword}
-                  onChangeText={repeated_password => this.setState({ repeated_password })}
-                  value={this.state.repeated_password}
-                  placeholderTextColor="#1F120D"
-                  style={styles.input}
-                />
-                <TouchableOpacity onPress={() => this.setState({ hideCopyPassword: !this.state.hideCopyPassword })}>
-                  <Icon active name="eye" style={styles.icon} />
-                </TouchableOpacity>
+                <View style={{ paddingHorizontal: 15 }} />
               </Item>
 
               <Item style={styles.item}>
@@ -163,7 +143,49 @@ class Signup extends Component {
                   placeholderTextColor="#1F120D"
                   style={styles.input}
                 />
-                <View style={{paddingHorizontal: 15}}></View>
+                <View style={{ paddingHorizontal: 15 }} />
+              </Item>
+
+              <Item style={styles.item}>
+                <Icon active name="lock" style={styles.icon} />
+                <Input
+                  placeholder="Contraseña"
+                  secureTextEntry={this.state.hidePassword}
+                  onChangeText={password => this.setState({ password })}
+                  value={this.state.password}
+                  placeholderTextColor="#1F120D"
+                  style={styles.input}
+                />
+                <TouchableOpacity
+                  onPress={() =>
+                    this.setState({ hidePassword: !this.state.hidePassword })
+                  }
+                >
+                  <Icon active name="eye" style={styles.icon} />
+                </TouchableOpacity>
+              </Item>
+
+              <Item style={styles.item}>
+                <Icon active name="lock" style={styles.icon} />
+                <Input
+                  placeholder="Repite la contraseña"
+                  secureTextEntry={this.state.hideCopyPassword}
+                  onChangeText={repeated_password =>
+                    this.setState({ repeated_password })
+                  }
+                  value={this.state.repeated_password}
+                  placeholderTextColor="#1F120D"
+                  style={styles.input}
+                />
+                <TouchableOpacity
+                  onPress={() =>
+                    this.setState({
+                      hideCopyPassword: !this.state.hideCopyPassword
+                    })
+                  }
+                >
+                  <Icon active name="eye" style={styles.icon} />
+                </TouchableOpacity>
               </Item>
 
               <Item style={styles.item}>
@@ -171,40 +193,41 @@ class Signup extends Component {
                 <Input
                   placeholder="Número de licencia"
                   autoCapitalize="none"
-                  onChangeText={license_number => this.setState({ license_number })}
+                  onChangeText={license_number =>
+                    this.setState({ license_number })
+                  }
                   value={this.state.license_number}
                   placeholderTextColor="#1F120D"
                   style={styles.input}
                 />
-                <View style={{paddingHorizontal: 15}}></View>
+                <View style={{ paddingHorizontal: 15 }} />
               </Item>
 
               <View style={styles.licenseWrapper}>
-                <TouchableOpacity style={styles.licenseButton} onPress={this.pickImage}>
+                <TouchableOpacity
+                  style={styles.licenseButton}
+                  onPress={this.pickImage}
+                >
                   <Icon active name="ios-camera" style={styles.icon} />
                   <Text style={styles.licenseText}>Gaffete</Text>
-                  <View style={{paddingHorizontal: 15}}></View>
+                  <View style={{ paddingHorizontal: 15 }} />
                 </TouchableOpacity>
-                {(imageSource || imageSpinner) &&
+                {(imageSource || imageSpinner) && (
                   <View style={styles.licensePreview}>
                     {imageSpinner && <Spinner color="black" />}
-                    {(imageSource && !imageSpinner) && <Image source={{ uri: imageSource.uri }} style={styles.licenseImage}/>}
+                    {imageSource &&
+                      !imageSpinner && (
+                        <Image
+                          source={{ uri: imageSource.uri }}
+                          style={styles.licenseImage}
+                        />
+                      )}
                   </View>
-                }
+                )}
               </View>
-
-
             </View>
 
-            <View style={styles.forgotPasswordButtonWrapper}>
-              <TouchableOpacity onPress={() => this.props.navigation.navigate('ChangePassword')}>
-                <Text style={styles.forgotPasswordText}>
-                  ¿Olvidaste tu contraseña?
-                </Text>
-              </TouchableOpacity>
-            </View>
-
-            <View style={styles.signupButtonWrapper} >
+            <View style={styles.signupButtonWrapper}>
               <Button
                 block
                 style={styles.signupButton}
@@ -216,16 +239,16 @@ class Signup extends Component {
 
             <View style={styles.loginWrapper}>
               <Text style={styles.loginText}>¿Ya tienes cuenta? </Text>
-              <TouchableOpacity onPress={() => this.props.navigation.navigate('Login')}>
-                <Text style={styles.loginLink}>
-                  Inicia sesión
-                </Text>
+              <TouchableOpacity
+                onPress={() => this.props.navigation.navigate('Login')}
+              >
+                <Text style={styles.loginLink}>Inicia sesión</Text>
               </TouchableOpacity>
             </View>
           </AuthLayout>
         )}
       </Subscribe>
-    )
+    );
   }
 }
 
