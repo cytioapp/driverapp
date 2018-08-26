@@ -16,13 +16,13 @@ import {
   Text,
   Title
 } from 'native-base';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Api from '../../utils/api';
 import styles from './style';
-import taxi from '../../assets/taxi.png'
+import taxi from '../../assets/taxi.png';
+import { SessionProvider } from '../Providers';
 
-export default class AssignVehicle extends Component {
-
+class AssignVehicle extends Component {
   state = {
     organization: '',
     organization_name: '',
@@ -31,37 +31,45 @@ export default class AssignVehicle extends Component {
     actual: ''
   };
 
-  componentDidMount(){
-    this.getActualInfo();
+  componentDidMount = () => {
     this.fetchOrganizations();
-  }
+    this.getActualInfo();
+  };
 
   assignVehicle = () => {
-    Api.post('/vehicles', { organization_id: this.state.organization,
-                            number: this.state.number
-                          })
+    Api.post('/vehicles', {
+      organization_id: this.state.organization,
+      number: this.state.number
+    })
       .then(res => {
-        this.props.navigation.navigate('Home')
-      }).catch(err => {
-        console.log(err.response)
-      });;
-  }
+        this.props.session.updateUser({
+          organizationName: this.state.organization_name,
+          number: this.state.number
+        });
+        this.props.navigation.navigate('Home');
+      })
+      .catch(err => {
+        console.log(err.response);
+      });
+  };
 
   getActualInfo = () => {
-    Api.get('/drivers/profile').then(res => {
-      this.setState({
-        actual: `${res.data.vehicle.organization.name} ${res.data.vehicle.number}`
-      });
-    })
-  }
+    this.setState({
+      actual: `${this.props.session.state.user.organizationName} ${
+        this.props.session.state.user.number
+      }`
+    });
+  };
 
-  onValueChange = (value) => {
-    if(value){
-      const organization = this.state.organizations.find(organization => value === organization.id);
+  onValueChange = value => {
+    if (value) {
+      const organization = this.state.organizations.find(
+        organization => value === organization.id
+      );
       this.setState({
         organization: value,
         organization_name: organization.name
-      })
+      });
     }
   };
 
@@ -70,23 +78,33 @@ export default class AssignVehicle extends Component {
       this.setState({
         organizations: res.data
       });
-    })
-  }
+    });
+  };
 
   renderOrganizations = () => {
     return this.state.organizations.map(organization => {
-      return <Picker.Item key={organization.id} label={organization.name} value={organization.id} />
+      return (
+        <Picker.Item
+          key={organization.id}
+          label={organization.name}
+          value={organization.id}
+        />
+      );
     });
-  }
+  };
 
-  render(){
-    return(
-      <KeyboardAwareScrollView style={{flex: 1}} behavior="padding">
+  render() {
+    return (
+      <KeyboardAwareScrollView style={{ flex: 1 }} behavior="padding">
         <Container>
-          <Header style={styles.header} iosBarStyle="light-content" androidStatusBarColor="#262626">
+          <Header
+            style={styles.header}
+            iosBarStyle="light-content"
+            androidStatusBarColor="#262626"
+          >
             <Left style={styles.headerLeft}>
               <Button transparent onPress={this.props.navigation.openDrawer}>
-                <Icon name='menu' style={styles.menuIcon} />
+                <Icon name="menu" style={styles.menuIcon} />
               </Button>
             </Left>
             <Body style={styles.bodyHeader}>
@@ -97,18 +115,17 @@ export default class AssignVehicle extends Component {
 
           <Content contentContainerStyle={{ flex: 1 }}>
             <View style={styles.container}>
-
-              {this.state.actual === '' &&
+              {this.state.actual === '' && (
                 <Text style={styles.actualOrganization}>
                   No tienes taxi asignado
                 </Text>
-              }
+              )}
 
-              {this.state.actual !== '' &&
+              {this.state.actual !== '' && (
                 <Text style={styles.actualOrganization}>
                   Taxi actual: {this.state.actual}
                 </Text>
-              }
+              )}
 
               <Text style={styles.label}>Número y sitio del taxi:</Text>
               <View style={styles.inputWrapper}>
@@ -117,7 +134,7 @@ export default class AssignVehicle extends Component {
                     <Input
                       autoCapitalize="none"
                       keyboardType="numeric"
-                      maxLength = {4}
+                      maxLength={4}
                       onChangeText={number => this.setState({ number })}
                       placeholder="Número"
                       placeholderStyle={styles.placeholder}
@@ -128,18 +145,25 @@ export default class AssignVehicle extends Component {
                 </View>
 
                 <Picker
-                  renderHeader={backAction =>
-                    <Header style={styles.header} iosBarStyle="light-content" androidStatusBarColor="#262626">
+                  renderHeader={backAction => (
+                    <Header
+                      style={styles.header}
+                      iosBarStyle="light-content"
+                      androidStatusBarColor="#262626"
+                    >
                       <Left style={styles.headerLeft}>
                         <Button transparent onPress={backAction}>
                           <Icon name="arrow-back" style={styles.menuIcon} />
                         </Button>
                       </Left>
                       <Body style={styles.bodyHeader}>
-                        <Title style={styles.fontText}>Selecciona el sitio</Title>
+                        <Title style={styles.fontText}>
+                          Selecciona el sitio
+                        </Title>
                       </Body>
                       <Right style={styles.headerRight} />
-                    </Header>}
+                    </Header>
+                  )}
                   iosIcon={<Icon name="ios-arrow-down-outline" />}
                   androidIcon={<Icon name="ios-arrow-down-outline" />}
                   mode="dropdown"
@@ -150,27 +174,43 @@ export default class AssignVehicle extends Component {
                   selectedValue={this.state.organization}
                   onValueChange={this.onValueChange}
                 >
-                    {Platform.OS === 'android' ? <Picker.Item key='x' label='Selecciona un sitio...' value='' /> : <React.Fragment />}
-                    {this.renderOrganizations()}
+                  {Platform.OS === 'android' ? (
+                    <Picker.Item
+                      key="x"
+                      label="Selecciona un sitio..."
+                      value=""
+                    />
+                  ) : (
+                    <React.Fragment />
+                  )}
+                  {this.renderOrganizations()}
                 </Picker>
               </View>
 
               <View style={styles.imageWrapper}>
                 <Image style={styles.taxiImage} source={taxi} />
-                <Text style={styles.taxiOrganization}>{this.state.organization_name}</Text>
+                <Text style={styles.taxiOrganization}>
+                  {this.state.organization_name}
+                </Text>
                 <Text style={styles.taxiNumber}>{this.state.number}</Text>
               </View>
 
               <View style={styles.buttonWrapper}>
-                <Button large full style={styles.asignButton} onPress={this.assignVehicle}>
+                <Button
+                  large
+                  full
+                  style={styles.asignButton}
+                  onPress={this.assignVehicle}
+                >
                   <Text style={styles.asignButtonText}>Asignar vehículo</Text>
                 </Button>
               </View>
             </View>
-
           </Content>
         </Container>
       </KeyboardAwareScrollView>
-    )
+    );
   }
 }
+
+export default SessionProvider(AssignVehicle);

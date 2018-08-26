@@ -12,7 +12,6 @@ export default class errorModal extends Component {
 
   render() {
     const { errors, modalVisible, setModalVisible, ...modalProps } = this.props;
-    console.log('sjdgshdfg');
     return (
       <Modal
         animationType="slide"

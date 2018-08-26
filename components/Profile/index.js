@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, Image, View } from 'react-native';
+import { Text, Image, TouchableOpacity, View } from 'react-native';
 import {
   Body,
   Button,
@@ -29,6 +29,7 @@ export default class Profile extends Component {
 
   componentDidMount(){
     this.fetchDriverData();
+
   }
 
   fetchDriverData = () => {
@@ -61,9 +62,9 @@ export default class Profile extends Component {
             <Right style={styles.rightHeader} />
           </View>
           <View style={styles.headerBottom}>
-            <View style={styles.profilePhotoWrapper}>
+            <TouchableOpacity onPress={() => console.log('click')} style={styles.profilePhotoWrapper}>
               <Image style={styles.profilePhoto} source={profile} />
-            </View>
+            </TouchableOpacity>
             <View style={styles.driverInfoWrapper}>
               <View style={styles.rowWrapper}>
                 <Text style={styles.name}>{this.state.full_name}</Text>
