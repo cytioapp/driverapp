@@ -38,7 +38,6 @@ class SessionState extends Container {
         if (res.data.jwt) {
           SInfo.setItem('jwt', res.data.jwt, options)
             .then(() => {
-              console.log(jwt);
               this.setState(
                 {
                   isLogued: true
@@ -92,26 +91,52 @@ class SessionState extends Container {
     });
   };
 
-  validatesEmail = email => {
-    const regex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return email.match(regex);
-  };
+  validations = data => {
+    const nameRegex = /^[áÁéÉíÍóÓúÚñÑa-z ,\-']+$/i;
 
-  validatesPassword = (password, repeated_password) => {
-    return password === repeated_password ? true : false;
-  };
+    if (!data.full_name.match(nameRegex)) {
+      this.setState({
+        signupErrors: ['Nombre inválido']
+      });
+      return false;
+    }
 
-  validatesNumber = number => {
-    const regex = /[0-9+ -]/;
-    return email.match(regex);
+    const emailRegex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (!data.email.match(emailRegex)) {
+      this.setState({
+        signupErrors: ['Email inválido']
+      });
+      return false;
+    }
+
+    const numberRegex = /^[0-9+ -]{10,16}$/;
+    if (!data.phone_number.match(numberRegex)) {
+      this.setState({
+        signupErrors: ['Número inválido']
+      });
+      return false;
+    }
+
+    if (data.password.length < 6) {
+      this.setState({
+        signupErrors: ['La contraseña debe tener mínimo 6 caracteres']
+      });
+      return false;
+    }
+
+    if (data.password !== data.repeated_password) {
+      this.setState({
+        signupErrors: ['Las contraseñas no coinciden']
+      });
+      return false;
+    } else {
+      return true;
+    }
   };
 
   signup = data => {
     this.setState({ signupErrors: false });
-    if (
-      this.validatesEmail(data.email) &&
-      this.validatesPassword(data.password, data.repeated_password)
-    ) {
+    if (this.validations(data)) {
       Api.post('/drivers/signup', data)
         .then(res => {
           this.login(data.email, data.password);
@@ -120,15 +145,6 @@ class SessionState extends Container {
           console.log('Signup error', err.response);
           this.setState({ signupErrors: err.response.data.errors });
         });
-    } else {
-      if (!this.validatesPassword(data.password, data.repeated_password)) {
-        this.setState({
-          signupErrors: [{ message: 'Las contraseñas no coinciden' }]
-        });
-      }
-      if (!this.validatesEmail(data.email)) {
-        this.setState({ signupErrors: [{ message: 'Email inválido' }] });
-      }
     }
   };
 }
