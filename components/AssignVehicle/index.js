@@ -133,7 +133,7 @@ class AssignVehicle extends Component {
                   <Item style={styles.inputItem}>
                     <Input
                       autoCapitalize="none"
-                      keyboardType="numeric"
+                      keyboardType="default"
                       maxLength={4}
                       onChangeText={number => this.setState({ number })}
                       placeholder="Número"
