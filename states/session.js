@@ -85,9 +85,20 @@ class SessionState extends Container {
   };
 
   logout = () => {
-    this.setState({ isLogued: false }, () => {
-      SInfo.deleteItem('jwt', options);
-    });
+    this.setState(
+      {
+        isLogued: false,
+        loginErrors: null,
+        signupErrors: null,
+        user: {
+          number: '',
+          organizationName: ''
+        }
+      },
+      () => {
+        SInfo.deleteItem('jwt', options);
+      }
+    );
   };
 
   validations = data => {
