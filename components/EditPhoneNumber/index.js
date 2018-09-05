@@ -44,7 +44,13 @@ export default class EditPhoneNumber extends Component {
       Alert.alert(
         'Cambios sin guardar',
         '¿Guardar y salir?',
-        [{ text: 'No' }, { text: 'Si', onPress: () => this.handleSave(true) }],
+        [
+          {
+            text: 'No',
+            onPress: () => this.props.navigation.navigate('Profile')
+          },
+          { text: 'Si', onPress: () => this.handleSave(true) }
+        ],
         { cancelable: false }
       );
     } else {
