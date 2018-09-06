@@ -41,11 +41,17 @@ export default class EditEmail extends Component {
   };
 
   handleReturn = () => {
-    if (this.difference() === true) {
+    if (this.difference()) {
       Alert.alert(
         'Cambios sin guardar',
         '¿Guardar y salir?',
-        [{ text: 'No' }, { text: 'Si', onPress: () => this.handleSave() }],
+        [
+          {
+            text: 'No',
+            onPress: () => this.props.navigation.navigate('Profile')
+          },
+          { text: 'Si', onPress: () => this.handleSave() }
+        ],
         { cancelable: false }
       );
     } else {
@@ -54,18 +60,11 @@ export default class EditEmail extends Component {
   };
 
   handleSave = () => {
-    if (this.validatesName(this.state.new_full_name)) {
-      Api.put('/users/profile', { full_name: this.state.new_full_name }).then(
-        () => {
-          this.props.navigation.navigate('Profile');
-        }
-      );
-    } else {
-      this.setState({
-        errors: ['Nombre inválido'],
-        modalVisible: true
-      });
-    }
+    Api.put('/users/profile', { full_name: this.state.new_full_name }).then(
+      () => {
+        this.props.navigation.navigate('Profile');
+      }
+    );
   };
 
   difference = () => {
@@ -76,11 +75,6 @@ export default class EditEmail extends Component {
       this.setState({ buttonDisabled: true });
       return false;
     }
-  };
-
-  validatesName = name => {
-    const regex = /^[áÁéÉíÍóÓúÚñÑa-z ,\-']+$/i;
-    return name.match(regex);
   };
 
   setModalVisible = visible => {

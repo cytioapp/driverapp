@@ -85,21 +85,23 @@ class SessionState extends Container {
   };
 
   logout = () => {
-    this.setState({ isLogued: false }, () => {
-      SInfo.deleteItem('jwt', options);
-    });
+    this.setState(
+      {
+        isLogued: false,
+        loginErrors: null,
+        signupErrors: null,
+        user: {
+          number: '',
+          organizationName: ''
+        }
+      },
+      () => {
+        SInfo.deleteItem('jwt', options);
+      }
+    );
   };
 
   validations = data => {
-    const nameRegex = /^[áÁéÉíÍóÓúÚñÑa-z ,\-']+$/i;
-
-    if (!data.full_name.match(nameRegex)) {
-      this.setState({
-        signupErrors: ['Nombre inválido']
-      });
-      return false;
-    }
-
     const emailRegex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if (!data.email.match(emailRegex)) {
       this.setState({

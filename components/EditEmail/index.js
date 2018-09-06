@@ -45,7 +45,13 @@ export default class EditEmail extends Component {
       Alert.alert(
         'Cambios sin guardar',
         '¿Guardar y salir?',
-        [{ text: 'No' }, { text: 'Si', onPress: () => this.handleSave() }],
+        [
+          {
+            text: 'No',
+            onPress: () => this.props.navigation.navigate('Profile')
+          },
+          { text: 'Si', onPress: () => this.handleSave() }
+        ],
         { cancelable: false }
       );
     } else {
