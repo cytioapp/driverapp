@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.facebook.react.ReactApplication;
 import fr.bamlab.rnimageresizer.ImageResizerPackage;
+import rnsoundplayer.RNSoundPlayerPackage;
 import com.imagepicker.ImagePickerPackage;
 import com.agontuk.RNFusedLocation.RNFusedLocationPackage;
 import br.com.classapp.RNSensitiveInfo.RNSensitiveInfoPackage;
@@ -29,6 +30,7 @@ public class MainApplication extends Application implements ReactApplication {
           new MainReactPackage(),
             new ImageResizerPackage(),
             new ImagePickerPackage(),
+            new RNSoundPlayerPackage(),
             new RNFusedLocationPackage(),
             new RNSensitiveInfoPackage()
       );

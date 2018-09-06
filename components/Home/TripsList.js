@@ -10,7 +10,8 @@ import {
   StyleSheet,
   TouchableOpacity
 } from 'react-native';
-import { Container, Spinner } from 'native-base';
+import SoundPlayer from 'react-native-sound-player'
+import { Container, Spinner, Button } from 'native-base';
 import geodist from 'geodist';
 import Geolocation from 'react-native-geolocation-service';
 import TripItem from './TripItem';
@@ -76,11 +77,14 @@ class TripsList extends React.Component {
         });
       }
     });
+
+    SoundPlayer.onFinishedPlaying((success) => {})
   }
 
   componentWillUnmount() {
     dbRef.off('child_added');
     dbRef.off('child_removed');
+    SoundPlayer.unmount();
   }
 
   compareWithCurrentPosition = (trip)  => {
@@ -91,6 +95,11 @@ class TripsList extends React.Component {
       let destiny_coords = { lat: trip.lat_origin, lon: trip.lng_origin };
       let distance = geodist(origin_coords, destiny_coords, geodistOptions)
       if (distance <= 4) {
+        try {
+          SoundPlayer.playSoundFile('appointed', 'mp3')
+        } catch (e) {
+          console.log('No se puede reproducir el sonido', e)
+        }
         this.setState({
           trips: [...this.state.trips, trip]
         })
