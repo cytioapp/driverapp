@@ -70,6 +70,18 @@ class Trip extends React.Component {
       });
   };
 
+  handleFinish = () => {
+    Alert.alert(
+      'Finalizar',
+      '¿Está seguro que desea finalizar el servicio?',
+      [
+        { text: 'No', onPress: () => {}, style: 'cancel' },
+        { text: 'Si', onPress: () => this.finishTrip() }
+      ],
+      { cancelable: false }
+    );
+  }
+
   finishTrip = () => {
     this.setState({ isWaiting: true });
     Api.put('/drivers/finish_trip')
@@ -173,7 +185,7 @@ class Trip extends React.Component {
                 large
                 full
                 style={styles.finishButton}
-                onPress={this.finishTrip}
+                onPress={this.handleFinish}
               >
                 <Text style={styles.finishButtonText}>Finalizar servicio</Text>
               </Button>
