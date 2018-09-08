@@ -26,6 +26,9 @@ const styles = StyleSheet.create({
   },
   cancelIcon: {
     color: yellow
+  },
+  carIcon: {
+    color: yellow
   }
 });
 

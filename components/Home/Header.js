@@ -29,6 +29,11 @@ const HeaderH = ({ status, cancelTrip, navigation }) => {
             <Icon name='ios-close-circle-outline' style={styles.cancelIcon} />
           </Button>
         }
+        {status === 'free' && 
+          <Button transparent onPress={() => navigation.navigate('AssignVehicle')}>
+            <Icon name='ios-car' style={styles.carIcon} />
+          </Button>
+        }
       </Right>
     </Header>
   );
