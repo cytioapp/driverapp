@@ -20,7 +20,6 @@
     "react-native-sensitive-info": "^5.1.0",
     "react-native-sound-player": "^0.4.0",
     "react-navigation": "^2.9.0",
-    "socket.io-client": "^2.1.1",
     "unstated": "^2.1.1"
   },
   "devDependencies": {
