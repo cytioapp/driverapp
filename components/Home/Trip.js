@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, TouchableOpacity, Image, Alert } from 'react-native';
-import { Button, Text, Container, Content } from 'native-base';
+import { Button, Text, Container, Content, Icon } from 'native-base';
 import openMap from 'react-native-open-maps';
 import mapsIcon from '../../assets/maps-icon.png';
 import Header from './Header';
@@ -102,6 +102,32 @@ class Trip extends React.Component {
       });
   };
 
+  handleNotify = () => {
+    Alert.alert(
+      'Notificar',
+      '¿Has llegado al domicilio?',
+      [
+        { text: 'No', onPress: () => {}, style: 'cancel' },
+        { text: 'Si', onPress: () => this.notifyUser() }
+      ],
+      { cancelable: false }
+    );
+  }
+  
+  notifyUser = () => {
+    Api.put('/drivers/notify_user')
+      .then(res => {
+        if (res.status == 200) {
+          alert('Has enviado una notificacion al usuario');
+        } else {
+          alert('Vuelve a intentar');
+        }
+      })
+      .catch(err => {
+        alert('Vuelve a intentar');
+      });
+  }
+
   cancelTrip = () => {
     Alert.alert(
       'Cancelar',
@@ -163,7 +189,12 @@ class Trip extends React.Component {
 
           <View style={styles.darkFieldWrapper}>
             <Text style={styles.label}>Usuario:</Text>
-            <Text style={styles.text}>{full_name}</Text>
+            <View style={styles.userWrapper}>
+              <Text style={styles.text}>{full_name}</Text>
+              <Button onPress={this.handleNotify} danger>
+                <Icon name="ios-notifications" />
+              </Button>
+            </View>
           </View>
 
           <View style={styles.fieldWrapper}>

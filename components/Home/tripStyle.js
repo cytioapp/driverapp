@@ -35,10 +35,11 @@ const styles = StyleSheet.create({
     color: text,
     flex: 3,
     fontFamily: 'Nunito-Regular',
-    marginVertical: 5
+    marginVertical: 5,
+    fontSize: 18
   },
   mapImageWrapper: {
-    alignItems: 'center',
+    alignItems: 'flex-end',
     flex: 1
   },
   mapImage: {
@@ -57,6 +58,10 @@ const styles = StyleSheet.create({
     color: label,
     fontFamily: 'Nunito-Bold',
     fontSize: 18
+  },
+  userWrapper: {
+    justifyContent: 'space-between',
+    flexDirection: 'row'
   }
 });
 
