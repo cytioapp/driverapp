@@ -5,15 +5,11 @@ import openMap from 'react-native-open-maps';
 import mapsIcon from '../../assets/maps-icon.png';
 import Header from './Header';
 import Api from '../../utils/api';
-import firebase from 'firebase';
-import firebaseConfig from '../../firebaseconfig.json';
 import styles from './tripStyle';
 import Loading from '../Loading';
 import Modal from '../Modal';
+import firebase from 'react-native-firebase';
 
-if (!firebase.apps.length) {
-  firebase.initializeApp(firebaseConfig);
-}
 let dbRef = firebase.database().ref('server/taken_trips/');
 
 class Trip extends React.Component {
