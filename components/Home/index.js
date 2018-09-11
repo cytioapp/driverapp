@@ -37,10 +37,6 @@ class Home extends React.Component {
       })
   }
 
-  componentWillUnmount() {
-    console.log('Unmonting index');
-  }
-
   setStatus = (status) => {
     this.setState({ status });
   }
@@ -54,7 +50,8 @@ class Home extends React.Component {
       return (
         <TripList
           navigation={this.props.navigation}
-          setStatus={this.setStatus} />
+          setStatus={this.setStatus}
+        />
       )
     } else {
       return (
