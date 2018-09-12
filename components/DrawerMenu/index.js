@@ -32,14 +32,13 @@ class DrawerMenu extends Component {
         >
           <View style={styles.logoWrapper}>
             <Image source={logoImage} style={styles.logo} />
-            <View>
+            {/* <View>
               <Button onPress={session.toggleNotifications} block>
                 <Text>
                   {notificationsState ? 'No Notificar' : 'Notificar de nuevos servicios'}
-                  {/* <Icon name={notificationsState ?  'ios-notifications-off' : 'ios-notifications'}/> */}
                 </Text>
               </Button>
-            </View>
+            </View> */}
             <TouchableHighlight onPress={() => navigate('AssignVehicle')}>
               <View>
                 <Text style={styles.vehicleText}>

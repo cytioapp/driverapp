@@ -6,6 +6,7 @@ import Trip from './Trip';
 import TripList from './TripsList';
 import Api from '../../utils/api';
 import Loading from '../Loading';
+import firebase from 'react-native-firebase';
 
 class Home extends React.Component {
 
@@ -34,7 +35,20 @@ class Home extends React.Component {
           this.props.screenProps.session.logout();
         }
         console.log('Active trip catch', err.response)
+      });
+
+    firebase.messaging().requestPermission()
+      .then(() => {
+        firebase.messaging().getToken()
+          .then(fcmToken => {
+            if (fcmToken) {
+              Api.put('/users/profile', { device_id: fcmToken }).then(res => {});
+            }
+          });
       })
+      .catch(error => {
+        // User has rejected permissions  
+      });
   }
 
   setStatus = (status) => {
