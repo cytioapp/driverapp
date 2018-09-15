@@ -62,7 +62,25 @@ const styles = StyleSheet.create({
   userWrapper: {
     justifyContent: 'space-between',
     flexDirection: 'row'
-  }
+  },
+  callUserWrapper: {
+    justifyContent: 'center',
+    flexDirection: 'row'
+  },
+  callUserButton: {
+    width: '90%',
+    marginTop: 30,
+    backgroundColor: '#73b639',
+    textAlign: 'center',
+    justifyContent: 'center',
+    borderRadius: 0
+  },
+  callText: {
+    fontFamily: 'Nunito-Bold'
+  },
+  phoneIcon: {
+    marginRight: 0
+  },
 });
 
 export default styles;

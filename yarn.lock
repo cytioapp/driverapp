@@ -4584,6 +4584,10 @@ react-native-open-maps@^0.2.2:
   version "0.2.2"
   resolved "https://registry.yarnpkg.com/react-native-open-maps/-/react-native-open-maps-0.2.2.tgz#e21c143b6c0a8ba17403f9646523d95cf13c5cbf"
 
+react-native-phone-call@^1.0.8:
+  version "1.0.8"
+  resolved "https://registry.yarnpkg.com/react-native-phone-call/-/react-native-phone-call-1.0.8.tgz#9c1e5d26957d9b573cf8cae212ef288d640eb3bc"
+
 react-native-safe-area-view@^0.7.0:
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/react-native-safe-area-view/-/react-native-safe-area-view-0.7.0.tgz#38f5ab9368d6ef9e5d18ab64212938af3ec39421"

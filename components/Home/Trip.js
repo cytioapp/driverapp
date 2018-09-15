@@ -9,6 +9,7 @@ import styles from './tripStyle';
 import Loading from '../Loading';
 import Modal from '../Modal';
 import firebase from 'react-native-firebase';
+import call from 'react-native-phone-call';
 
 let dbRef = firebase.database().ref('server/taken_trips/');
 
@@ -55,10 +56,13 @@ class Trip extends React.Component {
             since: '00:06',
             latitude: res.data.trip.lat_origin,
             longitude: res.data.trip.lng_origin,
-            full_name: res.data.trip.user.full_name
+            full_name: res.data.trip.user.full_name,
+            phone_number: res.data.trip.user.phone_number,
+            references: res.data.trip.references
           },
           this.monitorTrip
         );
+        console.log(res.data)
       })
       .catch(err => {
         console.log(err.response);
@@ -164,8 +168,17 @@ class Trip extends React.Component {
     openMap({ latitude, longitude, zoom: 30, query: address });
   };
 
+  makeCall = () => {
+    let { phone_number } = this.state;
+    const args = {
+      number: phone_number,
+      prompt: false
+    };
+    call(args).catch(err => alert(err));
+  }
+
   render() {
-    const { address, since, full_name } = this.state;
+    const { address, since, full_name, references, phone_number } = this.state;
     const { status } = this.props;
     const headerProps = {
       status,
@@ -205,6 +218,23 @@ class Trip extends React.Component {
               </TouchableOpacity>
             </View>
           </View>
+          {(references !== '' && typeof references == 'string')  &&
+            <View style={styles.darkFieldWrapper}>
+              <Text style={styles.label}>Indicaciones:</Text>
+              <View>
+                <Text style={styles.text}>{references}</Text>
+              </View>
+            </View>
+          }
+
+          {(phone_number !== '') &&
+            <View style={styles.callUserWrapper}>
+              <Button style={styles.callUserButton} onPress={this.makeCall}>
+                <Icon name="ios-call" style={styles.phoneIcon} />
+                <Text style={styles.callText}>Llamar al pasajero</Text>
+              </Button>
+            </View>
+          }
 
           {status == 'active' && (
             <View style={styles.buttonWrapper}>
