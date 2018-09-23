@@ -1,9 +1,7 @@
 import React from 'react';
 import { View, TouchableHighlight } from 'react-native';
 import { Text } from 'native-base';
-import styles from './tripItemStyle';
-
-
+import styles from './style';
 
 const TripItem = ({ address_origin, since, id, takeTrip }) => {
   return (

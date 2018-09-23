@@ -15,7 +15,7 @@ import { Container, Spinner, Button } from 'native-base';
 import geodist from 'geodist';
 import Geolocation from 'react-native-geolocation-service';
 import TripItem from './TripItem';
-import Header from './Header';
+import Header from '../shared/Header';
 import Api from '../../utils/api';
 import Loading from '../Loading';
 import Modal from '../Modal';

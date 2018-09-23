@@ -7,7 +7,7 @@ import {
   View,
   Linking
 } from 'react-native';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import logo1 from '../../assets/logo1.png';
 import fondo1 from '../../assets/fondo1.jpg';
 import styles from './style';

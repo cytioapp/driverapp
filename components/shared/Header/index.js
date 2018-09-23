@@ -9,7 +9,7 @@ import {
   Button,
   Icon
 } from 'native-base';
-import styles from './headerStyle';
+import styles from './style';
 
 
 const HeaderH = ({ status, cancelTrip, navigation }) => {

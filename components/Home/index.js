@@ -2,8 +2,8 @@ import React from 'react';
 import {
   View
 } from 'react-native';
-import Trip from './Trip';
-import TripList from './TripsList';
+import Trip from '../Trip';
+import TripList from '../TripsList';
 import Api from '../../utils/api';
 import Loading from '../Loading';
 import firebase from 'react-native-firebase';
