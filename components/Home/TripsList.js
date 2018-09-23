@@ -17,14 +17,9 @@ import Geolocation from 'react-native-geolocation-service';
 import TripItem from './TripItem';
 import Header from './Header';
 import Api from '../../utils/api';
-import firebase from 'firebase';
-import firebaseConfig from '../../firebaseconfig.json';
 import Loading from '../Loading';
 import Modal from '../Modal';
-
-if (!firebase.apps.length) {
-  firebase.initializeApp(firebaseConfig);
-}
+import firebase from 'react-native-firebase';
 
 let dbRef = firebase.database().ref('server/holding_trips/');
 
@@ -94,11 +89,11 @@ class TripsList extends React.Component {
       let origin_coords = { lat, lon: lng };
       let destiny_coords = { lat: trip.lat_origin, lon: trip.lng_origin };
       let distance = geodist(origin_coords, destiny_coords, geodistOptions)
-      if (distance <= 4) {
+      if (distance <= 10) {
         try {
-          SoundPlayer.playSoundFile('appointed', 'mp3')
+          SoundPlayer.playSoundFile('appointed', 'mp3');
         } catch (e) {
-          console.log('No se puede reproducir el sonido', e)
+          console.log('No se puede reproducir el sonido', e);
         }
         this.setState({
           trips: [...this.state.trips, trip]

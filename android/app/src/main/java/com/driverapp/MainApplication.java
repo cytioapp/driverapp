@@ -12,6 +12,9 @@ import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
+import io.invertase.firebase.RNFirebasePackage;
+import io.invertase.firebase.database.RNFirebaseDatabasePackage;
+import io.invertase.firebase.messaging.RNFirebaseMessagingPackage;
 
 import java.util.Arrays;
 import java.util.List;
@@ -32,7 +35,10 @@ public class MainApplication extends Application implements ReactApplication {
             new ImagePickerPackage(),
             new RNSoundPlayerPackage(),
             new RNFusedLocationPackage(),
-            new RNSensitiveInfoPackage()
+            new RNSensitiveInfoPackage(),
+            new RNFirebasePackage(),
+            new RNFirebaseDatabasePackage(),
+            new RNFirebaseMessagingPackage()
       );
     }
 

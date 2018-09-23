@@ -48,8 +48,10 @@
 		3AFDC666E8424E668B0EF1A3 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CC6B271B5C0F474DA6283927 /* FontAwesome.ttf */; };
 		487AA9F8E79D4B7CAD991B77 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D8ECEFD4DE18448D9C69CD31 /* Octicons.ttf */; };
 		487B0EE86880406589BF5DEF /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C9EA6201E42A4EFDB5A5511D /* Foundation.ttf */; };
+		4EA2A64B7A7447FBAAF51BD9 /* libRNSoundPlayer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F1B360952CB4B3EB59BFE26 /* libRNSoundPlayer.a */; };
 		510A8E27B12341DFBB1A16B4 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A201DBCB006A4999A9BC83E3 /* Ionicons.ttf */; };
 		54C7F65721419AC300F786C5 /* appointed.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 54C7F62E21419AC300F786C5 /* appointed.mp3 */; };
+		59DE949C2157D633009C4E62 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 59DE949B2157D633009C4E62 /* GoogleService-Info.plist */; };
 		5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
 		5EED498842B54E0B9CFCF04A /* Nunito-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 708B27E066B244B2B7CF7EBA /* Nunito-Italic.ttf */; };
 		6E289986F457403DBAFFB90F /* rubicon-icon-font.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 594A64AD17754B27B98CF77E /* rubicon-icon-font.ttf */; };
@@ -63,13 +65,14 @@
 		A1BC0EDC636E4570943C15A7 /* Nunito-ExtraLightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 89485E617EBB4DE2ADA1E359 /* Nunito-ExtraLightItalic.ttf */; };
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
 		B0D577C345C840ADBD2EF83A /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0BB1770F7ED94AF4A496B6A8 /* MaterialCommunityIcons.ttf */; };
+		C7625BBDF64EA759DE7FBE6F /* libPods-cytiodriver.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D3504C52EE1B55C1E6C4D46A /* libPods-cytiodriver.a */; };
 		D832D4A6E0FC42D3875F3C80 /* libRNImagePicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DBE50E439E764C0F9E2B3172 /* libRNImagePicker.a */; };
 		DBCAFFED7B5B4A068F23232B /* Nunito-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 647A4BA191AD49E69616B97F /* Nunito-ExtraLight.ttf */; };
 		DFB4A710752C432F8DE0D2E9 /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B4D2848A10F9493F8344600F /* Feather.ttf */; };
 		EBC2AB58EFDB4911B85614B6 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ECC3CE504DF147A995027359 /* MaterialIcons.ttf */; };
 		F5B242EDEDC7487A93700A25 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DDDB909F8A504C288708642D /* Zocial.ttf */; };
 		F8994C8F64FB42EEBEFEEE91 /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 78BB28AB337B4DE7B1BA11C9 /* SimpleLineIcons.ttf */; };
-		4EA2A64B7A7447FBAAF51BD9 /* libRNSoundPlayer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F1B360952CB4B3EB59BFE26 /* libRNSoundPlayer.a */; };
+		9BC83D176B7E4194B3CE2181 /* libRNFirebase.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AA658E3A4B3E44B2B28DB2B8 /* libRNFirebase.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -332,6 +335,13 @@
 			remoteGlobalIDString = BF8FCF941BFFB184000FCD37;
 			remoteInfo = RNSensitiveInfo;
 		};
+		59DE94972157D30A009C4E62 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3D7E0693338542F884FEFD87 /* RNSoundPlayer.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = RNSoundPlayer;
+		};
 		5E9157321DD0AC6500FF2AA8 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */;
@@ -399,19 +409,23 @@
 		2D02E4901E0B4A5D006451C7 /* cytiodriver-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "cytiodriver-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D16E6891FA4F8E400B85C8A /* libReact.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libReact.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		3465D66D0CA543D0955D3423 /* RNImagePicker.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNImagePicker.xcodeproj; path = "../node_modules/react-native-image-picker/ios/RNImagePicker.xcodeproj"; sourceTree = "<group>"; };
+		3D7E0693338542F884FEFD87 /* RNSoundPlayer.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNSoundPlayer.xcodeproj; path = "../node_modules/react-native-sound-player/ios/RNSoundPlayer.xcodeproj"; sourceTree = "<group>"; };
 		443D80A4CD3C4DADA87AD557 /* Nunito-ExtraBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Nunito-ExtraBold.ttf"; path = "../assets/fonts/Nunito-ExtraBold.ttf"; sourceTree = "<group>"; };
 		4510D720754B450488D24FE4 /* Nunito-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Nunito-Light.ttf"; path = "../assets/fonts/Nunito-Light.ttf"; sourceTree = "<group>"; };
 		4862F60DA01240F5957BA2D3 /* Nunito-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Nunito-Bold.ttf"; path = "../assets/fonts/Nunito-Bold.ttf"; sourceTree = "<group>"; };
 		54C7F62E21419AC300F786C5 /* appointed.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = appointed.mp3; sourceTree = "<group>"; };
 		594A64AD17754B27B98CF77E /* rubicon-icon-font.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "rubicon-icon-font.ttf"; path = "../node_modules/native-base/Fonts/rubicon-icon-font.ttf"; sourceTree = "<group>"; };
+		59DE949B2157D633009C4E62 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "cytiodriver/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
 		647A4BA191AD49E69616B97F /* Nunito-ExtraLight.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Nunito-ExtraLight.ttf"; path = "../assets/fonts/Nunito-ExtraLight.ttf"; sourceTree = "<group>"; };
 		66F0DD3DFDCE49CEB74104B3 /* Roboto_medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Roboto_medium.ttf; path = "../node_modules/native-base/Fonts/Roboto_medium.ttf"; sourceTree = "<group>"; };
 		6723F4F1824443819BC54800 /* Nunito-BoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Nunito-BoldItalic.ttf"; path = "../assets/fonts/Nunito-BoldItalic.ttf"; sourceTree = "<group>"; };
 		6D38A27A18F347CBA5E6FD9D /* Nunito-SemiBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Nunito-SemiBoldItalic.ttf"; path = "../assets/fonts/Nunito-SemiBoldItalic.ttf"; sourceTree = "<group>"; };
+		6F1B360952CB4B3EB59BFE26 /* libRNSoundPlayer.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNSoundPlayer.a; sourceTree = "<group>"; };
 		708B27E066B244B2B7CF7EBA /* Nunito-Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Nunito-Italic.ttf"; path = "../assets/fonts/Nunito-Italic.ttf"; sourceTree = "<group>"; };
 		78BB28AB337B4DE7B1BA11C9 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/native-base/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
+		7C6D98E03260DCE8034B27DD /* Pods-cytiodriver.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-cytiodriver.debug.xcconfig"; path = "Pods/Target Support Files/Pods-cytiodriver/Pods-cytiodriver.debug.xcconfig"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		87F2EA39C1AC4B1A9DA9951D /* libRNSensitiveInfo.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNSensitiveInfo.a; sourceTree = "<group>"; };
 		89485E617EBB4DE2ADA1E359 /* Nunito-ExtraLightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Nunito-ExtraLightItalic.ttf"; path = "../assets/fonts/Nunito-ExtraLightItalic.ttf"; sourceTree = "<group>"; };
@@ -422,8 +436,10 @@
 		BCE2B2FF52BE469D943B0933 /* Nunito-Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Nunito-Black.ttf"; path = "../assets/fonts/Nunito-Black.ttf"; sourceTree = "<group>"; };
 		C4CF86FB99A44550A174C573 /* Nunito-BlackItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Nunito-BlackItalic.ttf"; path = "../assets/fonts/Nunito-BlackItalic.ttf"; sourceTree = "<group>"; };
 		C9EA6201E42A4EFDB5A5511D /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/native-base/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
+		CBC1834DA802F9A956242F8E /* Pods-cytiodriver.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-cytiodriver.release.xcconfig"; path = "Pods/Target Support Files/Pods-cytiodriver/Pods-cytiodriver.release.xcconfig"; sourceTree = "<group>"; };
 		CC6B271B5C0F474DA6283927 /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/native-base/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
 		CFA757056A6A4DFE88F53EC6 /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/native-base/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
+		D3504C52EE1B55C1E6C4D46A /* libPods-cytiodriver.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-cytiodriver.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D520804B486444E4832DF39C /* libRCTImageResizer.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTImageResizer.a; sourceTree = "<group>"; };
 		D8ECEFD4DE18448D9C69CD31 /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/native-base/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
 		DB0E314E0A844D089F5C29F9 /* Nunito-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Nunito-Regular.ttf"; path = "../assets/fonts/Nunito-Regular.ttf"; sourceTree = "<group>"; };
@@ -431,8 +447,8 @@
 		DDDB909F8A504C288708642D /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/native-base/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
 		ECC3CE504DF147A995027359 /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/native-base/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		F0E86E52C1F749D08EF5B187 /* Nunito-LightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Nunito-LightItalic.ttf"; path = "../assets/fonts/Nunito-LightItalic.ttf"; sourceTree = "<group>"; };
-		3D7E0693338542F884FEFD87 /* RNSoundPlayer.xcodeproj */ = {isa = PBXFileReference; name = "RNSoundPlayer.xcodeproj"; path = "../node_modules/react-native-sound-player/ios/RNSoundPlayer.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
-		6F1B360952CB4B3EB59BFE26 /* libRNSoundPlayer.a */ = {isa = PBXFileReference; name = "libRNSoundPlayer.a"; path = "libRNSoundPlayer.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		4F8850A905A44F69BD50F7E4 /* RNFirebase.xcodeproj */ = {isa = PBXFileReference; name = "RNFirebase.xcodeproj"; path = "../node_modules/react-native-firebase/ios/RNFirebase.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		AA658E3A4B3E44B2B28DB2B8 /* libRNFirebase.a */ = {isa = PBXFileReference; name = "libRNFirebase.a"; path = "libRNFirebase.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -465,6 +481,8 @@
 				D832D4A6E0FC42D3875F3C80 /* libRNImagePicker.a in Frameworks */,
 				26CE0562D2D54A87B8B6C395 /* libRCTImageResizer.a in Frameworks */,
 				4EA2A64B7A7447FBAAF51BD9 /* libRNSoundPlayer.a in Frameworks */,
+				C7625BBDF64EA759DE7FBE6F /* libPods-cytiodriver.a in Frameworks */,
+				9BC83D176B7E4194B3CE2181 /* libRNFirebase.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -576,6 +594,7 @@
 		13B07FAE1A68108700A75B9A /* cytiodriver */ = {
 			isa = PBXGroup;
 			children = (
+				59DE949B2157D633009C4E62 /* GoogleService-Info.plist */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -614,6 +633,7 @@
 			isa = PBXGroup;
 			children = (
 				2D16E6891FA4F8E400B85C8A /* libReact.a */,
+				D3504C52EE1B55C1E6C4D46A /* libPods-cytiodriver.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -634,6 +654,15 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		59837A7512974302CFECC9FF /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				7C6D98E03260DCE8034B27DD /* Pods-cytiodriver.debug.xcconfig */,
+				CBC1834DA802F9A956242F8E /* Pods-cytiodriver.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		59B1F40A210AB42C00CFE552 /* Recovered References */ = {
 			isa = PBXGroup;
 			children = (
@@ -641,6 +670,7 @@
 				87F2EA39C1AC4B1A9DA9951D /* libRNSensitiveInfo.a */,
 				DBE50E439E764C0F9E2B3172 /* libRNImagePicker.a */,
 				D520804B486444E4832DF39C /* libRCTImageResizer.a */,
+				6F1B360952CB4B3EB59BFE26 /* libRNSoundPlayer.a */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -649,6 +679,14 @@
 			isa = PBXGroup;
 			children = (
 				59B1F434210AB42D00CFE552 /* libRNSensitiveInfo.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		59DE94942157D30A009C4E62 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				59DE94982157D30A009C4E62 /* libRNSoundPlayer.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -725,6 +763,7 @@
 				3465D66D0CA543D0955D3423 /* RNImagePicker.xcodeproj */,
 				146F75CDE55E4C1392AF93EA /* RCTImageResizer.xcodeproj */,
 				3D7E0693338542F884FEFD87 /* RNSoundPlayer.xcodeproj */,
+				4F8850A905A44F69BD50F7E4 /* RNFirebase.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -748,6 +787,7 @@
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				8147BAB896AC424D9BE6E772 /* Resources */,
 				59B1F40A210AB42C00CFE552 /* Recovered References */,
+				59837A7512974302CFECC9FF /* Pods */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -799,6 +839,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "cytiodriver" */;
 			buildPhases = (
+				0CFE139552D123B28DA17F14 /* [CP] Check Pods Manifest.lock */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
@@ -944,6 +985,10 @@
 				{
 					ProductGroup = 59B1F430210AB42D00CFE552 /* Products */;
 					ProjectRef = AD9F1906B8B14B54B9043F8C /* RNSensitiveInfo.xcodeproj */;
+				},
+				{
+					ProductGroup = 59DE94942157D30A009C4E62 /* Products */;
+					ProjectRef = 3D7E0693338542F884FEFD87 /* RNSoundPlayer.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -1202,6 +1247,13 @@
 			remoteRef = 59B1F433210AB42D00CFE552 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		59DE94982157D30A009C4E62 /* libRNSoundPlayer.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNSoundPlayer.a;
+			remoteRef = 59DE94972157D30A009C4E62 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1276,6 +1328,7 @@
 				B0D577C345C840ADBD2EF83A /* MaterialCommunityIcons.ttf in Resources */,
 				EBC2AB58EFDB4911B85614B6 /* MaterialIcons.ttf in Resources */,
 				487AA9F8E79D4B7CAD991B77 /* Octicons.ttf in Resources */,
+				59DE949C2157D633009C4E62 /* GoogleService-Info.plist in Resources */,
 				6F6AD6DC59CE41139E296264 /* Roboto_medium.ttf in Resources */,
 				15B3084649FA418883C82F10 /* Roboto.ttf in Resources */,
 				6E289986F457403DBAFFB90F /* rubicon-icon-font.ttf in Resources */,
@@ -1316,6 +1369,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
+		};
+		0CFE139552D123B28DA17F14 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-cytiodriver-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
 		};
 		2D02E4CB1E0B4B27006451C7 /* Bundle React Native Code And Images */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1410,12 +1481,14 @@
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
 					"$(SRCROOT)/../node_modules/react-native-image-resizer/ios/RCTImageResizer",
 					"$(SRCROOT)/../node_modules/react-native-sound-player/ios",
+					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
 				);
 				INFOPLIST_FILE = cytiodriverTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1441,12 +1514,14 @@
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
 					"$(SRCROOT)/../node_modules/react-native-image-resizer/ios/RCTImageResizer",
 					"$(SRCROOT)/../node_modules/react-native-sound-player/ios",
+					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
 				);
 				INFOPLIST_FILE = cytiodriverTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1463,6 +1538,7 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7C6D98E03260DCE8034B27DD /* Pods-cytiodriver.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1473,6 +1549,7 @@
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
 					"$(SRCROOT)/../node_modules/react-native-image-resizer/ios/RCTImageResizer",
 					"$(SRCROOT)/../node_modules/react-native-sound-player/ios",
+					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
 				);
 				INFOPLIST_FILE = cytiodriver/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1481,7 +1558,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = mx.com.cytio.cytiodriver;
+				PRODUCT_BUNDLE_IDENTIFIER = mx.com.cytiodriver;
 				PRODUCT_NAME = cytiodriver;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -1489,6 +1566,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = CBC1834DA802F9A956242F8E /* Pods-cytiodriver.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1498,6 +1576,7 @@
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
 					"$(SRCROOT)/../node_modules/react-native-image-resizer/ios/RCTImageResizer",
 					"$(SRCROOT)/../node_modules/react-native-sound-player/ios",
+					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
 				);
 				INFOPLIST_FILE = cytiodriver/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1506,7 +1585,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = mx.com.cytio.cytiodriver;
+				PRODUCT_BUNDLE_IDENTIFIER = mx.com.cytiodriver;
 				PRODUCT_NAME = cytiodriver;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -1530,11 +1609,13 @@
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
 					"$(SRCROOT)/../node_modules/react-native-image-resizer/ios/RCTImageResizer",
 					"$(SRCROOT)/../node_modules/react-native-sound-player/ios",
+					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
 				);
 				INFOPLIST_FILE = "cytiodriver-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1570,11 +1651,13 @@
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
 					"$(SRCROOT)/../node_modules/react-native-image-resizer/ios/RCTImageResizer",
 					"$(SRCROOT)/../node_modules/react-native-sound-player/ios",
+					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
 				);
 				INFOPLIST_FILE = "cytiodriver-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1609,11 +1692,13 @@
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
 					"$(SRCROOT)/../node_modules/react-native-image-resizer/ios/RCTImageResizer",
 					"$(SRCROOT)/../node_modules/react-native-sound-player/ios",
+					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
 				);
 				INFOPLIST_FILE = "cytiodriver-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1648,11 +1733,13 @@
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
 					"$(SRCROOT)/../node_modules/react-native-image-resizer/ios/RCTImageResizer",
 					"$(SRCROOT)/../node_modules/react-native-sound-player/ios",
+					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
 				);
 				INFOPLIST_FILE = "cytiodriver-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",

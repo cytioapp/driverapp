@@ -2,6 +2,7 @@ import SInfo from 'react-native-sensitive-info';
 import { NavigationActions } from 'react-navigation';
 import { Container } from 'unstated';
 import Api from '../utils/api';
+import firebase from 'react-native-firebase';
 
 const options = {
   sharedPreferencesName: 'taxiappdriver',
@@ -13,9 +14,10 @@ class SessionState extends Container {
     isLogued: null,
     loginErrors: null,
     signupErrors: null,
+    notificationsState: false,
     user: {
       number: '',
-      organizationName: ''
+      organizationName: '',
     }
   };
 
@@ -23,6 +25,7 @@ class SessionState extends Container {
     Api.get('/drivers/profile').then(res => {
       if (res.data && res.data.vehicle) {
         this.setState({
+          notificationsState: res.data.user.device_id ? true : false,
           user: {
             number: res.data.vehicle.number,
             organizationName: res.data.vehicle.organization.name
@@ -147,6 +150,43 @@ class SessionState extends Container {
         });
     }
   };
+
+  turnOnNotifications = () => {
+    firebase.messaging().requestPermission()
+      .then(() => {
+        firebase.messaging().getToken()
+          .then(fcmToken => {
+            if (fcmToken) {
+              Api.put('/users/profile', { device_id: fcmToken }).then(res => {
+                if (res.status == 200) {
+                  this.setState({ notificationsState: true });
+                }
+              });
+            } else {
+              // user doesn't have a device token yet
+            }
+          });
+      })
+      .catch(error => {
+        // User has rejected permissions  
+      });
+  }
+
+  turnOffNotifications = () => {
+    Api.put('/users/profile', { device_id: null }).then(res => {
+      if (res.status == 200) {
+        this.setState({ notificationsState: false });
+      }
+    });
+  }
+
+  toggleNotifications = () => {
+    if (this.state.notificationsState) {
+      this.turnOffNotifications();
+    } else {
+      this.turnOnNotifications();
+    }
+  }
 }
 
 export default SessionState;
