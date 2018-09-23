@@ -1,11 +1,12 @@
 import React from 'react';
-import { View, TouchableOpacity, Image, Alert } from 'react-native';
+import { View, TouchableOpacity, Image, Alert, ScrollView } from 'react-native';
 import { Button, Text, Container, Content, Icon } from 'native-base';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import openMap from 'react-native-open-maps';
 import mapsIcon from '../../assets/maps-icon.png';
-import Header from './Header';
+import Header from '../shared/Header';
 import Api from '../../utils/api';
-import styles from './tripStyle';
+import styles from './style';
 import Loading from '../Loading';
 import Modal from '../Modal';
 import firebase from 'react-native-firebase';
@@ -189,7 +190,7 @@ class Trip extends React.Component {
       <Container contentContainerStyle={{ flex: 1 }}>
         {this.state.isWaiting && <Loading />}
         <Header {...headerProps} />
-        <Content contentContainerStyle={{ flex: 1 }}>
+        <KeyboardAwareScrollView style={{ height: '100%' }}>
           <Modal
             errors={this.state.errors}
             modalVisible={this.state.modalVisible}
@@ -248,7 +249,7 @@ class Trip extends React.Component {
               </Button>
             </View>
           )}
-        </Content>
+        </KeyboardAwareScrollView>
       </Container>
     );
   }
