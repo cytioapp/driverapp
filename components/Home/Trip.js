@@ -227,7 +227,7 @@ class Trip extends React.Component {
             </View>
           }
 
-          {(phone_number !== '') &&
+          {(phone_number !== '' && typeof phone_number == 'string') &&
             <View style={styles.callUserWrapper}>
               <Button style={styles.callUserButton} onPress={this.makeCall}>
                 <Icon name="ios-call" style={styles.phoneIcon} />
