@@ -11,6 +11,7 @@ You need to have the following services installed in your computer:
 * watchman
 * react-native-cli
 * Xcode or Android Studio
+* CocoaPods
 
 ### Mac OS
 
@@ -19,6 +20,7 @@ $ brew install node
 $ brew install yarn
 $ brew install watchman
 $ yarn global add react-native-cli
+$ gem install cocoapods
 ```
 
 
@@ -32,6 +34,12 @@ $ git clone git@github.com:cytioapp/taxiapp.git
 
 ```
 $ yarn
+```
+
+### Install iOS dependencies
+```
+$ cd ios/
+$ pod install
 ```
 
 ### Start the server
