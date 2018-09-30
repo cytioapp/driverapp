@@ -89,7 +89,7 @@ class TripsList extends React.Component {
       let origin_coords = { lat, lon: lng };
       let destiny_coords = { lat: trip.lat_origin, lon: trip.lng_origin };
       let distance = geodist(origin_coords, destiny_coords, geodistOptions)
-      if (distance <= 10) {
+      if (distance <= 6) {
         try {
           SoundPlayer.playSoundFile('appointed', 'mp3');
         } catch (e) {
