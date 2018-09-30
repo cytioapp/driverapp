@@ -114,18 +114,23 @@ class AssignVehicle extends Component {
           </Header>
 
           <Content contentContainerStyle={{ flex: 1 }}>
-            <View style={styles.container}>
+            <View style={styles.currentOrganization}>
               {this.state.actual === '' && (
-                <Text style={styles.actualOrganization}>
+                <Text style={styles.labelOrg}>
                   No tienes taxi asignado
                 </Text>
               )}
 
               {this.state.actual !== '' && (
-                <Text style={styles.actualOrganization}>
-                  Taxi actual: {this.state.actual}
+                <Text>
+                  <Text style={styles.labelOrg}>
+                    {`Taxi actual: `}
+                  </Text>
+                  <Text style={styles.textOrg}>{this.state.actual}</Text>
                 </Text>
               )}
+            </View>
+            <View style={styles.container}>
 
               <Text style={styles.label}>Número y sitio del taxi:</Text>
               <View style={styles.inputWrapper}>
@@ -189,10 +194,12 @@ class AssignVehicle extends Component {
 
               <View style={styles.imageWrapper}>
                 <Image style={styles.taxiImage} source={taxi} />
-                <Text style={styles.taxiOrganization}>
-                  {this.state.organization_name}
-                </Text>
-                <Text style={styles.taxiNumber}>{this.state.number}</Text>
+                <View style={styles.wrapperOrgNum}>
+                  <Text style={styles.taxiOrganization}>
+                    {this.state.organization_name}
+                  </Text>
+                  <Text style={styles.taxiNumber}>{this.state.number}</Text>
+                </View>
               </View>
 
               <View style={styles.buttonWrapper}>

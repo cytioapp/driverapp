@@ -29,10 +29,18 @@ const styles = StyleSheet.create({
   container: {
     padding: 15
   },
-  actualOrganization: {
+  currentOrganization: {
+    backgroundColor: yellow,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 10
+  },
+  labelOrg: {
     alignSelf: 'center',
-    fontFamily: 'Nunito-Italic',
-    marginBottom: 20
+    fontFamily: 'Nunito-Bold',
+  },
+  textOrg: {
+    fontFamily: 'Nunito-Regular',
   },
   picker: {
     backgroundColor: textBackground
@@ -51,51 +59,51 @@ const styles = StyleSheet.create({
   },
   textInputWrapper: {
     borderColor: label,
-    borderRadius: 2,
-    borderWidth: 1,
     flex: 1,
     marginRight: 15
   },
   label: {
     color: label,
-    fontFamily: 'Nunito-Bold'
+    fontFamily: 'Nunito-Bold',
+    textAlign: 'center'
   },
   inputItem: {
   },
   input: {
-    textAlign: 'center'
+    backgroundColor: textBackground,
+    textAlign: 'center',
   },
   buttonWrapper: {
     alignItems: 'center',
-    marginTop: 70
   },
   asignButton: {
     backgroundColor: yellow,
-    marginHorizontal: 30
+    marginTop: 20
   },
   asignButtonText: {
     color: label,
     fontFamily: 'Nunito-Bold',
-    fontSize: 15
+    fontSize: 15,
   },
   imageWrapper: {
-    marginVertical: 10
+    marginVertical: 20,
+    alignItems: 'center'
+  },
+  wrapperOrgNum: {
+    position: 'absolute',
+    top: 115,
   },
   taxiOrganization: {
-    fontFamily: 'Nunito-Regular',
-    left: 125,
-    top: 60,
-    position: 'absolute',
+    fontFamily: 'Nunito-Bold',
+    textAlign: 'center'
   },
   taxiNumber: {
-    fontFamily: 'Nunito-Regular',
-    left: 135,
-    top: 80,
-    position: 'absolute',
+    fontFamily: 'Nunito-Bold',
+    textAlign: 'center'
   },
   taxiImage: {
-    height: 120,
-    width: 'auto'
+    height: 250,
+    width: 250
   }
 
 });
