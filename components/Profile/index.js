@@ -22,6 +22,8 @@ export default class Profile extends Component {
 
   componentDidMount() {
     this.fetchDriverData();
+    let { session } = this.props.screenProps;
+    session.fetchUserData();
   }
 
   fetchDriverData = () => {
@@ -46,6 +48,8 @@ export default class Profile extends Component {
   };
 
   render() {
+    let { session } = this.props.screenProps;
+    const { notificationsState } = session.state;
     return (
       <KeyboardAwareScrollView style={styles.keyboard}>
         <Header
@@ -143,6 +147,14 @@ export default class Profile extends Component {
               <Text style={styles.text}>{this.state.organization}</Text>
             </View>
           )}
+
+          <View>
+            <Button onPress={session.toggleNotifications} block style={styles.notificationsButton}>
+              <Text style={styles.notificationsText}>
+                {notificationsState ? 'No Notificar' : 'Notificar de nuevos servicios'}
+              </Text>
+            </Button>
+          </View>
 
           {/* {this.state.license_plate !== '' &&
             <View style={styles.fieldWrapper}>

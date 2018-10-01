@@ -14,7 +14,7 @@ class SessionState extends Container {
     isLogued: null,
     loginErrors: null,
     signupErrors: null,
-    notificationsState: false,
+    notificationsState: true,
     user: {
       number: '',
       organizationName: '',
@@ -25,10 +25,10 @@ class SessionState extends Container {
     Api.get('/drivers/profile').then(res => {
       if (res.data && res.data.vehicle) {
         this.setState({
-          notificationsState: res.data.user.device_id ? true : false,
+          notificationsState: res.data.push_notifications,
           user: {
             number: res.data.vehicle.number,
-            organizationName: res.data.vehicle.organization.name
+            organizationName: res.data.vehicle.organization.name,
           }
         });
       }
@@ -151,40 +151,25 @@ class SessionState extends Container {
     }
   };
 
-  turnOnNotifications = () => {
-    firebase.messaging().requestPermission()
-      .then(() => {
-        firebase.messaging().getToken()
-          .then(fcmToken => {
-            if (fcmToken) {
-              Api.put('/users/profile', { device_id: fcmToken }).then(res => {
-                if (res.status == 200) {
-                  this.setState({ notificationsState: true });
-                }
-              });
-            } else {
-              // user doesn't have a device token yet
-            }
-          });
+  updateNotifications = (value) => {
+    Api.put('/drivers/profile', { push_notifications: value })
+      .then(res => {
+        if (res.status == 200) {
+          this.setState({ notificationsState: value });
+        }
       })
       .catch(error => {
-        // User has rejected permissions  
+        alert('No se pudo actualizar el parametro');
       });
-  }
-
-  turnOffNotifications = () => {
-    Api.put('/users/profile', { device_id: null }).then(res => {
-      if (res.status == 200) {
-        this.setState({ notificationsState: false });
-      }
-    });
   }
 
   toggleNotifications = () => {
     if (this.state.notificationsState) {
-      this.turnOffNotifications();
+      // Turn off notifications
+      this.updateNotifications(false);
     } else {
-      this.turnOnNotifications();
+      // Turn on notifications
+      this.updateNotifications(true);
     }
   }
 }
