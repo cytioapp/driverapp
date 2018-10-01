@@ -6,7 +6,7 @@ import {
   Image
 } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
-import { Button, Icon, Text } from 'native-base';
+import { Text } from 'native-base';
 import styles from './style';
 import logoImage from '../../assets/logo2.png';
 import { SessionProvider } from '../Providers';
@@ -23,7 +23,6 @@ class DrawerMenu extends Component {
     const { navigate } = this.props.navigation;
     const { session } = this.props;
     const { organizationName, number } = session.state.user;
-    const { notificationsState } = session.state;
     return (
       <ScrollView style={styles.menu}>
         <SafeAreaView
@@ -32,13 +31,6 @@ class DrawerMenu extends Component {
         >
           <View style={styles.logoWrapper}>
             <Image source={logoImage} style={styles.logo} />
-            {/* <View>
-              <Button onPress={session.toggleNotifications} block>
-                <Text>
-                  {notificationsState ? 'No Notificar' : 'Notificar de nuevos servicios'}
-                </Text>
-              </Button>
-            </View> */}
             <TouchableHighlight onPress={() => navigate('AssignVehicle')}>
               <View>
                 <Text style={styles.vehicleText}>

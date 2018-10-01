@@ -99,6 +99,13 @@ const styles = StyleSheet.create({
   noTaxiMessageWrapper: {
     alignItems: 'center',
     marginVertical: 15
+  },
+  notificationsButton: {
+    backgroundColor: yellow,
+    marginHorizontal: 10,
+  },
+  notificationsText: {
+    color: '#262626'
   }
 });
 
