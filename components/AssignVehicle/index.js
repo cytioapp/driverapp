@@ -95,7 +95,7 @@ class AssignVehicle extends Component {
 
   render() {
     return (
-      <KeyboardAwareScrollView style={{ flex: 1 }} behavior="padding">
+      
         <Container>
           <Header
             style={styles.header}
@@ -113,7 +113,7 @@ class AssignVehicle extends Component {
             <Right style={styles.headerRight} />
           </Header>
 
-          <Content contentContainerStyle={{ flex: 1 }}>
+          <KeyboardAwareScrollView style={{ flex: 1 }} behavior="padding">
             <View style={styles.currentOrganization}>
               {this.state.actual === '' && (
                 <Text style={styles.labelOrg}>
@@ -213,9 +213,9 @@ class AssignVehicle extends Component {
                 </Button>
               </View>
             </View>
-          </Content>
+          </KeyboardAwareScrollView>
         </Container>
-      </KeyboardAwareScrollView>
+      
     );
   }
 }
